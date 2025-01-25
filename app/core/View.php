@@ -24,7 +24,11 @@ class  View
             require $viewFile;
             $viewContent = ob_get_clean();
 
-            $this->loadTemplate($layoutFile ?? '', array_merge($params, ['viewContent' => $viewContent]));
+            if ($layoutFile ?? '') {
+                $this->loadTemplate($layoutFile ?? '', array_merge($params, ['viewContent' => $viewContent]));
+            } else {
+                echo $viewContent;
+            }
 
             // if isset any previous session clear them
             if (isset($_SESSION['error'])) unset($_SESSION['error']);

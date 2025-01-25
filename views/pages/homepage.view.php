@@ -1,7 +1,4 @@
 <?php
-
-use App\Core\Auth;
-
 $layoutFile = 'layouts.main';
 ?>
 

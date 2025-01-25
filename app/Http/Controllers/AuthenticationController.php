@@ -16,7 +16,7 @@ class AuthenticationController extends Controller
      */
     public function index()
     {
-        view('pages.auth.login', array('title' => "Login"));
+        view('admin.pages.auth.login', array('title' => "Login"));
     }
 
     /**
@@ -71,7 +71,7 @@ class AuthenticationController extends Controller
             return redirect('/login');
         }
 
-        return redirect('/');
+        return redirect('/admin');
     }
 
     /**

@@ -4,6 +4,7 @@ use App\Core\Auth;
 use App\Core\Config;
 use App\Core\CSRF;
 use App\Core\Env;
+use App\Core\Session;
 use App\Core\View;
 
 /**
@@ -159,4 +160,24 @@ function csrf(): string
 function csrfField(): string
 {
     return '<input type="hidden" name="_csrf_token" value="' . csrf() . '">';
+}
+
+
+function getEnvData(string $key, string $default = ''): string
+{
+    return Env::get($key, $default);
+}
+
+function getConfig(string $path)
+{
+    return Config::get($path);
+}
+
+
+function getFlashData(): array
+{
+    $data = $_SESSION['_flash'] ?? array();
+    Session::unflash();
+
+    return $data;
 }

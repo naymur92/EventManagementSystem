@@ -24,6 +24,10 @@ class Session
      */
     public static function put(string|int $key, $value): void
     {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
         $_SESSION[$key] = $value;
     }
 
@@ -36,6 +40,10 @@ class Session
      */
     public static function get(string|int $key, $default = null)
     {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
         return $_SESSION['_flash'][$key] ?? $_SESSION[$key] ?? $default;
     }
 
@@ -48,7 +56,11 @@ class Session
      */
     public static function flash(string|int $key, $value): void
     {
-        $_SESSION['_flash'][$key] = $value;
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $_SESSION['_flash'][$key][] = $value;
     }
 
 
@@ -59,7 +71,11 @@ class Session
      */
     public static function unflash(): void
     {
-        unset($_SESSION['_flash']);
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (isset($_SESSION['_flash'])) unset($_SESSION['_flash']);
     }
 
     /**
@@ -69,6 +85,10 @@ class Session
      */
     public static function flush(): void
     {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
         $_SESSION = [];
     }
 

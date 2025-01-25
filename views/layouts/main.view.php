@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.3/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         .fakeimg {
@@ -83,6 +84,16 @@
         <p>Footer</p>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.3/dist/sweetalert2.all.min.js"></script>
+
+    <script src="<?= getBaseUrl() ?>/assets/js/global_helpers.js"></script>
+    <script src="<?= getBaseUrl() ?>/assets/js/swal-helpers.js"></script>
+
+    <script>
+        // show all flash messages
+        swalErrors = <?= json_encode(getFlashData()) ?>;
+        showFlashMessages(swalErrors);
+    </script>
 </body>
 
 </html>

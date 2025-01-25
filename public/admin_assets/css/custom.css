@@ -1,0 +1,176 @@
+.is-invalid,
+.was-validated .form-control:invalid {
+    border: 1px solid !important;
+    border-radius: 5px !important;
+    border-color: #e74a3b !important;
+    padding-right: calc(1.5em + 0.75rem) !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23e74a3b' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23e74a3b' stroke='none'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+/* input::placeholder {
+    color: #6c757d;
+} */
+
+::-webkit-input-placeholder {
+    color: #6c757da2 !important;
+    /* Placeholder text color for Chrome, Safari, and newer versions of Edge */
+}
+
+:-moz-placeholder {
+    color: #6c757da2 !important;
+    /* Placeholder text color for Firefox 18- */
+}
+
+::-moz-placeholder {
+    color: #6c757da2 !important;
+    /* Placeholder text color for Firefox 19+ */
+}
+
+:-ms-input-placeholder {
+    color: #6c757da2 !important;
+    /* Placeholder text color for Internet Explorer 10-11 */
+}
+
+::placeholder {
+    color: #6c757da2 !important;
+    /* Placeholder text color for modern browsers */
+}
+
+table.dataTable>thead .sorting::before,
+table.dataTable>thead .sorting::after,
+table.dataTable>thead .sorting_asc::before,
+table.dataTable>thead .sorting_asc::after,
+table.dataTable>thead .sorting_desc::before,
+table.dataTable>thead .sorting_desc::after,
+table.dataTable>thead .sorting_asc_disabled::before,
+table.dataTable>thead .sorting_asc_disabled::after,
+table.dataTable>thead .sorting_desc_disabled::before,
+table.dataTable>thead .sorting_desc_disabled::after {
+    bottom: 0.5em !important;
+}
+
+.no-sort::after {
+    display: none !important;
+}
+
+.no-sort::before {
+    display: none !important;
+}
+
+.no-sort {
+    pointer-events: none !important;
+    cursor: default !important;
+}
+
+.no-sort input {
+    pointer-events: auto !important;
+    cursor: default !important;
+}
+
+.table th,
+.table td {
+    padding: 0.5rem !important;
+    padding-right: 0.5rem !important;
+}
+
+.table thead th {
+    font-weight: normal !important;
+}
+
+.table thead {
+    line-height: 1.2 !important;
+}
+
+.table tbody td {
+    /* padding: 0.3rem !important; */
+    font-size: 0.9rem !important;
+    line-height: normal;
+}
+
+.show-table>tbody>tr>td {
+    font-size: 1rem !important;
+}
+
+@media only screen and (max-width: 767px) {
+    .topbar-title {
+        display: none !important;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .first-topbar-divider {
+        display: none !important;
+    }
+}
+
+.topbar-title .page-title {
+    font-weight: 600;
+    font-size: 1.5rem !important;
+}
+
+.table-data-modify-icon span {
+    width: 25px !important;
+    text-align: center;
+}
+
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--multiple {
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    color: #6e707e !important;
+    border: 1px solid #d1d3e2;
+    border-radius: 0.35rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendere {
+    color: #6e707e !important;
+}
+
+.select2-container--default .select2-selection--multiple {
+    padding: 0rem 0.75rem;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: calc(1.5em + 0.75rem + 2px) !important;
+}
+
+.datepicker table {
+    width: 300px;
+}
+
+
+.sidebar li.active {
+    background-color: #f8f9fc !important;
+}
+
+.sidebar li.active a,
+.sidebar li.active a i {
+    color: #345bcc !important;
+}
+
+.product-list-table,
+.product-list-table tr,
+.product-list-table td,
+.product-list-table th {
+    border: none;
+}
+
+.product-list-table td {
+    border-bottom: 1px solid #ddd !important;
+}
+
+/* .product-list-table tr:not(:first-child) td {
+    border-top: 1px solid #ddd !important;
+} */
+
+input[type="text"].custom-number-input {
+    text-align: right;
+}
+
+.form-control::placeholder {
+    opacity: 0.5 !important;
+}

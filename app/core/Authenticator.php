@@ -22,7 +22,7 @@ class Authenticator
 
         $user = (new User)->where('email', '=', $email)->get();
         if ($user && isset($user[0]['password'])) {
-            if (password_verify($password, $user[0]['password'])) {
+            if (password_verify($password, $user[0]['password']) && $user[0]['status'] == 1) {
                 $this->login($user[0]);
 
                 return true;

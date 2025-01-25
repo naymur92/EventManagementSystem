@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Core\Controller;
 use App\Core\DB;
+use App\Core\Session;
 use PDO;
 
 class HomeController extends Controller

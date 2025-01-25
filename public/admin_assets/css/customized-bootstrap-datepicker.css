@@ -1,0 +1,101 @@
+.input-group-text {
+    border-radius: 0px 0.35rem 0.35rem 0px;
+}
+
+.datepicker {
+    z-index: 9999999 !important;
+    background-color: #edf1ff !important;
+    color: black !important;
+}
+
+.datepicker-dropdown.datepicker-orient-top::before {
+    border-top: 7px solid #edf1ff !important;
+}
+
+/* bootstrap datepicker disabled cursor */
+.datepicker table tr td span.disabled,
+.datepicker table tr td span.disabled:hover {
+    cursor: not-allowed !important;
+    color: red !important;
+}
+
+
+.datepicker table tr td.disabled,
+.datepicker table tr td.disabled:hover {
+    color: red !important;
+    cursor: not-allowed !important;
+}
+
+.datepicker table tr td.active.active,
+.datepicker table tr td.active.highlighted.active,
+.datepicker table tr td.active.highlighted:active,
+.datepicker table tr td.active:active,
+.datepicker table tr td span.active.active,
+.datepicker table tr td span.active.disabled.active,
+.datepicker table tr td span.active.disabled:active,
+.datepicker table tr td span.active.disabled:hover.active,
+.datepicker table tr td span.active.disabled:hover:active,
+.datepicker table tr td span.active:active,
+.datepicker table tr td span.active:hover.active,
+.datepicker table tr td span.active:hover:active {
+    font-weight: bold;
+}
+
+.date-selector {
+    color: #6e707e;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #d1d3e2;
+    border-radius: 0.35rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.date-selector .date-selector-input {
+    border: none;
+    text-align: right;
+}
+
+.date-selector .date-selector-icon {
+    border: none;
+    background-color: #fff !important;
+    border-left: 1px solid #d1d3e2;
+    cursor: pointer;
+}
+
+.date-selector .date-selector-icon:hover {
+    background-color: #ddd !important;
+    border-left: 1px solid #ddd !important;
+}
+
+.date-selector-input[readonly],
+.from-date[readonly],
+.to-date[readonly] {
+    background-color: #fff !important;
+}
+
+.date-selector-input[disabled],
+.from-date[disabled],
+.to-date[disabled] {
+    background-color: #e9ecef !important;
+}
+
+
+.input-daterange input {
+    border: none;
+}
+
+.input-daterange {
+    border: 1px solid #d1d3e2;
+    border-radius: 0.35rem;
+    color: #888888;
+}
+
+.input-daterange .input-group-addon {
+    padding: 6px 12px;
+    line-height: 1.5;
+    margin-left: 0px;
+    margin-right: 0px;
+    background: #ddd;
+    border-left: 1px solid #d1d3e2;
+    border-right: 1px solid #d1d3e2;
+}
