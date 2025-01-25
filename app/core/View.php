@@ -25,7 +25,7 @@ class  View
             $viewContent = ob_get_clean();
 
             if ($layoutFile ?? '') {
-                $this->loadTemplate($layoutFile ?? '', array_merge($params, ['viewContent' => $viewContent]));
+                $this->loadTemplate($layoutFile ?? '', array_merge($params, ['viewContent' => $viewContent, 'stylesBlock' => $stylesBlock ?? '', 'scriptsBlock' => $scriptsBlock ?? '']));
             } else {
                 echo $viewContent;
             }

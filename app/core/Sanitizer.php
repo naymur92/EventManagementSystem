@@ -44,7 +44,7 @@ class Sanitizer
                 return filter_var($value, FILTER_SANITIZE_EMAIL);
             case 'url':
                 return filter_var($value, FILTER_SANITIZE_URL);
-            case 'int':
+            case 'integer':
                 return filter_var($value, FILTER_SANITIZE_NUMBER_INT);
             case 'float':
                 return filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);

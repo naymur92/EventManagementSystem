@@ -11,6 +11,8 @@ class Router
     protected array $supportedMethods = ['GET', 'POST', 'PUT', 'DELETE'];
     protected array $middlewares = [];
 
+    protected ?array $currentRoute = null;
+
 
     /**
      * Register a route for any HTTP method
@@ -26,6 +28,12 @@ class Router
         if (!in_array($method, $this->supportedMethods)) {
             throw new \Exception("HTTP method $method not supported.");
         }
+
+        $this->currentRoute = [
+            'method' => $method,
+            'uri' => $uri,
+        ];
+
         $this->routes[$method][$uri] = array(
             'callback' => $callback,
             'middleware' => [],
@@ -42,11 +50,19 @@ class Router
      */
     public function only(array $keys): self
     {
-        // Retrieve the last added route for the current HTTP method
-        $method = array_key_last($this->routes);
-        $uri = array_key_last($this->routes[$method]);
+        if ($this->currentRoute === null) {
+            throw new \Exception("Cannot set middleware: No route is being defined.");
+        }
 
-        $this->routes[$method][$uri]['middleware'] = (array) $keys;
+        $method = $this->currentRoute['method'];
+        $uri = $this->currentRoute['uri'];
+
+        // Add middleware to the current route
+        $this->routes[$method][$uri]['middleware'] = $keys;
+
+        // Reset the current route context to avoid conflicts
+        $this->currentRoute = null;
+
         return $this;
     }
 
@@ -99,6 +115,21 @@ class Router
     }
 
     /**
+     * Update request method for PUT and DELETE
+     *
+     * @return void
+     */
+    public function updateRequestMethod()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['_method'])) {
+            $method = strtoupper($_POST['_method']);
+            if (in_array($method, ['PUT', 'DELETE'])) {
+                $_SERVER['REQUEST_METHOD'] = $method;
+            }
+        }
+    }
+
+    /**
      * Resolve the current route and execute its callback
      *
      * @param Request $request
@@ -106,6 +137,9 @@ class Router
      */
     public function resolve(Request $request)
     {
+        // update method
+        $this->updateRequestMethod();
+
         $method = $request->getRequestMethod();
         $uri = $request->getRequestUri();
 
@@ -176,26 +210,33 @@ class Router
             // Instantiate the controller
             $controller = new $controllerClass();
 
-            // Use reflection to inspect the method's parameters
+            // Check if the method expects a Request object
             $reflection = new \ReflectionMethod($controller, $method);
-            $params = [];
 
+            $requestParamFound = false;
             foreach ($reflection->getParameters() as $param) {
                 $paramType = $param->getType();
 
                 if ($paramType && $paramType->getName() === Request::class) {
-                    // Inject the Request object manually
-                    $params[] = new Request();
-                } else {
-                    // Inject route parameters for remaining arguments
-                    $params[] = array_shift($routeParams);
+                    $requestParamFound = true;
+                    break;
                 }
             }
 
-            return call_user_func_array([$controller, $method], $params);
+            // remove the request class from $routeParams if method not contains Request class
+            if (!$requestParamFound) {
+                for ($i = 0; $i < count($routeParams); $i++) {
+                    if ($routeParams[$i] instanceof Request) {
+                        unset($routeParams[$i]);
+                    }
+                }
+            }
+
+            // Call the controller method with resolved arguments
+            return call_user_func_array([$controller, $method], $routeParams);
         }
 
-        // For simple callable functions
+        // For callable functions
         return call_user_func_array($callback, $routeParams);
     }
 

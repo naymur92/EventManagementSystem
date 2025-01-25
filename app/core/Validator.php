@@ -20,13 +20,31 @@ class Validator
             $rulesArray = explode('|', $ruleString);
             $value = $data[$field] ?? null;
 
+            // remove validated data form array
+            unset($data[$field]);
+
             foreach ($rulesArray as $rule) {
-                $this->applyRule($field, $value, $rule);
+                [$ruleName, $ruleParam] = explode(':', $rule . ':');
+
+                if (!in_array('integer', $rulesArray) && ($ruleName == 'min' || $ruleName == 'max')) {
+                    $this->applyRule($field, strlen($value), $rule);
+                } else {
+                    $this->applyRule($field, $value, $rule);
+                }
             }
 
             if (!isset($this->errors[$field])) {
                 $this->validatedData[$field] = $value;
             }
+        }
+
+        // add all other data into validated
+        foreach ($data as $field => $value) {
+            if (in_array($field, array('_csrf_token', '_method'))) {
+                continue;
+            }
+
+            $this->validatedData[$field] = $value;
         }
     }
 
@@ -50,37 +68,37 @@ class Validator
                 break;
 
             case 'string':
-                if (!is_string($value)) {
+                if (!is_string($value) && !empty($value)) {
                     $this->addError($field, "$field must be a string.");
                 }
                 break;
 
             case 'integer':
-                if (!filter_var($value, FILTER_VALIDATE_INT)) {
+                if (!filter_var($value, FILTER_VALIDATE_INT) && !empty($value)) {
                     $this->addError($field, "$field must be an integer.");
                 }
                 break;
 
             case 'max':
-                if (strlen($value) > (int)$ruleParam) {
-                    $this->addError($field, "$field must not exceed $ruleParam characters.");
+                if ($value > (int) $ruleParam && !empty($value)) {
+                    $this->addError($field, "$field must not exceed $ruleParam.");
                 }
                 break;
 
             case 'min':
-                if ($value < (int)$ruleParam) {
+                if ($value < (int) $ruleParam && !empty($value)) {
                     $this->addError($field, "$field must be at least $ruleParam.");
                 }
                 break;
 
             case 'email':
-                if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                if (!filter_var($value, FILTER_VALIDATE_EMAIL) && !empty($value)) {
                     $this->addError($field, "$field must be a valid email address.");
                 }
                 break;
 
             case 'url':
-                if (!filter_var($value, FILTER_VALIDATE_URL)) {
+                if (!filter_var($value, FILTER_VALIDATE_URL) && !empty($value)) {
                     $this->addError($field, "$field must be a valid URL.");
                 }
                 break;

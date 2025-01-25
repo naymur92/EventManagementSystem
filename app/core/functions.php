@@ -49,6 +49,18 @@ function urlIs(string $value): bool
 
 
 /**
+ * Check the current url
+ *
+ * @param array $routeList
+ * @return boolean
+ */
+function urlInList(array $routeList): bool
+{
+    return in_array($_SERVER['REQUEST_URI'], $routeList);
+}
+
+
+/**
  * Get absolute path of a file
  *
  * @param string $path
@@ -163,17 +175,35 @@ function csrfField(): string
 }
 
 
+/**
+ * Get data from .env file
+ *
+ * @param string $key
+ * @param string $default
+ * @return string
+ */
 function getEnvData(string $key, string $default = ''): string
 {
     return Env::get($key, $default);
 }
 
+/**
+ * Get data from config files
+ *
+ * @param string $path
+ * @return void
+ */
 function getConfig(string $path)
 {
     return Config::get($path);
 }
 
 
+/**
+ * Get flash data from session
+ *
+ * @return array
+ */
 function getFlashData(): array
 {
     $data = $_SESSION['_flash'] ?? array();
