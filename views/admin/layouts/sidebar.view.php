@@ -1,52 +1,3 @@
-<?php
-// $c_con_array = explode('.', Route::currentRouteName());
-$c_con_array = '';
-global $current_controller;
-// $current_controller = $c_con_array[0];
-// set collapsed class
-if (!function_exists('isCollapsed')) {
-    function isCollapsed(array $controllerNameArray)
-    {
-        global $current_controller;
-        if (!in_array($current_controller, $controllerNameArray)) {
-            echo 'collapsed';
-        }
-    }
-}
-// set active class in li tag
-if (!function_exists('isActiveLI')) {
-    function isActiveLI(array $controllerName)
-    {
-        global $current_controller;
-        if (in_array($current_controller, $controllerName)) {
-            echo 'active';
-        }
-    }
-}
-
-// set show class in a tag
-if (!function_exists('isShow')) {
-    function isShow($controllerName)
-    {
-        global $current_controller;
-        if ($current_controller == $controllerName) {
-            echo 'show';
-        }
-    }
-}
-
-// set active class
-// if (!function_exists('isActive')) {
-//     function isActive($routeName)
-//     {
-//         if (Route::currentRouteName() == $routeName) {
-//             echo 'active';
-//         }
-//     }
-// }
-
-?>
-
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
@@ -60,8 +11,8 @@ if (!function_exists('isShow')) {
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
-    <li class="nav-item {{ isActiveLI(['dashboard']) }}">
-        <a class="nav-link" href="{{ route('dashboard') }}">
+    <li class="nav-item <?= urlInList(['/admin']) ? 'active' : '' ?>">
+        <a class="nav-link" href="/admin">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
@@ -75,8 +26,8 @@ if (!function_exists('isShow')) {
         Event Management
     </div>
 
-    <li class="nav-item {{ isActiveLI(['product-units']) }}">
-        <a class="nav-link" href="{{ route('product-units.index') }}">
+    <li class="nav-item <?= urlInList(['product-units']) ? 'active' : '' ?>">
+        <a class="nav-link" href="#">
             <i class="fa-solid fa-scale-unbalanced-flip"></i>
             <span>Events</span></a>
     </li>
@@ -89,14 +40,14 @@ if (!function_exists('isShow')) {
         Site Configuration
     </div>
 
-    <li class="nav-item {{ isActiveLI(['users']) }}">
-        <a class="nav-link" href="{{ route('users.index') }}">
+    <li class="nav-item <?= urlInList(['/admin/users', '/admin/users/create']) ? 'active' : '' ?>">
+        <a class="nav-link" href="/admin/users">
             <i class="fa-solid fa-users-gear"></i>
             <span>Auth Users</span></a>
     </li>
 
-    <li class="nav-item {{ isActiveLI(['company-information']) }}">
-        <a class="nav-link" href="{{ route('company-information.index') }}">
+    <li class="nav-item <?= urlInList(['company-information']) ? 'active' : '' ?>">
+        <a class="nav-link" href="#">
             <i class="fa-solid fa-info"></i>
             <span>Company Information</span></a>
     </li>

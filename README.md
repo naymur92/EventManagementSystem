@@ -1,24 +1,25 @@
 ## Event Management System
 
-
 ### Requirements
-`PHP >= 8.0` `MySql` `composer`
 
+`PHP >= 8.0` `MySql` `composer`
 
 ### Setup Instructions:
 
-* __Step 1:__ Download or Clone the repository.
+- **Step 1:** Download or Clone the repository.
 
-* __Step 2:__ Run `composer dump-autoload`.
+- **Step 2:** Run `composer dump-autoload`.
 
-* __Step 3:__ Import the database from the `/database/backup.sql` folder.
+- **Step 3:** Import the database from the `/database/backup.sql` folder.
 
-* __Step 4:__ Copy the `.env.example` to `.env` file.
+- **Step 4:** Copy the `.env.example` to `.env` file.
 
-* __Step 5:__ Set correct database credentials in the `.env` file.
+- **Step 5:** Set correct database credentials in the `.env` file.
 
-* __Step 6:__ Set correct `APP_URL` and `APP_NAME` in the `.env` file.
+- **Step 6:** Set correct `APP_URL` and `APP_NAME` in the `.env` file.
 
+- **Step 7:** Set writable permission to `public/uploads` folder.
 
 ### Developer
+
 > Naymur Rahman

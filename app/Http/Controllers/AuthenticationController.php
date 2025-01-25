@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Core\Authenticator;
 use App\Core\Controller;
 use App\Core\Request;
+use App\Core\Session;
 use App\Models\User;
 
 class AuthenticationController extends Controller
@@ -70,6 +71,8 @@ class AuthenticationController extends Controller
 
             return redirect('/login');
         }
+
+        Session::flash('flash_success', "Login success.");
 
         return redirect('/admin');
     }

@@ -11,7 +11,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="<?= csrf(); ?>">
 
-    <title><?= $title ?> - <?= getEnvData('APP_NAME') ?></title>
+    <title><?= $title ?? '' ?> - <?= getEnvData('APP_NAME') ?></title>
 
     <!-- Custom fonts for this template-->
     <link href="<?= getBaseUrl() ?>/admin_assets/vendor/Font-Awesome-6.x/css/all.min.css" rel="stylesheet" type="text/css">
@@ -29,7 +29,8 @@
     <link href="<?= getBaseUrl() ?>/admin_assets/css/customized-bootstrap-datepicker.css" rel="stylesheet">
 
     <!-- Styles -->
-    <!-- @stack('styles') -->
+    <?= $stylesBlock ?? '' ?>
+
     <link href="<?= getBaseUrl() ?>/admin_assets/css/custom.css" rel="stylesheet">
 
     <style>
@@ -89,7 +90,7 @@
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-                <?= $viewContent ?>
+                <?= $viewContent ?? '' ?>
                 <!-- /.container-fluid -->
 
             </div>
@@ -125,11 +126,17 @@
 
     <script>
         $(document).ready(function() {
-            $('select').select2();
+            $('.select2').select2();
         });
     </script>
 
+    <script>
+        showFlashMessages(<?= json_encode(getFlashData()); ?>);
+    </script>
 
+
+    <!-- scripts block -->
+    <?= $scriptsBlock ?? '' ?>
 </body>
 
 </html>
