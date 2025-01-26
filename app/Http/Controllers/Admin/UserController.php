@@ -6,6 +6,7 @@ use App\Core\Auth;
 use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Session;
+use App\Models\File;
 use App\Models\User;
 
 class UserController extends Controller
@@ -336,14 +337,7 @@ class UserController extends Controller
         $ext = end($ext);;
 
         $fileName = $user->user_id . '_' . time() . '.' . $ext;
-
-        // dd(UPLOAD_DIR . "$filePath/$fileName");
-
-        try {
-            move_uploaded_file($_FILES['profile_picture']['tmpname'], UPLOAD_DIR . "$filePath/$fileName");
-        } catch (\Throwable $th) {
-            dd($th);
-        }
+        move_uploaded_file($_FILES['profile_picture']['tmp_name'], UPLOAD_DIR . "$filePath/$fileName");
 
         // save it to files table
         $user->saveFile([
@@ -355,12 +349,21 @@ class UserController extends Controller
         ]);
 
 
-        // all good  
-        // if (!empty($existingFile)) {
-        //     $existingFilePath = "{$existingFile[0]['filepath']}/{$existingFile[0]['filename']}";
-        //     if (file_exists(UPLOAD_DIR . $existingFilePath))
-        //         unlink(UPLOAD_DIR . $existingFilePath);
-        // }
+        // delete existing files
+        if (!empty($existingFile)) {
+            foreach ($existingFile as $file) {
+                // set deleted in DB
+                (new File())->update($file['file_id'], array(
+                    'deleted_by' => Auth::user()->user_id,
+                    'deleted_at' => date('Y-m-d H:i:s')
+                ));
+
+                // remove file from storage
+                $existingFilePath = "{$file['filepath']}/{$file['filename']}";
+                if (file_exists(UPLOAD_DIR . $existingFilePath))
+                    unlink(UPLOAD_DIR . $existingFilePath);
+            }
+        }
 
         Session::setPopup('popup_success', "Profile picture updated successfully!");
         return redirect('/admin/user-profile');
