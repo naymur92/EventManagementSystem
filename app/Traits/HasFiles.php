@@ -15,6 +15,7 @@ trait HasFiles
     {
         return (new File())->where('operation_name', '=', $this->getTable())
             ->where('table_id', '=', $this->{$this->getPrimaryKey()})
+            ->where('deleted_at', 'IS', null)
             ->get();
     }
 
@@ -34,6 +35,7 @@ trait HasFiles
         return (new File())->saveFileIntoDB($fileData);
     }
 
+
     /**
      * Delete all files associated with the model.
      *
@@ -41,8 +43,8 @@ trait HasFiles
      */
     // public function deleteAllFiles(): bool
     // {
-    //     return (new File())->where('operation_name', $this->getTable())
-    //         ->where('table_id', $this->{$this->getPrimaryKey()})
+    //     return (new File())->where('operation_name', '=', $this->getTable())
+    //         ->where('table_id', '=', $this->{$this->getPrimaryKey()})
     //         ->delete();
     // }
 }
