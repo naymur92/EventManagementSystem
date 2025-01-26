@@ -2,16 +2,18 @@
 
 namespace App\Core;
 
+use App\Models\User;
+
 class Auth
 {
     /**
      * Get authenticated user
      *
-     * @return object|null
+     * @return User|null
      */
-    public static function user(): object|null
+    public static function user(): User|null
     {
         $user = Session::get('user');
-        return $user ? (object) $user : null;
+        return $user ? User::makeInstance((array) $user) : null;
     }
 }
