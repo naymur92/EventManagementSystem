@@ -89,4 +89,84 @@ class AuthenticationController extends Controller
 
         return redirect('/');
     }
+
+
+    /**
+     * Register a user
+     *
+     * @return void
+     */
+    public function registerPage()
+    {
+        view('admin.pages.auth.register', array('title' => "Register"));
+    }
+
+    /**
+     * Store registered user
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function register(Request $request)
+    {
+        // Define sanitization rules
+        $request->setSanitizationRules([
+            'name' => ['string'],
+            'email' => ['email'],
+            'mobile' => ['string'],
+            'password' => ['string'],
+        ]);
+
+        // Validation rules
+        $rules = [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:127',
+            'mobile' => 'string|max:15',
+            'password' => 'required|string|min:8',
+        ];
+
+        // Validate data
+        $request->validate($rules);
+
+        $errors = $request->errors();
+
+        $errorFound = false;
+
+        if (!empty($errors)) {
+            $errorFound = true;
+        }
+
+        $email = $request->input('email');
+        if ($email != "") {
+            $usersModel = new User();
+            $user = $usersModel->where('email', '=', $email)->get();
+
+            if (count($user) > 0) {
+                $errorFound = true;
+                $errors['email'][] = "Email must be unique!";
+            }
+        }
+
+        if ($errorFound) {
+            // set errors and old data into session
+            $_SESSION['error'] = $errors;
+            $_SESSION['old'] = $request->all();
+
+            return redirect('/register');
+        }
+
+        $data = $request->validated();
+
+        $usersModel = new User();
+
+        $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['updated_at'] = date('Y-m-d H:i:s');
+
+        $usersModel->insert($data);
+
+        Session::setPopup('popup_success', "Registration successfull. Please contact with admin to active your account!");
+
+        return redirect('/');
+    }
 }

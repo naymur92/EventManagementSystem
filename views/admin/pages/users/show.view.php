@@ -74,7 +74,7 @@ ob_start(); ?>
                                 <?= csrfField() ?>
                                 <input type="hidden" name="_method" value="PUT">
 
-                                <input type="text" value="2" name="status" hidden>
+                                <input type="text" value="0" name="status" hidden>
 
                                 <button type="submit" class="btn btn-outline-danger"><i class="fas fa-times"></i> Mark Inactive</button>
                             </form>

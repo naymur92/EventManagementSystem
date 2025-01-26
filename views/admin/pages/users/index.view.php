@@ -85,7 +85,7 @@ ob_start(); ?>
                                                             <?= csrfField() ?>
                                                             <input type="hidden" name="_method" value="PUT">
 
-                                                            <input type="text" value="2" name="status" hidden>
+                                                            <input type="text" value="0" name="status" hidden>
 
                                                             <input type="submit" class="hidden-submit-btn" hidden>
 

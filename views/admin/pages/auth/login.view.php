@@ -16,6 +16,7 @@
 
     <!-- Custom styles for this template-->
     <link href="<?= getBaseUrl() ?>/admin_assets/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?= getBaseUrl() ?>/admin_assets/css/custom.css" rel="stylesheet">
 
 </head>
 
@@ -39,7 +40,7 @@
                                 <?= csrfField() ?>
 
                                 <div class="form-group">
-                                    <input id="email" type="email" class="form-control form-control-user <?= hasError('email') ? 'is-invalid' : '' ?>" name="email"
+                                    <input id="_email" type="email" class="form-control form-control-user <?= hasError('email') ? 'is-invalid' : '' ?>" name="email"
                                         value="<?= old('email') ?>" required autocomplete="email" autofocus placeholder="someone@example.com">
 
                                     <?php foreach (errors('email') as $error) : ?>
@@ -48,9 +49,9 @@
                                         </span>
                                     <?php endforeach; ?>
                                 </div>
+
                                 <div class="form-group">
-                                    <input id="password" type="password" class="form-control form-control-user <?= hasError('password') ? 'is-invalid' : '' ?>" name="password" required
-                                        autocomplete="current-password">
+                                    <input id="_password" type="password" class="form-control form-control-user <?= hasError('password') ? 'is-invalid' : '' ?>" name="password" required autocomplete="current-password" placeholder="Password here">
 
                                     <?php foreach (errors('password') as $error) : ?>
                                         <span class="invalid-feedback" role="alert">
@@ -68,7 +69,7 @@
                                 <!-- <a class="small" href="forgot-password.html">Forgot Password?</a> -->
                             </div>
                             <div class="text-center">
-                                <!-- <a class="small" href="register.html">Create an Account!</a> -->
+                                <a class="small" href="/register">Create an Account!</a>
                             </div>
                         </div>
 

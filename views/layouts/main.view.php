@@ -90,9 +90,11 @@
     <script src="<?= getBaseUrl() ?>/assets/js/swal-helpers.js"></script>
 
     <script>
-        // show all flash messages
-        swalErrors = <?= json_encode(getFlashData()) ?>;
-        showFlashMessages(swalErrors);
+        // show popup messages
+        showPopupMessages(<?= json_encode(getPopupData()); ?>).then(() => {
+            // show flash messages
+            showFlashMessages(<?= json_encode(getFlashData()); ?>);
+        });
     </script>
 </body>
 
