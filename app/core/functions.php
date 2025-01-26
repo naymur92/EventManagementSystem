@@ -57,7 +57,7 @@ function urlIs(string $value): bool
  */
 function urlInList(array $routeList): bool
 {
-    return in_array($_SERVER['REQUEST_URI'], $routeList);
+    return in_array(Router::filterCurrentUri($_SERVER['REQUEST_URI']), $routeList);
 }
 
 
