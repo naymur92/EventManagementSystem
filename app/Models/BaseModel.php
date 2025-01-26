@@ -86,15 +86,25 @@ abstract class BaseModel implements ModelInterface
     }
 
     /**
-     * Update table data
+     * Update table data.
      *
-     * @param integer $id
-     * @param array $data
-     * @return boolean
+     * @param array $data Data to update.
+     * @param int|null $id Optional ID for static usage.
+     * @return bool
      */
-    public function update(int $id, array $data): bool
+    public function update(array $data, ?int $id = null): bool
     {
         $data = $this->filterFillable($data);
+
+        // If $id is not provided, use the primary key from the instance
+        if ($id === null) {
+            if (isset($this->{$this->primaryKey})) {
+                $id = $this->{$this->primaryKey};
+            } else {
+                throw new \InvalidArgumentException("ID is required to update a record.");
+            }
+        }
+
         $db = DB::getInstance();
         return $db->update($this->table, $id, $data, $this->primaryKey);
     }
@@ -120,11 +130,20 @@ abstract class BaseModel implements ModelInterface
     /**
      * Delete data from table (model)
      *
-     * @param integer $id
-     * @return boolean
+     * @param int|null $id Optional ID. If not provided, use the primary key value from the instance.
+     * @return bool
      */
-    public function delete(int $id): bool
+    public function delete(?int $id = null): bool
     {
+        // If $id is not provided, use the primary key from the instance
+        if ($id === null) {
+            if (isset($this->{$this->primaryKey})) {
+                $id = $this->{$this->primaryKey};
+            } else {
+                throw new \InvalidArgumentException("ID is required to delete a record.");
+            }
+        }
+
         $db = DB::getInstance();
         return $db->delete($this->table, $id, $this->primaryKey);
     }

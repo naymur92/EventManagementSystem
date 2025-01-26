@@ -5,7 +5,7 @@ namespace App\Contracts;
 interface ModelInterface
 {
     public function insert(array $data): bool;
-    public function update(int $id, array $data): bool;
+    public function update(array $data, ?int $id = null): bool;
     public function find(int $id): ?self;
     public function delete(int $id): bool;
     public function getAll(): array;

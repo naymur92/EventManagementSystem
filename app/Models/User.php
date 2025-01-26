@@ -22,6 +22,6 @@ class User extends BaseModel
     {
         $files = $this->getFiles();
 
-        return array_filter($files, fn($file) => $file['fileinfo'] === 'profile_picture');
+        return array_filter($files, fn($file) => $file['fileinfo'] === 'profile_picture')[0] ?? null;
     }
 }
