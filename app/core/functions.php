@@ -206,8 +206,16 @@ function getConfig(string $path)
  */
 function getFlashData(): array
 {
-    $data = $_SESSION['_flash'] ?? array();
-    Session::unflash();
+    return Session::getFlash();
+}
 
-    return $data;
+
+/**
+ * Get popup data from session
+ *
+ * @return array
+ */
+function getPopupData(): array
+{
+    return Session::getPopup();
 }

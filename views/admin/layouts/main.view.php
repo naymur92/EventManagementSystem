@@ -131,7 +131,11 @@
     </script>
 
     <script>
-        showFlashMessages(<?= json_encode(getFlashData()); ?>);
+        // show popup messages
+        showPopupMessages(<?= json_encode(getPopupData()); ?>).then(() => {
+            // show flash messages
+            showFlashMessages(<?= json_encode(getFlashData()); ?>);
+        });
     </script>
 
 

@@ -44,7 +44,7 @@ class Session
             session_start();
         }
 
-        return $_SESSION['_flash'][$key] ?? $_SESSION[$key] ?? $default;
+        return $_SESSION[$key] ?? $default;
     }
 
     /**
@@ -63,6 +63,18 @@ class Session
         $_SESSION['_flash'][$key][] = $value;
     }
 
+    /**
+     * Get Flash data from session
+     *
+     * @return array
+     */
+    public static function getFlash(): array
+    {
+        $flash = $_SESSION['_flash'] ?? array();
+        self::unflash();
+        return $flash;
+    }
+
 
     /**
      * Remove all flash data from session
@@ -71,12 +83,49 @@ class Session
      */
     public static function unflash(): void
     {
+        if (isset($_SESSION['_flash'])) unset($_SESSION['_flash']);
+    }
+
+
+    /**
+     * Set popup data into session
+     *
+     * @param string|int $key
+     * @param $value
+     * @return void
+     */
+    public static function setPopup(string|int $key, $value): void
+    {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
 
-        if (isset($_SESSION['_flash'])) unset($_SESSION['_flash']);
+        $_SESSION['_popup'][$key][] = $value;
     }
+
+    /**
+     * Get popup data from session
+     *
+     * @return array
+     */
+    public static function getPopup(): array
+    {
+        $popups = $_SESSION['_popup'] ?? array();
+        self::unsetPopup();
+        return $popups;
+    }
+
+
+    /**
+     * Remove all popup data from session
+     *
+     * @return void
+     */
+    public static function unsetPopup(): void
+    {
+        if (isset($_SESSION['_popup'])) unset($_SESSION['_popup']);
+    }
+
 
     /**
      * Remove all session data
