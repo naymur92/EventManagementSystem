@@ -256,4 +256,113 @@ class UserController extends Controller
 
         return redirect('/admin/users');
     }
+
+
+
+    /**
+     * Show prfile info
+     *
+     * @return void
+     */
+    public function userProfile()
+    {
+        $user = (new User)->find(Auth::user()->user_id);
+
+        if (!$user) {
+            Session::flash('flash_error', "Invalid action!");
+
+            return redirect('/admin');
+        }
+
+        view('admin.pages.user-profile.show', array('title' => "User Profile | Show", 'user' => $user));
+    }
+
+
+    /**
+     * Change profile picture
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function changeProfilePicture(Request $request)
+    {
+        $user = Auth::user();
+
+        $errorFound = false;
+
+        if (!$user) {
+            Session::flash('flash_error', "Invalid action!");
+
+            $errorFound = true;
+        }
+
+        if (empty($_FILES) || !isset($_FILES['profile_picture'])) {
+            Session::setPopup('popup_error', "Please select an image first!");
+
+            $errorFound = true;
+        }
+
+        $maxSize    = 1024 * 1024;  // 1 MB
+        $acceptable = array(
+            'image/jpeg',
+            'image/jpg',
+            'image/gif',
+            'image/png'
+        );
+
+        // dd($_FILES);
+        if (($_FILES['profile_picture']['size'] >= $maxSize) || ($_FILES["profile_picture"]["size"] == 0)) {
+            Session::flash('flash_error', 'File too large. File must be less than 1 megabyte.');
+            $errorFound = true;
+        }
+
+        if (!in_array($_FILES['profile_picture']['type'], $acceptable) && (!empty($_FILES["profile_picture"]["type"]))) {
+            Session::flash('flash_error', 'Invalid file type. Only JPG, GIF and PNG types are accepted.');
+            $errorFound = true;
+        }
+
+        if ($errorFound) {
+            return redirect('/admin/user-profile');
+        }
+
+        $user = (new User)->find(Auth::user()->user_id);
+
+        $existingFile = $user->getProfilePicture();
+
+        $filePath =  'users';
+
+        $name = $_FILES["profile_picture"]["name"];
+        $ext = (explode(".", $name));
+        $ext = end($ext);;
+
+        $fileName = $user->user_id . '_' . time() . '.' . $ext;
+
+        // dd(UPLOAD_DIR . "$filePath/$fileName");
+
+        try {
+            move_uploaded_file($_FILES['profile_picture']['tmpname'], UPLOAD_DIR . "$filePath/$fileName");
+        } catch (\Throwable $th) {
+            dd($th);
+        }
+
+        // save it to files table
+        $user->saveFile([
+            'filepath' => $filePath,
+            'filename' => $fileName,
+            'fileinfo' => "profile_picture",
+            'created_by' => Auth::user()->user_id,
+            'created_at' => date('Y-m-d H:i:s'),
+        ]);
+
+
+        // all good  
+        // if (!empty($existingFile)) {
+        //     $existingFilePath = "{$existingFile[0]['filepath']}/{$existingFile[0]['filename']}";
+        //     if (file_exists(UPLOAD_DIR . $existingFilePath))
+        //         unlink(UPLOAD_DIR . $existingFilePath);
+        // }
+
+        Session::setPopup('popup_success', "Profile picture updated successfully!");
+        return redirect('/admin/user-profile');
+    }
 }

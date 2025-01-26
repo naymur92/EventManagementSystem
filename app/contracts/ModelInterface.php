@@ -6,7 +6,7 @@ interface ModelInterface
 {
     public function insert(array $data): bool;
     public function update(int $id, array $data): bool;
-    public function find(int $id): ?array;
+    public function find(int $id): ?self;
     public function delete(int $id): bool;
     public function getAll(): array;
 

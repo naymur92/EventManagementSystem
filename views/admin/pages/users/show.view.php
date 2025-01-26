@@ -32,9 +32,15 @@ ob_start(); ?>
                                     <th style="width: 20%;">Name</th>
                                     <td><?= $user['name'] ?></td>
                                 </tr>
+
                                 <tr>
                                     <th>Email</th>
                                     <td><?= $user['email'] ?></td>
+                                </tr>
+
+                                <tr>
+                                    <th>Mobile</th>
+                                    <td><?= $user['mobile'] ?></td>
                                 </tr>
 
                                 <tr>
@@ -48,7 +54,7 @@ ob_start(); ?>
 
                                 <tr>
                                     <th>Joined Date</th>
-                                    <td><?= date('d M, Y H:i A', strtotime($user['created_at'])) ?></td>
+                                    <td><?= date('d M, Y - H:i A', strtotime($user['created_at'])) ?></td>
                                 </tr>
 
                             </table>

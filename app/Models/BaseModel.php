@@ -10,6 +10,51 @@ abstract class BaseModel implements ModelInterface
     protected $table;
     protected $primaryKey = 'id';
     protected array $fillable = [];
+    protected array $attributes = [];
+
+    // Magic getter for dynamic properties
+    public function __get($key)
+    {
+        if (array_key_exists($key, $this->attributes)) {
+            return $this->attributes[$key];
+        }
+
+        throw new \Exception("Property {$key} does not exist.");
+    }
+
+    // Magic setter for dynamic properties
+    public function __set($key, $value)
+    {
+        $this->attributes[$key] = $value;
+    }
+
+    // Check if a property is set
+    public function __isset($key)
+    {
+        return isset($this->attributes[$key]);
+    }
+
+
+    /**
+     * Get table name
+     *
+     * @return string
+     */
+    public function getTable(): string
+    {
+        return $this->table;
+    }
+
+
+    /**
+     * Get primary key name
+     *
+     * @return string
+     */
+    public function getPrimaryKey(): string
+    {
+        return $this->primaryKey;
+    }
 
     /**
      * Filter fillable fields
@@ -57,12 +102,24 @@ abstract class BaseModel implements ModelInterface
      * Find table data
      *
      * @param integer $id
-     * @return array|null
+     * @return self|null
      */
-    public function find(int $id): ?array
+    public function find(int $id): ?self
     {
         $db = DB::getInstance();
-        return $db->find($this->table, $id, $this->primaryKey);
+        $result = $db->find($this->table, $id, $this->primaryKey);
+
+        if (!$result) {
+            return null;
+        }
+
+        $instance = new static();
+
+        foreach ($result as $key => $value) {
+            $instance->$key = $value;
+        }
+
+        return $instance;
     }
 
     /**

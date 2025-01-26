@@ -6,7 +6,8 @@ use App\Core\Env;
 use App\Core\Request;
 use App\Core\Router;
 
-const BASE_PATH = __DIR__ . '/../';
+const BASE_PATH     = __DIR__ . '/../';
+const UPLOAD_DIR    = __DIR__ . '/uploads/';
 
 require BASE_PATH . 'vendor/autoload.php';
 require BASE_PATH . 'app/core/functions.php';
