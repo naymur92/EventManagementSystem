@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Core\DB;
 use App\Models\File;
 
 trait HasFiles
@@ -13,10 +14,15 @@ trait HasFiles
      */
     public function getFiles(): array
     {
-        return (new File())->where('operation_name', '=', $this->getTable())
-            ->where('table_id', '=', $this->{$this->getPrimaryKey()})
-            ->where('deleted_at', 'IS', null)
-            ->get();
+        // return (new File())->where('operation_name', '=', $this->getTable())
+        //     ->where('table_id', '=', $this->{$this->getPrimaryKey()})
+        //     ->where('deleted_at', 'IS', null)
+        //     ->get();
+
+        $sql = "SELECT * FROM files WHERE operation_name = ? AND table_id = ? AND deleted_at IS NULL ORDER BY created_at ASC";
+        $stmt = DB::query($sql, [$this->getTable(), $this->{$this->getPrimaryKey()}]);
+
+        return $stmt->fetchAll();
     }
 
     /**
