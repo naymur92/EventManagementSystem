@@ -16,21 +16,21 @@ ob_start(); ?>
         <div class="col-12 col-xl-8">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                    <h5 class="m-0 text-primary">Auth User Edit</h5>
+                    <h5 class="m-0 text-primary">User Profile Edit</h5>
 
-                    <a href="<?= route('/admin/users') ?>" class="btn waves-effect waves-light br-5 btn-secondary">
+                    <a href="<?= route('/admin/user-profile') ?>" class="btn waves-effect waves-light br-5 btn-secondary">
                         <i class="fas fa-angle-left"></i> Back
                     </a>
                 </div>
 
-                <form action="<?= route("/admin/users/{$user->user_id}/update") ?>" method="POST" onsubmit="swalConfirmationOnSubmit(event, 'Are you sure to update user?');">
+                <form action="<?= route("/admin/update-profile") ?>" method="POST" onsubmit="swalConfirmationOnSubmit(event, 'Are you sure to update profile?');">
                     <?= csrfField() ?>
                     <input type="hidden" name="_method" value="PUT">
 
                     <div class="card-body">
                         <div class="row">
 
-                            <div class="form-group col-12 col-lg-6 mb-3">
+                            <div class="form-group col-12 col-lg-12 mb-3">
                                 <label for="_name">Name <span class="text-danger"><i class="fas fa-xs fa-asterisk"></i></span></label>
                                 <input type="text" name="name" id="_name" value="<?= old('name', $user->name) ?>" class="form-control <?= hasError('name') ? 'is-invalid' : '' ?>" placeholder="Full Name">
 
@@ -41,7 +41,7 @@ ob_start(); ?>
                                 <?php endforeach; ?>
                             </div>
 
-                            <div class="form-group col-12 col-lg-6 mb-3">
+                            <div class="form-group col-12 col-lg-12 mb-3">
                                 <label for="_email">Email <span class="text-danger"><i class="fas fa-xs fa-asterisk"></i></span></label>
                                 <input type="email" id="_email" value="<?= old('email', $user->email) ?>" class="form-control <?= hasError('email') ? 'is-invalid' : '' ?>" placeholder="someone@example.com" readonly disabled>
 
@@ -53,7 +53,7 @@ ob_start(); ?>
 
                             </div>
 
-                            <div class="form-group col-12 col-lg-6 mb-3">
+                            <div class="form-group col-12 col-lg-12 mb-3">
                                 <label for="mobile">Mobile</label>
                                 <input type="text" name="mobile" id="mobile" value="<?= old('mobile', $user->mobile) ?>" class="form-control <?= hasError('mobile') ? 'is-invalid' : '' ?>" placeholder="01xxxxxxxxx">
 
@@ -64,34 +64,6 @@ ob_start(); ?>
                                 <?php endforeach; ?>
 
                             </div>
-
-                            <div class="form-group col-12 col-lg-6 mb-3">
-                                <label for="_status">Status <span class="text-danger"><i class="fas fa-xs fa-asterisk"></i></span></label>
-
-                                <select name="status" id="_status" class="form-control select2 <?= hasError('status') ? 'is-invalid' : '' ?>">
-                                    <option value="0" <?= old('status', $user->status) == 0 ? 'selected' : "" ?>>Inactive</option>
-                                    <option value="1" <?= old('status', $user->status) == 1 ? 'selected' : "" ?>>Active</option>
-                                </select>
-
-                                <?php foreach (errors('status') as $error) : ?>
-                                    <span class="invalid-feedback" role="alert">
-                                        <?= $error ?>
-                                    </span>
-                                <?php endforeach; ?>
-                            </div>
-
-                            <div class="form-group col-12 col-lg-12 mb-3">
-
-                                <label for="_password">Password (<small class="text-danger">Please fill if you want to change it!</small>)</label>
-                                <input type="password" name="password" id="_password" class="form-control <?= hasError('password') ? 'is-invalid' : '' ?>">
-
-                                <?php foreach (errors('password') as $error) : ?>
-                                    <span class="invalid-feedback" role="alert">
-                                        <?= $error ?>
-                                    </span>
-                                <?php endforeach; ?>
-                            </div>
-
 
                         </div>
 

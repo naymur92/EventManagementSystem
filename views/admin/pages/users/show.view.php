@@ -30,53 +30,54 @@ ob_start(); ?>
                             <table class="show-table table border table-bordered">
                                 <tr>
                                     <th style="width: 20%;">Name</th>
-                                    <td><?= $user['name'] ?></td>
+                                    <td><?= $user->name ?></td>
                                 </tr>
 
                                 <tr>
                                     <th>Email</th>
-                                    <td><?= $user['email'] ?></td>
+                                    <td><?= $user->email ?></td>
                                 </tr>
 
                                 <tr>
                                     <th>Mobile</th>
-                                    <td><?= $user['mobile'] ?></td>
+                                    <td><?= $user->mobile ?></td>
                                 </tr>
 
                                 <tr>
                                     <th>Status</th>
                                     <td>
-                                        <span class="badge badge-pill <?= $user['status'] == 0 ? 'badge-danger' : 'badge-success' ?>">
-                                            <?= $user['status'] == 0 ? 'Inactive' : 'Active' ?>
+                                        <span class="badge badge-pill <?= $user->status == 0 ? 'badge-danger' : 'badge-success' ?>">
+                                            <?= $user->status == 0 ? 'Inactive' : 'Active' ?>
                                         </span>
                                     </td>
                                 </tr>
 
                                 <tr>
                                     <th>Joined Date</th>
-                                    <td><?= date('d M, Y - H:i A', strtotime($user['created_at'])) ?></td>
+                                    <td><?= date('d M, Y - H:i A', strtotime($user->created_at)) ?></td>
                                 </tr>
 
                             </table>
                         </div>
 
                         <div class="col-12 col-md-4 text-center">
-                            <!-- @if ($user->profilePicture)
-                            <img class="img-thumbnail rounded-circle" src="{{ asset('/') }}{{ $user->profilePicture->filepath . '/' . $user->profilePicture->filename }}"
-                                style="width: 20vw;">
-                            @else
-                            <img class="img-thumbnail rounded-circle" src="{{ asset('/') }}assets/uploads/users/user.png" style="width: 20vw;">
-                            @endif -->
-                            <img class="img-thumbnail rounded-circle" src="<?= getBaseUrl() ?>/uploads/users/user.png" style="width: 20vw;">
+                            <?php
+                            $profilePicture = $user->getProfilePicture();
+                            if ($profilePicture): ?>
+                                <img class="img-thumbnail rounded-circle" src="<?= getBaseUrl() . "/uploads/{$profilePicture['filepath']}/{$profilePicture['filename']}" ?>"
+                                    style="width: 20vw;">
+                            <?php else: ?>
+                                <img class="img-thumbnail rounded-circle" src="<?= getBaseUrl() ?>/uploads/users/user.png" style="width: 20vw;">
+                            <?php endif; ?>
 
                         </div>
                     </div>
                 </div>
                 <div class="card-footer d-flex justify-content-between">
-                    <?php if ($user['user_id'] != 1 && $user['user_id'] != authUser()->user_id): ?>
+                    <?php if ($user->user_id != 1 && $user->user_id != authUser()->user_id): ?>
                         <!-- set inactive -->
-                        <?php if ($user['status'] == 1): ?>
-                            <form action="<?= route("/admin/users/{$user['user_id']}/change-status") ?>" method="POST" onsubmit="swalConfirmationOnSubmit(event, 'Are you sure?');">
+                        <?php if ($user->status == 1): ?>
+                            <form action="<?= route("/admin/users/{$user->user_id}/change-status") ?>" method="POST" onsubmit="swalConfirmationOnSubmit(event, 'Are you sure?');">
                                 <?= csrfField() ?>
                                 <input type="hidden" name="_method" value="PUT">
 
@@ -87,8 +88,8 @@ ob_start(); ?>
                         <?php endif; ?>
 
                         <!-- set active -->
-                        <?php if ($user['status'] == 0): ?>
-                            <form action="<?= route("/admin/users/{$user['user_id']}/change-status") ?>" method="POST" onsubmit="swalConfirmationOnSubmit(event, 'Are you sure?');">
+                        <?php if ($user->status == 0): ?>
+                            <form action="<?= route("/admin/users/{$user->user_id}/change-status") ?>" method="POST" onsubmit="swalConfirmationOnSubmit(event, 'Are you sure?');">
                                 <?= csrfField() ?>
                                 <input type="hidden" name="_method" value="PUT">
 
@@ -98,7 +99,7 @@ ob_start(); ?>
                             </form>
                         <?php endif; ?>
 
-                        <!-- <form action="<?= route("/admin/users/{$user['user_id']}/delete") ?>"
+                        <!-- <form action="<?= route("/admin/users/{$user->user_id}/delete") ?>"
                             onsubmit="swalConfirmationOnSubmit(event, 'Are you sure to delete?');"
                             method="POST">
                             <?= csrfField() ?>
@@ -107,7 +108,7 @@ ob_start(); ?>
                             <button class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
                         </form> -->
 
-                        <a href="<?= route("/admin/users/{$user['user_id']}/edit") ?>" class="btn btn-outline-warning br-5 waves-effect waves-light">
+                        <a href="<?= route("/admin/users/{$user->user_id}/edit") ?>" class="btn btn-outline-warning br-5 waves-effect waves-light">
                             <i class="fa-solid fa-pen-to-square"></i> Edit
                         </a>
                     <?php endif; ?>

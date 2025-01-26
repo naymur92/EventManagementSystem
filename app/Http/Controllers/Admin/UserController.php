@@ -122,7 +122,7 @@ class UserController extends Controller
             return redirect('/admin/users');
         }
 
-        view('admin.pages.users.show', array('title' => "Create User", 'user' => $user));
+        view('admin.pages.users.show', array('title' => "View User", 'user' => $user));
     }
 
 
@@ -142,7 +142,7 @@ class UserController extends Controller
             return redirect('/admin/users');
         }
 
-        view('admin.pages.users.edit', array('title' => "Create User", 'user' => $user));
+        view('admin.pages.users.edit', array('title' => "Edit User", 'user' => $user));
     }
 
 
@@ -201,7 +201,7 @@ class UserController extends Controller
         $data['updated_by'] = Auth::user()->user_id;
         $data['updated_at'] = date('Y-m-d H:i:s');
 
-        (new User)->update($user_id, $data);
+        $user->update($data);
 
         Session::flash('flash_success', "User updated successfully!");
 
@@ -251,7 +251,7 @@ class UserController extends Controller
             return redirect('/admin/users');
         }
 
-        (new User)->update($user_id, ['status' => $request->input('status'), 'updated_by' => Auth::user()->user_id, 'updated_at' => date('Y-m-d H:i:s')]);
+        $user->update(['status' => $request->input('status'), 'updated_by' => Auth::user()->user_id, 'updated_at' => date('Y-m-d H:i:s')]);
 
         Session::flash('flash_success', "Status changed successfully!");
 
@@ -353,10 +353,10 @@ class UserController extends Controller
         if (!empty($existingFile)) {
             foreach ($existingFile as $file) {
                 // set deleted in DB
-                (new File())->update($file['file_id'], array(
+                (new File())->update(array(
                     'deleted_by' => Auth::user()->user_id,
                     'deleted_at' => date('Y-m-d H:i:s')
-                ));
+                ), $file['file_id']);
 
                 // remove file from storage
                 $existingFilePath = "{$file['filepath']}/{$file['filename']}";
@@ -367,5 +367,164 @@ class UserController extends Controller
 
         Session::setPopup('popup_success', "Profile picture updated successfully!");
         return redirect('/admin/user-profile');
+    }
+
+
+
+    /**
+     * Auth user prfile edit
+     *
+     * @return void
+     */
+    public function editProfile()
+    {
+        $user = (new User)->find(Auth::user()->user_id);
+
+        if (!$user) {
+            Session::flash('flash_error', "Invalid action!");
+
+            return redirect('/admin/user-profile');
+        }
+
+        view('admin.pages.user-profile.edit', array('title' => "User Profile | Edit", 'user' => $user));
+    }
+
+    /**
+     * Update user profile
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function updateProfile(Request $request)
+    {
+        $user = (new User)->find(Auth::user()->user_id);
+
+        if (!$user) {
+            Session::flash('flash_error', "Invalid action!");
+
+            return redirect('/admin/user-profile');
+        }
+
+        // Define sanitization rules
+        $request->setSanitizationRules([
+            'name' => ['string'],
+            'mobile' => ['string'],
+        ]);
+
+        // Validation rules
+        $rules = [
+            'name' => 'required|string|max:255',
+            'mobile' => 'string|max:15',
+        ];
+
+        // Validate data
+        $request->validate($rules);
+
+        $errors = $request->errors();
+
+        if (!empty($errors)) {
+            // set errors and old data into session
+            $_SESSION['error'] = $errors;
+            $_SESSION['old'] = $request->all();
+
+            return redirect("/admin/edit-profile");
+        }
+
+        $data = $request->validated();
+
+        $data['updated_by'] = Auth::user()->user_id;
+        $data['updated_at'] = date('Y-m-d H:i:s');
+
+        $user->update($data);
+
+        Session::flash('flash_success', "Profile updated successfully!");
+
+        return redirect('/admin/user-profile');
+    }
+
+
+    /**
+     * Change password
+     *
+     * @return void
+     */
+    public function changePassword()
+    {
+        $user = (new User)->find(Auth::user()->user_id);
+
+        if (!$user) {
+            Session::flash('flash_error', "Invalid action!");
+
+            return redirect('/admin');
+        }
+
+        view('admin.pages.user-profile.change-password', array('title' => "User Profile | Change Password"));
+    }
+
+    /**
+     * Store new password
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function saveChangedPassword(Request $request)
+    {
+        $user = (new User)->find(Auth::user()->user_id);
+
+        if (!$user) {
+            Session::flash('flash_error', "Invalid action!");
+
+            return redirect('/admin/user-profile');
+        }
+
+        // Define sanitization rules
+        $request->setSanitizationRules([
+            'password' => ['string'],
+            'password_confirmation' => ['string'],
+        ]);
+
+        // Validation rules
+        $rules = [
+            'password' => 'required|string|min:8',
+            'password_confirmation' => 'required|string|min:8',
+        ];
+
+        // Validate data
+        $request->validate($rules);
+
+        $errors = $request->errors();
+
+        $errorFound = false;
+
+        if (!empty($errors)) {
+            $errorFound = true;
+        }
+
+        if ($request->input('password') != $request->input('password_confirmation')) {
+            $errors['password'][] = "Password not match!";
+            $errors['password_confirmation'][] = "Password not match!";
+
+            $errorFound = true;
+        }
+
+        if ($errorFound) {
+            // set errors and old data into session
+            $_SESSION['error'] = $errors;
+            $_SESSION['old'] = $request->all();
+
+            return redirect("/admin/change-password");
+        }
+
+        $data = $request->validated();
+
+        $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
+        $data['updated_by'] = Auth::user()->user_id;
+        $data['updated_at'] = date('Y-m-d H:i:s');
+
+        $user->update($data);
+
+        Session::flash('flash_success', "Password updated successfully!");
+
+        return redirect('/admin');
     }
 }

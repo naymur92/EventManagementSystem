@@ -30,13 +30,15 @@
             <li class="nav-item dropdown no-arrow">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= authUser()->name ?></span>
-                    <!-- @if (Auth::user()->profilePicture)
-                    <img class="img-profile rounded-circle" src="{{ asset('/') }}{{ Auth::user()->profilePicture->filepath . '/' . Auth::user()->profilePicture->filename }}">
-                    @else
-                    <img class="img-profile rounded-circle" src="{{ asset('/') }}assets/uploads/users/user.png">
-                    @endif -->
 
-                    <img class="img-profile rounded-circle" src="<?= getBaseUrl() ?>/uploads/users/user.png">
+                    <?php
+                    $profilePicture = authUser()->getProfilePicture();
+                    if ($profilePicture): ?>
+                        <img class="img-profile rounded-circle" src="<?= getBaseUrl() . "/uploads/{$profilePicture['filepath']}/{$profilePicture['filename']}" ?>">
+                    <?php else: ?>
+                        <img class="img-profile rounded-circle" src="<?= getBaseUrl() ?>/uploads/users/user.png">
+                    <?php endif; ?>
+
                 </a>
                 <!-- Dropdown - User Information -->
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

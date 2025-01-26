@@ -144,13 +144,14 @@ ob_start(); ?>
                         </div>
 
                         <div class="col-12 col-xl-4 text-center">
-                            <!-- @if (Auth::user()->profilePicture)
-                            <img class="img-thumbnail rounded-circle"
-                                src="{{ asset('/') }}{{ Auth::user()->profilePicture->filepath . '/' . Auth::user()->profilePicture->filename }}" style="width: 20vw;">
-                            @else
-                            <img class="img-thumbnail rounded-circle" src="{{ asset('/') }}assets/uploads/users/user.png" style="width: 20vw;">
-                            @endif -->
-                            <img class="img-thumbnail rounded-circle" src="<?= getBaseUrl() ?>/uploads/users/user.png" style="width: 20vw;">
+                            <?php
+                            $profilePicture = $user->getProfilePicture();
+                            if ($profilePicture): ?>
+                                <img class="img-thumbnail rounded-circle" src="<?= getBaseUrl() . "/uploads/{$profilePicture['filepath']}/{$profilePicture['filename']}" ?>"
+                                    style="width: 20vw;">
+                            <?php else: ?>
+                                <img class="img-thumbnail rounded-circle" src="<?= getBaseUrl() ?>/uploads/users/user.png" style="width: 20vw;">
+                            <?php endif; ?>
 
                             <br>
                             <button class="btn btn-outline-success mt-2" data-toggle="modal" data-target="#profilePictureChangeModal">Change Profile Picture</button>
@@ -204,7 +205,7 @@ ob_start(); ?>
                     </div>
                 </div>
                 <div class="card-footer d-flex justify-content-end">
-                    <a href="<?= route('') ?>" class="btn btn-outline-warning br-5 waves-effect waves-light">
+                    <a href="<?= route('/admin/edit-profile') ?>" class="btn btn-outline-warning br-5 waves-effect waves-light">
                         <i class="fa-solid fa-pen-to-square"></i> Edit Profile
                     </a>
                 </div>
