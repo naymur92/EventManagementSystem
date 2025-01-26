@@ -139,7 +139,7 @@ function errors(string $key): array
  */
 function redirect(string $route)
 {
-    header('Location: ' . $route);
+    header('Location: ' . route($route));
     exit;
 }
 
