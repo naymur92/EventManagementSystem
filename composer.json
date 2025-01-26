@@ -1,7 +1,20 @@
 {
+  "name": "naymur/event-management-system",
+  "description": "A simple Event Management System using custom PHP MVC",
+  "type": "project",
+  "require": {},
   "autoload": {
-    "psr-4": {
-      "App\\": "app/"
-    }
-  }
+      "psr-4": {
+          "App\\": "app/",
+          "App\\Core\\": "app/core/",
+          "App\\Contracts\\": "app/contracts/"
+      }
+  },
+  "config": {
+      "optimize-autoloader": true,
+      "preferred-install": "dist",
+      "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

@@ -4,6 +4,7 @@ use App\Core\Auth;
 use App\Core\Config;
 use App\Core\CSRF;
 use App\Core\Env;
+use App\Core\Router;
 use App\Core\Session;
 use App\Core\View;
 
@@ -44,7 +45,7 @@ function dd(mixed $data): void
  */
 function urlIs(string $value): bool
 {
-    return $_SERVER['REQUEST_URI'] === $value;
+    return Router::filterCurrentUri($_SERVER['REQUEST_URI']) === $value;
 }
 
 
@@ -79,7 +80,20 @@ function basePath(string $path): string
  */
 function getBaseUrl(): string
 {
-    return Env::get('APP_URL', '/');
+    // Get the script name (e.g., /folderName/public/index.php)
+    $scriptName = $_SERVER['SCRIPT_NAME'];
+
+    // Remove /index.php from the script name to get the base path
+    $basePath = str_replace('/index.php', '', $scriptName);
+
+    // Get the protocol (http or https)
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
+
+    // Get the host (e.g., localhost or domain.com)
+    $host = $_SERVER['HTTP_HOST'];
+
+    // Combine protocol, host, and base path to form the base URL
+    return $protocol . $host . $basePath;
 }
 
 
@@ -218,4 +232,25 @@ function getFlashData(): array
 function getPopupData(): array
 {
     return Session::getPopup();
+}
+
+
+/**
+ * Generate full route with base url
+ *
+ * @param string $path
+ * @return string
+ */
+function route(string $path): string
+{
+    // Get the base URL
+    $baseUrl = getBaseUrl();
+
+    // Ensure the path starts with a slash
+    if ($path[0] !== '/') {
+        $path = '/' . $path;
+    }
+
+    // Return the full URL
+    return $baseUrl . $path;
 }

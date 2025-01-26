@@ -27,10 +27,10 @@
         <div class="container-fluid">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link <?= urlIs('/') ? 'active' : '' ?>" href="/">Home</a>
+                    <a class="nav-link <?= urlIs('/') ? 'active' : '' ?>" href="<?= route('/') ?>">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?= urlIs('/users') || urlIs('/users/create') ? 'active' : '' ?>" href="/users">Users</a>
+                    <a class="nav-link <?= urlIs('/users') || urlIs('/users/create') ? 'active' : '' ?>" href="<?= route('/users') ?>">Users</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Test Page</a>
@@ -47,7 +47,7 @@
 
                 <?php if (!authUser()): ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="/login">Login</a>
+                        <a class="nav-link" href="<?= route('/login') ?>">Login</a>
                     </li>
                 <?php endif; ?>
             </ul>

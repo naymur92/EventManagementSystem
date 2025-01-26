@@ -143,6 +143,9 @@ class Router
         $method = $request->getRequestMethod();
         $uri = $request->getRequestUri();
 
+        // Normalize the URI by removing the base path
+        $uri = self::filterCurrentUri($uri);
+
         if (!isset($this->routes[$method])) {
             throw new \Exception("Method $method not allowed", 405);
         }
@@ -255,5 +258,22 @@ class Router
         $csrfMiddleware = new CsrfMiddleware($csrfExceptions ?? []);
 
         $csrfMiddleware->verify($method, $uri, $request);
+    }
+
+    /**
+     * Normalize the URI by removing the base path
+     *
+     * @param string $uri
+     * @return string
+     */
+    public static function filterCurrentUri(string $uri): string
+    {
+        $basePath = str_replace('/index.php', '', $_SERVER['SCRIPT_NAME']);
+        if (strpos($uri, $basePath) === 0) {
+            $uri = substr($uri, strlen($basePath));
+            if ($uri == '') $uri = '/';
+        }
+
+        return $uri;
     }
 }
