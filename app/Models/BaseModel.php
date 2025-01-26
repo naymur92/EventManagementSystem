@@ -11,6 +11,7 @@ abstract class BaseModel implements ModelInterface
     protected $primaryKey = 'id';
     protected array $fillable = [];
     protected array $attributes = [];
+    protected array $protected = [];
 
     // Magic getter for dynamic properties
     public function __get($key)
@@ -113,13 +114,7 @@ abstract class BaseModel implements ModelInterface
             return null;
         }
 
-        $instance = new static();
-
-        foreach ($result as $key => $value) {
-            $instance->$key = $value;
-        }
-
-        return $instance;
+        return self::makeInstance($result);
     }
 
     /**
@@ -207,8 +202,8 @@ abstract class BaseModel implements ModelInterface
      * Add 'where between' condition to query builder
      *
      * @param string $field
-     * @param [type] $start
-     * @param [type] $end
+     * @param $start
+     * @param $end
      * @return self
      */
     public function whereBetween(string $field, $start, $end): self
@@ -227,5 +222,25 @@ abstract class BaseModel implements ModelInterface
         return DB::getInstance()
             ->table($this->table)
             ->get();
+    }
+
+    /**
+     * Create a new instance and populate it with the given attributes.
+     *
+     * @param array $attributes
+     * @return static
+     */
+    public static function makeInstance(array $attributes): static
+    {
+        $instance = new static();
+
+        foreach ($attributes as $key => $value) {
+            if (!in_array($key, $instance->protected)) {
+                $instance->$key = $value;
+                $instance->attributes[$key] = $value;
+            }
+        }
+
+        return $instance;
     }
 }
