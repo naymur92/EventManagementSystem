@@ -98,18 +98,6 @@ function getBaseUrl(): string
 
 
 /**
- * Generate URL from route
- *
- * @param string $route
- * @return string
- */
-function generateUrl(string $route): string
-{
-    return getBaseUrl() . $route;
-}
-
-
-/**
  * Get old form data from session
  *
  * @param string $key
