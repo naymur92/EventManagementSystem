@@ -36,7 +36,7 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Welcome! Login to start.</h1>
                             </div>
-                            <form class="user" method="POST" action="/login">
+                            <form class="user" method="POST" action="<?= route('/login') ?>">
                                 <?= csrfField() ?>
 
                                 <div class="form-group">
@@ -69,7 +69,7 @@
                                 <!-- <a class="small" href="forgot-password.html">Forgot Password?</a> -->
                             </div>
                             <div class="text-center">
-                                <a class="small" href="/register">Create an Account!</a>
+                                <a class="small" href="<?= route('/register') ?>">Create an Account!</a>
                             </div>
                         </div>
 

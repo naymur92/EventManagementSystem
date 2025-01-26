@@ -100,7 +100,7 @@ ob_start(); ?>
                     <h5 class="m-0 text-primary">My Profile</h5>
                     <div class="ms-auto">
                         <div class="btn-list">
-                            <a href="/admin" class="btn waves-effect waves-light br-5 btn-secondary">
+                            <a href="<?= route('/admin') ?>" class="btn waves-effect waves-light br-5 btn-secondary">
                                 <i class="fas fa-angle-left"></i> Back
                             </a>
                         </div>
@@ -167,7 +167,7 @@ ob_start(); ?>
                                             </button>
                                         </div>
 
-                                        <form id="profile_picture_change_form" action="/admin/change-profile-picture" method="POST"
+                                        <form id="profile_picture_change_form" action="<?= route('/admin/change-profile-picture') ?>" method="POST"
                                             enctype="multipart/form-data">
                                             <?= csrfField() ?>
                                             <input type="hidden" name="_method" value="PUT">
@@ -204,7 +204,7 @@ ob_start(); ?>
                     </div>
                 </div>
                 <div class="card-footer d-flex justify-content-end">
-                    <a href="/admin/edit-profile" class="btn btn-outline-warning br-5 waves-effect waves-light">
+                    <a href="<?= route('') ?>" class="btn btn-outline-warning br-5 waves-effect waves-light">
                         <i class="fa-solid fa-pen-to-square"></i> Edit Profile
                     </a>
                 </div>

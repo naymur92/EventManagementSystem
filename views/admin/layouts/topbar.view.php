@@ -40,17 +40,17 @@
                 </a>
                 <!-- Dropdown - User Information -->
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                    <a class="dropdown-item" href="/admin/user-profile">
+                    <a class="dropdown-item" href="<?= route('/admin/user-profile') ?>">
                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                         Profile
                     </a>
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item" href="<?= route('/admin/change-password') ?>">
                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                         Change Password
                     </a>
 
                     <div class="dropdown-divider"></div>
-                    <form action="/logout" method="POST" onsubmit="swalConfirmationOnSubmit(event, 'Are you sure to logout?');">
+                    <form action="<?= route('/logout') ?>" method="POST" onsubmit="swalConfirmationOnSubmit(event, 'Are you sure to logout?');">
                         <?= csrfField() ?>
 
                         <button class="dropdown-item dropdown-logout-button btn btn-sm btn-link btn-outline-danger" type="submit">

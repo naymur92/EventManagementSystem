@@ -25,7 +25,7 @@ ob_start(); ?>
 
             <div class="ms-auto">
                 <div class="btn-list">
-                    <a class="btn btn-primary waves-effect waves-light br-5" href="/admin/users/create">
+                    <a class="btn btn-primary waves-effect waves-light br-5" href="<?= route("/admin/users/create") ?>">
                         <i class="fas fa-plus-circle me-1"></i> Add New User</a>
 
                 </div>
@@ -73,14 +73,14 @@ ob_start(); ?>
                                         <td>
                                             <div class="text-center d-flex justify-content-center align-items-center">
 
-                                                <a href="/admin/users/<?= $user['user_id'] ?>/show" data-toggle="tooltip" data-placement="top" title="View Details" class="table-data-modify-icon mr-2">
+                                                <a href="<?= route("/admin/users/{$user['user_id']}/show") ?>" data-toggle="tooltip" data-placement="top" title="View Details" class="table-data-modify-icon mr-2">
                                                     <span class="badge badge-primary"><i class="fa-solid fa-eye"></i></span>
                                                 </a>
 
                                                 <?php if ($user['user_id'] != 1 && $user['user_id'] != authUser()->user_id): ?>
                                                     <!-- set inactive -->
                                                     <?php if ($user['status'] == 1): ?>
-                                                        <form action="/admin/users/<?= $user['user_id'] ?>/change-status" method="POST"
+                                                        <form action="<?= route("/admin/users/{$user['user_id']}/change-status") ?>" method="POST"
                                                             onsubmit="swalConfirmationOnSubmit(event, 'Are you sure?');">
                                                             <?= csrfField() ?>
                                                             <input type="hidden" name="_method" value="PUT">
@@ -100,7 +100,7 @@ ob_start(); ?>
 
                                                     <!-- set active -->
                                                     <?php if ($user['status'] == 0): ?>
-                                                        <form action="/admin/users/<?= $user['user_id'] ?>/change-status" method="POST"
+                                                        <form action="<?= route("/admin/users/{$user['user_id']}/change-status") ?>" method="POST"
                                                             onsubmit="swalConfirmationOnSubmit(event, 'Are you sure??');">
                                                             <?= csrfField() ?>
                                                             <input type="hidden" name="_method" value="PUT">
@@ -116,7 +116,7 @@ ob_start(); ?>
                                                         </form>
                                                     <?php endif; ?>
 
-                                                    <a href="/admin/users/<?= $user['user_id'] ?>/edit" data-toggle="tooltip" data-placement="top" title="Edit User" class="table-data-modify-icon mr-2">
+                                                    <a href="<?= route("/admin/users/{$user['user_id']}/edit") ?>" data-toggle="tooltip" data-placement="top" title="Edit User" class="table-data-modify-icon mr-2">
                                                         <span class="badge badge-warning"><i class="fa-solid fa-pen-to-square"></i></span>
                                                     </a>
 

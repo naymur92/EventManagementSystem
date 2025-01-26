@@ -18,12 +18,12 @@ ob_start(); ?>
                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
                     <h5 class="m-0 text-primary">Auth User Edit</h5>
 
-                    <a href="/admin/users" class="btn waves-effect waves-light br-5 btn-secondary">
+                    <a href="<?= route('/admin/users') ?>" class="btn waves-effect waves-light br-5 btn-secondary">
                         <i class="fas fa-angle-left"></i> Back
                     </a>
                 </div>
 
-                <form action="/admin/users/<?= $user['user_id'] ?>/update" method="POST" onsubmit="swalConfirmationOnSubmit(event, 'Are you sure to create user?');">
+                <form action="<?= route("/admin/users/{$user['user_id']}/update") ?>" method="POST" onsubmit="swalConfirmationOnSubmit(event, 'Are you sure to create user?');">
                     <?= csrfField() ?>
                     <input type="hidden" name="_method" value="PUT">
 

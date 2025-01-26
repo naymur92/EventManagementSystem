@@ -19,7 +19,7 @@ ob_start(); ?>
                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
                     <h5 class="m-0 text-primary">Auth User Details</h5>
 
-                    <a href="/admin/users" class="btn waves-effect waves-light br-5 btn-secondary">
+                    <a href="<?= route("/admin/users") ?>" class="btn waves-effect waves-light br-5 btn-secondary">
                         <i class="fas fa-angle-left"></i> Back
                     </a>
                 </div>
@@ -76,7 +76,7 @@ ob_start(); ?>
                     <?php if ($user['user_id'] != 1 && $user['user_id'] != authUser()->user_id): ?>
                         <!-- set inactive -->
                         <?php if ($user['status'] == 1): ?>
-                            <form action="/admin/users/<?= $user['user_id'] ?>/change-status" method="POST" onsubmit="swalConfirmationOnSubmit(event, 'Are you sure?');">
+                            <form action="<?= route("/admin/users/{$user['user_id']}/change-status") ?>" method="POST" onsubmit="swalConfirmationOnSubmit(event, 'Are you sure?');">
                                 <?= csrfField() ?>
                                 <input type="hidden" name="_method" value="PUT">
 
@@ -88,7 +88,7 @@ ob_start(); ?>
 
                         <!-- set active -->
                         <?php if ($user['status'] == 0): ?>
-                            <form action="/admin/users/<?= $user['user_id'] ?>/change-status" method="POST" onsubmit="swalConfirmationOnSubmit(event, 'Are you sure?');">
+                            <form action="<?= route("/admin/users/{$user['user_id']}/change-status") ?>" method="POST" onsubmit="swalConfirmationOnSubmit(event, 'Are you sure?');">
                                 <?= csrfField() ?>
                                 <input type="hidden" name="_method" value="PUT">
 
@@ -98,7 +98,7 @@ ob_start(); ?>
                             </form>
                         <?php endif; ?>
 
-                        <!-- <form action="/admin/users/<?= $user['user_id'] ?>/delete"
+                        <!-- <form action="<?= route("/admin/users/{$user['user_id']}/delete") ?>"
                             onsubmit="swalConfirmationOnSubmit(event, 'Are you sure to delete?');"
                             method="POST">
                             <?= csrfField() ?>
@@ -107,7 +107,7 @@ ob_start(); ?>
                             <button class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
                         </form> -->
 
-                        <a href="/admin/users/<?= $user['user_id'] ?>/edit" class="btn btn-outline-warning br-5 waves-effect waves-light">
+                        <a href="<?= route("/admin/users/{$user['user_id']}/edit") ?>" class="btn btn-outline-warning br-5 waves-effect waves-light">
                             <i class="fa-solid fa-pen-to-square"></i> Edit
                         </a>
                     <?php endif; ?>

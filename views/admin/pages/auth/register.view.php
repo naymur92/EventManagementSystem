@@ -36,7 +36,7 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">New registration</h1>
                             </div>
-                            <form class="user" method="POST" action="/register" autocomplete="off">
+                            <form class="user" method="POST" action="<?= route('/register') ?>" autocomplete="off">
                                 <?= csrfField() ?>
 
                                 <div class="form-group">
@@ -92,7 +92,7 @@
                                 <!-- <a class="small" href="forgot-password.html">Forgot Password?</a> -->
                             </div>
                             <div class="text-center">
-                                <a class="small" href="/login">Already have an account? Login!</a>
+                                <a class="small" href="<?= route('/login') ?>">Already have an account? Login!</a>
                             </div>
                         </div>
 
