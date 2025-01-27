@@ -24,14 +24,14 @@ $router->delete('/admin/users/{id}/delete', [UserController::class, 'delete'])->
 $router->put('/admin/users/{id}/change-status', [UserController::class, 'changeStatus'])->only(['auth', 'superuser']);
 
 // events routes
-$router->get('/admin/events', [EventController::class, 'index'])->only(['auth', 'superuser', 'hostuser']);
+$router->get('/admin/events', [EventController::class, 'index'])->only(['auth', 'super&host']);
 $router->get('/admin/events/create', [EventController::class, 'create'])->only(['auth', 'hostuser']);
 $router->post('/admin/events', [EventController::class, 'store'])->only(['auth', 'hostuser']);
-$router->get('/admin/events/{id}/show', [EventController::class, 'show'])->only(['auth', 'superuser', 'hostuser']);
+$router->get('/admin/events/{id}/show', [EventController::class, 'show'])->only(['auth', 'super&host']);
 $router->get('/admin/events/{id}/edit', [EventController::class, 'edit'])->only(['auth', 'hostuser']);
 $router->put('/admin/events/{id}/update', [EventController::class, 'update'])->only(['auth', 'hostuser']);
-$router->delete('/admin/events/{id}/delete', [EventController::class, 'delete'])->only(['auth', 'superuser', 'hostuser']);
-$router->put('/admin/events/{id}/change-status', [EventController::class, 'changeStatus'])->only(['auth', 'superuser', 'hostuser']);
+$router->delete('/admin/events/{id}/delete', [EventController::class, 'delete'])->only(['auth', 'super&host']);
+$router->put('/admin/events/{id}/change-status', [EventController::class, 'changeStatus'])->only(['auth', 'super&host']);
 
 // User profile routes
 $router->get('/user-profile', [UserController::class, 'userProfile'])->only(['auth']);

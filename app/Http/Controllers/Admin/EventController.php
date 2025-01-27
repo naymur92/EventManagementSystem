@@ -18,10 +18,12 @@ class EventController extends Controller
      */
     public function index()
     {
-        $usersModel = new User();
-        $users = $usersModel->getAll();
-        // dd($users);
-        view('admin.pages.events.index', array('title' => "Users", 'users' => $users));
+        $eventsModel = new Event();
+        $events = $eventsModel->getAll();
+
+        dd($events);
+
+        view('admin.pages.events.index', array('title' => "Events", 'events' => $events));
     }
 
     /**
@@ -31,7 +33,7 @@ class EventController extends Controller
      */
     public function create()
     {
-        view('admin.pages.users.create', array('title' => "Create User"));
+        view('admin.pages.events.create', array('title' => "Events | Create Event"));
     }
 
     /**

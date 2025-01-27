@@ -82,11 +82,11 @@ function multipleFileSelection(fileSelector, imageContainer, fileContainer, form
             if (selectedFiles[index].type == 'application/pdf') {
                 // list pdfs
                 pdfItems +=
-                    `<li><a href="${url}" target="_blank">${selectedFiles[index].name}</a><i key="${index}" class="fas fa-sm fa-times text-danger file-remove-btn ml-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove File"></i></li>`
+                    `<li class="position-relative mr-2" style="width:fit-content;"><a href="${url}" target="_blank">${selectedFiles[index].name}</a><i key="${index}" class="fas fa-sm fa-times text-danger remove-btn file-remove-btn ml-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove File"></i></li>`
             } else {
                 // print images
                 imageItems +=
-                    `<div class="position-relative mr-2"><img src="${url}" style="width: 150px" class="img-thumbnail selected-image" /><i key="${index}" class="fas fa-times text-danger file-remove-btn image-remove-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove Image"></i></div>`;
+                    `<div class="position-relative mr-2"><img src="${url}" style="width: 150px" class="img-thumbnail selected-image" /><i key="${index}" class="fas fa-times text-danger remove-btn image-remove-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove Image"></i></div>`;
             }
         })
 
@@ -95,7 +95,7 @@ function multipleFileSelection(fileSelector, imageContainer, fileContainer, form
     }
 
     // on click remove button
-    $(document).on('click', '.file-remove-btn', function () {
+    $(document).on('click', '.remove-btn', function () {
         const itemIndex = parseInt($(this).attr('key'));
         let tempFiles = selectedFiles.filter((_, index) => index !== itemIndex);
         selectedFiles = tempFiles;
