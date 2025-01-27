@@ -19,13 +19,13 @@ ob_start(); ?>
                     <h5 class="m-0 text-primary">User Password Change</h5>
                     <div class="ms-auto">
                         <div class="btn-list">
-                            <a href="<?= route('/admin') ?>" class="btn waves-effect waves-light br-5 btn-secondary">
+                            <a href="<?= route('/user-profile') ?>" class="btn waves-effect waves-light br-5 btn-secondary">
                                 <i class="fas fa-angle-left"></i> Back
                             </a>
                         </div>
                     </div>
                 </div>
-                <form action="<?= route("/admin/change-password") ?>" method="POST" onsubmit="swalConfirmationOnSubmit(event, 'Are you sure?');">
+                <form action="<?= route("/change-password") ?>" method="POST" onsubmit="swalConfirmationOnSubmit(event, 'Are you sure?');">
                     <?= csrfField() ?>
                     <input type="hidden" name="_method" value="PUT">
 

@@ -23,7 +23,7 @@ ob_start(); ?>
                     </a>
                 </div>
 
-                <form action="<?= route("/admin/update-profile") ?>" method="POST" onsubmit="swalConfirmationOnSubmit(event, 'Are you sure to update profile?');">
+                <form action="<?= route("/update-profile") ?>" method="POST" onsubmit="swalConfirmationOnSubmit(event, 'Are you sure to update profile?');">
                     <?= csrfField() ?>
                     <input type="hidden" name="_method" value="PUT">
 

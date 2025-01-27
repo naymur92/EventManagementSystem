@@ -76,7 +76,11 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <?php require(basePath('/views/admin/layouts/sidebar.view.php')) ?>
+        <?php
+        if (authUser()->type != 3) {
+            require(basePath('/views/admin/layouts/sidebar.view.php'));
+        }
+        ?>
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->

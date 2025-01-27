@@ -276,7 +276,7 @@ class UserController extends Controller
         if (!$user) {
             Session::flash('flash_error', "Invalid action!");
 
-            return redirect('/admin');
+            return redirect('/');
         }
 
         view('admin.pages.user-profile.show', array('title' => "User Profile | Show", 'user' => $user));
@@ -327,7 +327,7 @@ class UserController extends Controller
         }
 
         if ($errorFound) {
-            return redirect('/admin/user-profile');
+            return redirect('/user-profile');
         }
 
         $user = (new User)->find(Auth::user()->user_id);
@@ -370,7 +370,7 @@ class UserController extends Controller
         }
 
         Session::setPopup('popup_success', "Profile picture updated successfully!");
-        return redirect('/admin/user-profile');
+        return redirect('/user-profile');
     }
 
 
@@ -387,7 +387,7 @@ class UserController extends Controller
         if (!$user) {
             Session::flash('flash_error', "Invalid action!");
 
-            return redirect('/admin/user-profile');
+            return redirect('/user-profile');
         }
 
         view('admin.pages.user-profile.edit', array('title' => "User Profile | Edit", 'user' => $user));
@@ -406,7 +406,7 @@ class UserController extends Controller
         if (!$user) {
             Session::flash('flash_error', "Invalid action!");
 
-            return redirect('/admin/user-profile');
+            return redirect('/user-profile');
         }
 
         // Define sanitization rules
@@ -431,7 +431,7 @@ class UserController extends Controller
             $_SESSION['error'] = $errors;
             $_SESSION['old'] = $request->all();
 
-            return redirect("/admin/edit-profile");
+            return redirect("/edit-profile");
         }
 
         $data = $request->validated();
@@ -443,7 +443,7 @@ class UserController extends Controller
 
         Session::flash('flash_success', "Profile updated successfully!");
 
-        return redirect('/admin/user-profile');
+        return redirect('/user-profile');
     }
 
 
@@ -459,7 +459,7 @@ class UserController extends Controller
         if (!$user) {
             Session::flash('flash_error', "Invalid action!");
 
-            return redirect('/admin');
+            return redirect('/');
         }
 
         view('admin.pages.user-profile.change-password', array('title' => "User Profile | Change Password"));
@@ -478,7 +478,7 @@ class UserController extends Controller
         if (!$user) {
             Session::flash('flash_error', "Invalid action!");
 
-            return redirect('/admin/user-profile');
+            return redirect('/user-profile');
         }
 
         // Define sanitization rules
@@ -516,7 +516,7 @@ class UserController extends Controller
             $_SESSION['error'] = $errors;
             $_SESSION['old'] = $request->all();
 
-            return redirect("/admin/change-password");
+            return redirect("/change-password");
         }
 
         $data = $request->validated();
@@ -529,6 +529,6 @@ class UserController extends Controller
 
         Session::flash('flash_success', "Password updated successfully!");
 
-        return redirect('/admin');
+        return redirect('/user-profile');
     }
 }

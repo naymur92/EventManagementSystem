@@ -19,13 +19,14 @@ $router->get('/admin/users/{id}/edit', [UserController::class, 'edit'])->only(['
 $router->put('/admin/users/{id}/update', [UserController::class, 'update'])->only(['auth', 'superuser']);
 $router->delete('/admin/users/{id}/delete', [UserController::class, 'delete'])->only(['auth', 'superuser']);
 $router->put('/admin/users/{id}/change-status', [UserController::class, 'changeStatus'])->only(['auth', 'superuser']);
+
 // User profile routes
-$router->get('/admin/user-profile', [UserController::class, 'userProfile'])->only(['auth']);
-$router->put('/admin/change-profile-picture', [UserController::class, 'changeProfilePicture'])->only(['auth']);
-$router->get('/admin/edit-profile', [UserController::class, 'editProfile'])->only(['auth']);
-$router->put('/admin/update-profile', [UserController::class, 'updateProfile'])->only(['auth']);
-$router->get('/admin/change-password', [UserController::class, 'changePassword'])->only(['auth']);
-$router->put('/admin/change-password', [UserController::class, 'saveChangedPassword'])->only(['auth']);
+$router->get('/user-profile', [UserController::class, 'userProfile'])->only(['auth']);
+$router->put('/change-profile-picture', [UserController::class, 'changeProfilePicture'])->only(['auth']);
+$router->get('/edit-profile', [UserController::class, 'editProfile'])->only(['auth']);
+$router->put('/update-profile', [UserController::class, 'updateProfile'])->only(['auth']);
+$router->get('/change-password', [UserController::class, 'changePassword'])->only(['auth']);
+$router->put('/change-password', [UserController::class, 'saveChangedPassword'])->only(['auth']);
 
 // authentication routes
 $router->get('/login', [AuthenticationController::class, 'index'])->only(['guest']);
