@@ -9,6 +9,7 @@ class Middleware
         'auth' => AuthMiddleware::class,
         'superuser' => SuperUserMiddleware::class,
         'hostuser' => HostUserMiddleware::class,
+        'super&host' => SuperAndHostUserMiddleware::class,
     ];
 
     public static function resolve(array $keys): void
