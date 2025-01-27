@@ -74,6 +74,9 @@ class AuthenticationController extends Controller
 
         Session::flash('flash_success', "Login success.");
 
+        if ($_SESSION['user']['type'] == 3) {
+            redirect('/');
+        }
         return redirect('/admin');
     }
 
