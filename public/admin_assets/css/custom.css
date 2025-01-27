@@ -192,3 +192,18 @@ body {
 #wrapper {
     flex: 1;
 }
+
+.fieldset {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+}
+
+.fieldset-legend {
+    width: inherit;
+    padding: 0 5px;
+    border-bottom: none;
+    font-size: 14px;
+    font-style: italic;
+}
