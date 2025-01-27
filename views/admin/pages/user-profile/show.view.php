@@ -105,7 +105,7 @@ ob_start(); ?>
                                     <i class="fas fa-angle-left"></i> Back
                                 </a>
                             <?php else: ?>
-                                <a href="<?= route('') ?>" class="btn waves-effect waves-light br-5 btn-secondary">
+                                <a href="<?= route('/admin') ?>" class="btn waves-effect waves-light br-5 btn-secondary">
                                     <i class="fas fa-angle-left"></i> Back
                                 </a>
                             <?php endif; ?>

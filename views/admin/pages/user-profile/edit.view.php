@@ -18,7 +18,7 @@ ob_start(); ?>
                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
                     <h5 class="m-0 text-primary">User Profile Edit</h5>
 
-                    <a href="<?= route('/admin/user-profile') ?>" class="btn waves-effect waves-light br-5 btn-secondary">
+                    <a href="<?= route('/user-profile') ?>" class="btn waves-effect waves-light br-5 btn-secondary">
                         <i class="fas fa-angle-left"></i> Back
                     </a>
                 </div>
