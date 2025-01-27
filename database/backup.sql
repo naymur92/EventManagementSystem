@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 27, 2025 at 03:14 AM
+-- Generation Time: Jan 27, 2025 at 04:51 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -20,6 +20,43 @@ SET time_zone = "+00:00";
 --
 -- Database: `ems`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `attendees`
+--
+
+CREATE TABLE `attendees` (
+  `attendee_id` bigint UNSIGNED NOT NULL,
+  `event_id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `mobile` varchar(15) COLLATE utf8mb4_general_ci NOT NULL,
+  `registration_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` tinyint NOT NULL DEFAULT '1' COMMENT '0=>cancelled, 1=>registered'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `events`
+--
+
+CREATE TABLE `events` (
+  `event_id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `location` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `description` text COLLATE utf8mb4_general_ci NOT NULL,
+  `start_time` datetime NOT NULL,
+  `end_time` datetime DEFAULT NULL,
+  `max_capacity` int UNSIGNED NOT NULL,
+  `current_capacity` int UNSIGNED NOT NULL,
+  `status` tinyint NOT NULL DEFAULT '0' COMMENT '0=>inactive, 1=>active',
+  `user_id` bigint UNSIGNED NOT NULL COMMENT 'Host id from users table',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -59,6 +96,7 @@ INSERT INTO `files` (`file_id`, `operation_name`, `table_id`, `filepath`, `filen
 --
 
 CREATE TABLE `host_details` (
+  `id` bigint UNSIGNED NOT NULL,
   `user_id` bigint UNSIGNED NOT NULL,
   `description` text COLLATE utf8mb4_general_ci NOT NULL,
   `location` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
@@ -95,11 +133,27 @@ INSERT INTO `users` (`user_id`, `name`, `email`, `mobile`, `email_verified_at`, 
 (4, 'Abdur Rahman', 'abdrahman@gmail.com', '01737036324', NULL, 0, 3, '$2y$10$6ZHQFuUJDRq5mdYCmsJ5lu/cli9URQ7fG4aH5mto3HEjmmeeIOPuC', 1, 1, '2025-01-25 05:35:22', '2025-01-25 08:35:39'),
 (6, 'Abdur Rahman', 'naymur@gmail.com', '', NULL, 1, 3, '$2y$10$snZMAYf93NtOW3MyKpCr6eafO.895r.IMrj2fGZo4R2p322AXLQCK', 1, 0, '2025-01-25 08:28:34', '2025-01-25 08:28:34'),
 (7, 'Sabbir Saad', 'saad@gmail.com', '', NULL, 0, 2, '$2y$10$2j3g8ESbh3ktyotkh9akrOPhKyOlLbsGFWvccqqPkCQBcDrKrLKVu', 0, 1, '2025-01-25 19:36:10', '2025-01-26 20:28:54'),
-(10, 'Test User', 'test@gmail.com', '', NULL, 1, 2, '$2y$10$exPSoX9MyOnQL8ttMd7MYu9iwbghEO6jwOIn.W8mzLMdfWho4lxzi', 1, 0, '2025-01-26 20:26:43', '2025-01-26 20:26:43');
+(10, 'Test User', 'test@gmail.com', '', NULL, 1, 2, '$2y$10$exPSoX9MyOnQL8ttMd7MYu9iwbghEO6jwOIn.W8mzLMdfWho4lxzi', 1, 0, '2025-01-26 20:26:43', '2025-01-26 20:26:43'),
+(11, 'BUET', 'into@buet.ac.bd', '', NULL, 1, 2, '$2y$10$yUTNsSDIAd0oAyn/ggKXI.NMKe3OpYbZcv/sgkhGTAGPOfPcUlPOu', 0, 0, '2025-01-27 09:38:09', '2025-01-27 09:38:09');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `attendees`
+--
+ALTER TABLE `attendees`
+  ADD PRIMARY KEY (`attendee_id`),
+  ADD KEY `attendees_user_id_foreign` (`user_id`),
+  ADD KEY `attendees_event_id_foreign` (`event_id`);
+
+--
+-- Indexes for table `events`
+--
+ALTER TABLE `events`
+  ADD PRIMARY KEY (`event_id`),
+  ADD KEY `events_user_id_foreign` (`user_id`);
 
 --
 -- Indexes for table `files`
@@ -113,6 +167,7 @@ ALTER TABLE `files`
 -- Indexes for table `host_details`
 --
 ALTER TABLE `host_details`
+  ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `user_id` (`user_id`);
 
 --
@@ -127,20 +182,51 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `attendees`
+--
+ALTER TABLE `attendees`
+  MODIFY `attendee_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `events`
+--
+ALTER TABLE `events`
+  MODIFY `event_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `files`
 --
 ALTER TABLE `files`
   MODIFY `file_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT for table `host_details`
+--
+ALTER TABLE `host_details`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `user_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `attendees`
+--
+ALTER TABLE `attendees`
+  ADD CONSTRAINT `attendees_event_id_foreign` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `attendees_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `events`
+--
+ALTER TABLE `events`
+  ADD CONSTRAINT `events_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `files`
