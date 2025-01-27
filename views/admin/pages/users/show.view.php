@@ -44,6 +44,19 @@ ob_start(); ?>
                                 </tr>
 
                                 <tr>
+                                    <th>User Type</th>
+                                    <td>
+                                        <?php if ($user->type == 1): ?>
+                                            <span class="badge badge-pill badge-primary">Super User</span>
+                                        <?php elseif ($user->type == 2): ?>
+                                            <span class="badge badge-pill badge-info">Host User</span>
+                                        <?php elseif ($user->type == 3): ?>
+                                            <span class="badge badge-pill badge-secondary">General User</span>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+
+                                <tr>
                                     <th>Status</th>
                                     <td>
                                         <span class="badge badge-pill <?= $user->status == 0 ? 'badge-danger' : 'badge-success' ?>">

@@ -52,6 +52,7 @@ ob_start(); ?>
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Mobile</th>
+                                    <th>User Type</th>
                                     <th>Status</th>
                                     <th class="no-sort">Actions</th>
                                 </tr>
@@ -65,6 +66,15 @@ ob_start(); ?>
                                         <td><?= $user['email'] ?></td>
 
                                         <td><?= $user['mobile'] ?></td>
+                                        <td class="text-center">
+                                            <?php if ($user['type'] == 1): ?>
+                                                <span class="badge badge-pill badge-primary">Super User</span>
+                                            <?php elseif ($user['type'] == 2): ?>
+                                                <span class="badge badge-pill badge-info">Host User</span>
+                                            <?php elseif ($user['type'] == 3): ?>
+                                                <span class="badge badge-pill badge-secondary">General User</span>
+                                            <?php endif; ?>
+                                        </td>
                                         <td class="text-center">
                                             <span class="badge badge-pill <?= $user['status'] == 0 ? 'badge-danger' : 'badge-success' ?>">
                                                 <?= $user['status'] == 0 ? 'Inactive' : 'Active' ?>

@@ -40,7 +40,7 @@
         Site Configuration
     </div>
 
-    <li class="nav-item <?= urlInList(['/admin/users', '/admin/users/create']) ? 'active' : '' ?>">
+    <li class="nav-item <?= urlInList(['/admin/users', '/admin/users/create', '/admin/users/{id}/show', '/admin/users/{id}/edit']) ? 'active' : '' ?>">
         <a class="nav-link" href="<?= route('/admin/users') ?>">
             <i class="fa-solid fa-users-gear"></i>
             <span>Auth Users</span></a>

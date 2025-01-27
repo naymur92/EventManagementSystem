@@ -66,6 +66,35 @@ ob_start(); ?>
                             </div>
 
                             <div class="form-group col-12 col-lg-6 mb-3">
+
+                                <label for="_password">Password (<small class="text-danger">Please fill if you want to change it!</small>)</label>
+                                <input type="password" name="password" id="_password" class="form-control <?= hasError('password') ? 'is-invalid' : '' ?>">
+
+                                <?php foreach (errors('password') as $error) : ?>
+                                    <span class="invalid-feedback" role="alert">
+                                        <?= $error ?>
+                                    </span>
+                                <?php endforeach; ?>
+                            </div>
+
+
+                            <div class="form-group col-12 col-lg-6 mb-3">
+                                <label for="_type">User Type <span class="text-danger"><i class="fas fa-xs fa-asterisk"></i></span></label>
+
+                                <select name="type" id="_type" class="form-control select2 <?= hasError('type') ? 'is-invalid' : '' ?>">
+                                    <option value="1" <?= old('type', $user->type) == 1 ? 'selected' : "" ?>>Super User</option>
+                                    <option value="2" <?= old('type', $user->type) == 2 ? 'selected' : "" ?>>Host User</option>
+                                    <option value="3" <?= old('type', $user->type) == 3 ? 'selected' : "" ?>>General User</option>
+                                </select>
+
+                                <?php foreach (errors('type') as $error) : ?>
+                                    <span class="invalid-feedback" role="alert">
+                                        <?= $error ?>
+                                    </span>
+                                <?php endforeach; ?>
+                            </div>
+
+                            <div class="form-group col-12 col-lg-6 mb-3">
                                 <label for="_status">Status <span class="text-danger"><i class="fas fa-xs fa-asterisk"></i></span></label>
 
                                 <select name="status" id="_status" class="form-control select2 <?= hasError('status') ? 'is-invalid' : '' ?>">
@@ -74,18 +103,6 @@ ob_start(); ?>
                                 </select>
 
                                 <?php foreach (errors('status') as $error) : ?>
-                                    <span class="invalid-feedback" role="alert">
-                                        <?= $error ?>
-                                    </span>
-                                <?php endforeach; ?>
-                            </div>
-
-                            <div class="form-group col-12 col-lg-12 mb-3">
-
-                                <label for="_password">Password (<small class="text-danger">Please fill if you want to change it!</small>)</label>
-                                <input type="password" name="password" id="_password" class="form-control <?= hasError('password') ? 'is-invalid' : '' ?>">
-
-                                <?php foreach (errors('password') as $error) : ?>
                                     <span class="invalid-feedback" role="alert">
                                         <?= $error ?>
                                     </span>

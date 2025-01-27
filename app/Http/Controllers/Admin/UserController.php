@@ -47,6 +47,7 @@ class UserController extends Controller
             'name' => ['string'],
             'email' => ['email'],
             'mobile' => ['string'],
+            'type' => ['integer'],
             'status' => ['integer'],
             'password' => ['string'],
         ]);
@@ -56,6 +57,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:127',
             'mobile' => 'string|max:15',
+            'type' => 'required|integer',
             'password' => 'required|string|min:8',
         ];
 
@@ -167,6 +169,7 @@ class UserController extends Controller
         $request->setSanitizationRules([
             'name' => ['string'],
             'mobile' => ['string'],
+            'type' => ['integer'],
             'status' => ['integer'],
             'password' => ['string'],
         ]);
@@ -175,6 +178,7 @@ class UserController extends Controller
         $rules = [
             'name' => 'required|string|max:255',
             'mobile' => 'string|max:15',
+            'type' => 'required|integer',
             'password' => 'string|min:8',
         ];
 
