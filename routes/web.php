@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\HomeController;
@@ -8,8 +9,10 @@ use App\Http\Controllers\HomeController;
 // Define routes
 $router->get('/', [HomeController::class, 'index']);
 
-// admin routes
+############################################# Admin Routes #############################################
+// dashboard routes
 $router->get('/admin', [DashboardController::class, 'index'])->only(['auth']);
+
 // users routes
 $router->get('/admin/users', [UserController::class, 'index'])->only(['auth', 'superuser']);
 $router->get('/admin/users/create', [UserController::class, 'create'])->only(['auth', 'superuser']);
@@ -19,6 +22,16 @@ $router->get('/admin/users/{id}/edit', [UserController::class, 'edit'])->only(['
 $router->put('/admin/users/{id}/update', [UserController::class, 'update'])->only(['auth', 'superuser']);
 $router->delete('/admin/users/{id}/delete', [UserController::class, 'delete'])->only(['auth', 'superuser']);
 $router->put('/admin/users/{id}/change-status', [UserController::class, 'changeStatus'])->only(['auth', 'superuser']);
+
+// events routes
+$router->get('/admin/events', [EventController::class, 'index'])->only(['auth', 'superuser', 'hostuser']);
+$router->get('/admin/events/create', [EventController::class, 'create'])->only(['auth', 'hostuser']);
+$router->post('/admin/events', [EventController::class, 'store'])->only(['auth', 'hostuser']);
+$router->get('/admin/events/{id}/show', [EventController::class, 'show'])->only(['auth', 'superuser', 'hostuser']);
+$router->get('/admin/events/{id}/edit', [EventController::class, 'edit'])->only(['auth', 'hostuser']);
+$router->put('/admin/events/{id}/update', [EventController::class, 'update'])->only(['auth', 'hostuser']);
+$router->delete('/admin/events/{id}/delete', [EventController::class, 'delete'])->only(['auth', 'superuser', 'hostuser']);
+$router->put('/admin/events/{id}/change-status', [EventController::class, 'changeStatus'])->only(['auth', 'superuser', 'hostuser']);
 
 // User profile routes
 $router->get('/user-profile', [UserController::class, 'userProfile'])->only(['auth']);

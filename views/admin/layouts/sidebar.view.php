@@ -19,38 +19,36 @@
 
 
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-    <!-- Heading -->
-    <div class="sidebar-heading mb-2">
-        Event Management
-    </div>
+    <?php if (authUser()->type == 1 || authUser()->type == 2): ?>
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+        <!-- Heading -->
+        <div class="sidebar-heading mb-2">
+            Event Management
+        </div>
 
-    <li class="nav-item <?= urlInList(['product-units']) ? 'active' : '' ?>">
-        <a class="nav-link" href="#">
-            <i class="fa-solid fa-scale-unbalanced-flip"></i>
-            <span>Events</span></a>
-    </li>
+        <li class="nav-item <?= urlInList(['/admin/events', '/admin/events/create', '/admin/events/{id}/show', '/admin/events/{id}/edit']) ? 'active' : '' ?>">
+            <a class="nav-link" href="<?= route('/admin/events') ?>">
+                <i class="fa-solid fa-calendar-days"></i>
+                <span>Events</span></a>
+        </li>
+    <?php endif; ?>
 
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-    <!-- Heading -->
-    <div class="sidebar-heading mb-2">
-        Site Configuration
-    </div>
+    <?php if (authUser()->type == 1): ?>
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+        <!-- Heading -->
+        <div class="sidebar-heading mb-2">
+            Portal Management
+        </div>
 
-    <li class="nav-item <?= urlInList(['/admin/users', '/admin/users/create', '/admin/users/{id}/show', '/admin/users/{id}/edit']) ? 'active' : '' ?>">
-        <a class="nav-link" href="<?= route('/admin/users') ?>">
-            <i class="fa-solid fa-users-gear"></i>
-            <span>Auth Users</span></a>
-    </li>
-
-    <li class="nav-item <?= urlInList(['company-information']) ? 'active' : '' ?>">
-        <a class="nav-link" href="#">
-            <i class="fa-solid fa-info"></i>
-            <span>Company Information</span></a>
-    </li>
+        <li class="nav-item <?= urlInList(['/admin/users', '/admin/users/create', '/admin/users/{id}/show', '/admin/users/{id}/edit']) ? 'active' : '' ?>">
+            <a class="nav-link" href="<?= route('/admin/users') ?>">
+                <i class="fa-solid fa-users-gear"></i>
+                <span>Auth Users</span></a>
+        </li>
+    <?php endif; ?>
 
 
     <!-- Divider -->
