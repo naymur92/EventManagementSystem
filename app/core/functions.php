@@ -243,7 +243,7 @@ function route(string $path): string
     $baseUrl = getBaseUrl();
 
     // Ensure the path starts with a slash
-    if ($path[0] !== '/') {
+    if ($path == '' || $path[0] !== '/') {
         $path = '/' . $path;
     }
 
