@@ -31,7 +31,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        view('admin.pages.users.create', array('title' => "Create User"));
+        view('admin.pages.users.create', array('title' => "Users | Create User"));
     }
 
     /**
@@ -126,7 +126,7 @@ class UserController extends Controller
 
         $hostDetails = $user->getHostDetail();
 
-        view('admin.pages.users.show', array('title' => "View User", 'user' => $user, 'hostDetails' => $hostDetails));
+        view('admin.pages.users.show', array('title' => "Users | View User", 'user' => $user, 'hostDetails' => $hostDetails));
     }
 
 
@@ -146,7 +146,7 @@ class UserController extends Controller
             return redirect('/admin/users');
         }
 
-        view('admin.pages.users.edit', array('title' => "Edit User", 'user' => $user));
+        view('admin.pages.users.edit', array('title' => "Users | Edit User", 'user' => $user));
     }
 
 
