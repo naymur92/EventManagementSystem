@@ -7,7 +7,7 @@ $layoutFile = 'layouts.main';
         <div class="m-5">
             <h1>Hello, <?= authUser()->name; ?></h1>
 
-            <form action="/logout" method="POST"><input type="submit" class="btn btn-danger" value="Logout"></form>
+            <form action="/logout" method="POST"><?= csrfField() ?><input type="submit" class="btn btn-danger" value="Logout"></form>
         </div>
     <?php endif; ?>
 
