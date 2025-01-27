@@ -57,7 +57,15 @@ function urlIs(string $value): bool
  */
 function urlInList(array $routeList): bool
 {
-    return in_array(Router::filterCurrentUri($_SERVER['REQUEST_URI']), $routeList);
+    $currentUri = Router::filterCurrentUri($_SERVER['REQUEST_URI']);
+
+    foreach ($routeList as $route) {
+        $pattern = "#^" . preg_replace('/\{[^\/]+\}/', '([^/]+)', $route) . "$#";
+        if (preg_match($pattern, $currentUri, $matches)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 
