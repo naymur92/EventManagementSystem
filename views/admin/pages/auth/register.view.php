@@ -83,6 +83,10 @@
                                     <?php endforeach; ?>
                                 </div>
 
+                                <div class="form-group d-flex align-items-center">
+                                    <input id="_host" type="checkbox" name="host" <?= old('host') ? 'checked' : '' ?>>
+                                    <label class="ml-2 p-0 m-0" for="_host">Register as a HOST</label>
+                                </div>
 
                                 <input type="submit" class="btn btn-primary btn-user btn-block" value="Register">
 
@@ -114,6 +118,18 @@
 
     <!-- Custom scripts for all pages-->
     <script src="<?= getBaseUrl() ?>/admin_assets/js/sb-admin-2.min.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.3/dist/sweetalert2.all.min.js"></script>
+    <script src="<?= getBaseUrl() ?>/admin_assets/js/swal-helpers.js"></script>
+
+    <script>
+        // show popup messages
+        showPopupMessages(<?= json_encode(getPopupData()); ?>).then(() => {
+            // show flash messages
+            showFlashMessages(<?= json_encode(getFlashData()); ?>);
+        });
+    </script>
 
 </body>
 

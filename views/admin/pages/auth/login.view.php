@@ -92,6 +92,17 @@
     <!-- Custom scripts for all pages-->
     <script src="<?= getBaseUrl() ?>/admin_assets/js/sb-admin-2.min.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.3/dist/sweetalert2.all.min.js"></script>
+    <script src="<?= getBaseUrl() ?>/admin_assets/js/swal-helpers.js"></script>
+
+    <script>
+        // show popup messages
+        showPopupMessages(<?= json_encode(getPopupData()); ?>).then(() => {
+            // show flash messages
+            showFlashMessages(<?= json_encode(getFlashData()); ?>);
+        });
+    </script>
+
 </body>
 
 </html>

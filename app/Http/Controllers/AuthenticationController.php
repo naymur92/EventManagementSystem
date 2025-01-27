@@ -163,6 +163,15 @@ class AuthenticationController extends Controller
         $usersModel = new User();
 
         $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
+        if (isset($data['host']) && $data['host'] == 'on') {
+            $data['type'] = 2;
+            $data['status'] = 1;
+
+            unset($data['host']);
+        } else {
+            $data['type'] = 3;
+            $data['status'] = 1;
+        }
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
 
@@ -170,6 +179,6 @@ class AuthenticationController extends Controller
 
         Session::setPopup('popup_success', "Registration successfull. Please contact with admin to active your account!");
 
-        return redirect('/');
+        return redirect('/login');
     }
 }
