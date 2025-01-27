@@ -24,4 +24,42 @@ class User extends BaseModel
 
         return array_filter($files, fn($file) => $file['fileinfo'] === 'profile_picture')[0] ?? null;
     }
+
+    /**
+     * Get the HostDetail associated with the user.
+     *
+     * @return HostDetail|null
+     */
+    public function getHostDetail(): ?HostDetail
+    {
+        if ($this->type !== 2) {
+            return null;
+        }
+
+        $hostDetails = (new HostDetail())->where('user_id', '=', $this->{$this->primaryKey})->get();
+
+        return !empty($hostDetails) ? HostDetail::makeInstance($hostDetails[0]) : null;
+    }
+
+    /**
+     * Save HostDetail data if applicable.
+     *
+     * @param array $hostDetailData
+     * @return void
+     */
+    public function saveHostDetail(array $hostDetailData): void
+    {
+        if ($this->type !== 2) {
+            return;
+        }
+
+        $hostDetail = $this->getHostDetail();
+
+        if ($hostDetail) {
+            $hostDetail->update($hostDetailData);
+        } else {
+            $hostDetailData['user_id'] = $this->{$this->primaryKey};
+            (new HostDetail())->insert($hostDetailData);
+        }
+    }
 }
