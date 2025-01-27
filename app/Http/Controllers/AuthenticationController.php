@@ -177,7 +177,7 @@ class AuthenticationController extends Controller
 
         $usersModel->insert($data);
 
-        Session::setPopup('popup_success', "Registration successfull. Please contact with admin to active your account!");
+        Session::setPopup('popup_success', "Registration successfull. Please login to continue!");
 
         return redirect('/login');
     }
