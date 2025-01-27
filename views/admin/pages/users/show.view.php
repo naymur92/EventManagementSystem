@@ -25,6 +25,7 @@ ob_start(); ?>
                 </div>
 
                 <div class="card-body">
+                    <!-- profile info -->
                     <div class="row align-items-center justify-content-between">
                         <div class="col-12 col-xl-8">
                             <table class="show-table table border table-bordered">
@@ -85,6 +86,31 @@ ob_start(); ?>
 
                         </div>
                     </div>
+
+
+                    <!-- host details -->
+                    <?php if ($user->type == 2): ?>
+                        <div class="row align-items-center justify-content-between mt-5">
+                            <div class="col-12">
+                                <h5 class="text-primary">Host Details</h5>
+
+                                <table class="show-table table border table-bordered">
+                                    <tr>
+                                        <th style="width: 20%;">Location</th>
+                                        <td><?= $hostDetails->location ?? '' ?></td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Description</th>
+                                        <td><?= htmlspecialchars_decode($hostDetails->description ?? '') ?></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+                    <?php endif; ?>
+
+
                 </div>
                 <div class="card-footer d-flex justify-content-between">
                     <?php if ($user->user_id != 1 && $user->user_id != authUser()->user_id): ?>

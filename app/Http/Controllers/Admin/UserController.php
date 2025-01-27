@@ -124,7 +124,9 @@ class UserController extends Controller
             return redirect('/admin/users');
         }
 
-        view('admin.pages.users.show', array('title' => "View User", 'user' => $user));
+        $hostDetails = $user->getHostDetail();
+
+        view('admin.pages.users.show', array('title' => "View User", 'user' => $user, 'hostDetails' => $hostDetails));
     }
 
 
@@ -279,7 +281,9 @@ class UserController extends Controller
             return redirect('/');
         }
 
-        view('admin.pages.user-profile.show', array('title' => "User Profile | Show", 'user' => $user));
+        $hostDetails = $user->getHostDetail();
+
+        view('admin.pages.user-profile.show', array('title' => "User Profile | Show", 'user' => $user, 'hostDetails' => $hostDetails));
     }
 
 
@@ -390,7 +394,9 @@ class UserController extends Controller
             return redirect('/user-profile');
         }
 
-        view('admin.pages.user-profile.edit', array('title' => "User Profile | Edit", 'user' => $user));
+        $hostDetails = $user->getHostDetail();
+
+        view('admin.pages.user-profile.edit', array('title' => "User Profile | Edit", 'user' => $user, 'hostDetails' => $hostDetails));
     }
 
     /**
@@ -413,12 +419,14 @@ class UserController extends Controller
         $request->setSanitizationRules([
             'name' => ['string'],
             'mobile' => ['string'],
+            'description' => ['string'],
         ]);
 
         // Validation rules
         $rules = [
             'name' => 'required|string|max:255',
             'mobile' => 'string|max:15',
+            'description' => 'string',
         ];
 
         // Validate data
@@ -436,10 +444,24 @@ class UserController extends Controller
 
         $data = $request->validated();
 
+        // Ready HostDetail if the user is of type 2
+        $hostDetailData = array();
+        if ($user->type == 2) {
+            $hostDetailData['description'] = $data['description'];
+            $hostDetailData['location'] = $data['location'];
+
+            // unset data
+            unset($data['description']);
+            unset($data['location']);
+        }
+
         $data['updated_by'] = Auth::user()->user_id;
         $data['updated_at'] = date('Y-m-d H:i:s');
 
         $user->update($data);
+
+        // save HostDetail data
+        $user->saveHostDetail($hostDetailData);
 
         Session::flash('flash_success', "Profile updated successfully!");
 
