@@ -8,6 +8,7 @@ use App\Core\Request;
 use App\Core\Session;
 use App\Models\Event;
 use App\Models\File;
+use App\Models\User;
 
 class EventController extends Controller
 {
@@ -19,11 +20,27 @@ class EventController extends Controller
     public function index()
     {
         $eventsModel = new Event();
-        $events = $eventsModel->getAll();
 
-        dd($events);
+        if (Auth::user()->type == 2)
+            $eventsModel->where('user_id', '=', Auth::user()->user_id);
 
-        view('admin.pages.events.index', array('title' => "Events", 'events' => $events));
+        $events = $eventsModel->orderBy('created_at', 'DESC')->get();
+
+        $userModel = new User();
+        $hostUsers = $userModel->where('type', '=', 2)
+            ->where('status', '=', 1)
+            ->select(['user_id', 'name'])
+            ->orderBy('name', "ASC")
+            ->get();
+
+        $hostUsers = array_combine(
+            array_column($hostUsers, 'user_id'),
+            array_column($hostUsers, 'name')
+        );
+
+        // dd($hostUsers);
+
+        view('admin.pages.events.index', array('title' => "Events", 'events' => $events, 'hostUsers' => $hostUsers));
     }
 
     /**
@@ -119,6 +136,9 @@ class EventController extends Controller
 
         // if data is empty then handle them with default value by not passing
         if ($data['max_capacity'] == '') unset($data['max_capacity']);
+        else {
+            $data['current_capacity'] = $data['max_capacity'];
+        }
         if ($data['registration_fee'] == '') unset($data['registration_fee']);
         if ($data['start_time'] == '') unset($data['start_time']);
         if ($data['end_time'] == '') unset($data['end_time']);
@@ -148,7 +168,7 @@ class EventController extends Controller
                 'created_at' => date('Y-m-d H:i:s'),
             ]);
 
-            Session::flash('flash_success', "Event created successfully.");
+            Session::flash('flash_success', "Event created successfully. View it carefully and publish.");
         } else {
             Session::flash('flash_error', "Something went wrong. Please try again!");
             return redirect('/admin/events/create');
@@ -175,9 +195,9 @@ class EventController extends Controller
             return redirect('/admin/events');
         }
 
-        $hostDetails = $user->getHostDetail();
+        $hostDetails = $event->getHostDetail();
 
-        view('admin.pages.users.show', array('title' => "View User", 'user' => $user, 'hostDetails' => $hostDetails));
+        view('admin.pages.events.show', array('title' => "Events | View Event", 'event' => $event, 'hostDetails' => $hostDetails));
     }
 
 
