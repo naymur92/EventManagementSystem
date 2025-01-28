@@ -2,8 +2,6 @@
 
 namespace App\Core;
 
-use App\Models\User;
-
 class Authenticator
 {
     /**
@@ -15,12 +13,11 @@ class Authenticator
      */
     public function attempt(string $email, string $password): bool
     {
-        // $user = App::resolve('App\Core\DB')
-        //     ->query('select * from users where email = :email', [
-        //         'email' => $email
-        //     ])->fetchAll();
+        $user = App::resolve('App\Core\DB')
+            ->query('select * from users where email = :email', [
+                'email' => $email
+            ])->fetchAll();
 
-        $user = (new User)->where('email', '=', $email)->get();
         if ($user && isset($user[0]['password'])) {
             if (password_verify($password, $user[0]['password']) && $user[0]['status'] == 1) {
                 $this->login($user[0]);
