@@ -48,16 +48,19 @@ class EventController extends Controller
         $request->setSanitizationRules([
             'name' => ['string'],
             'location' => ['string'],
+            'google_map_location' => ['url'],
             'description' => ['string'],
             'max_capacity' => ['integer'],
+            'registration_fee' => ['integer'],
         ]);
 
         // Validation rules
         $rules = [
             'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
-            'start_time' => 'required',
-            'max_capacity' => 'required|integer|min:0',
+            'google_map_location' => 'url|max:1024',
+            'max_capacity' => 'integer|min:0',
+            'registration_fee' => 'integer|min:0',
         ];
 
         // Validate data
@@ -106,9 +109,20 @@ class EventController extends Controller
 
         $data = $request->validated();
 
-        dd($data);
-
         $data['user_id'] = Auth::user()->user_id;
+
+        // format datetime
+        if ($data['start_time'] != '')
+            $data['start_time'] = date('Y-m-d H:i:s', strtotime($data['start_time']));
+        if ($data['end_time'] != '')
+            $data['end_time'] = date('Y-m-d H:i:s', strtotime($data['end_time']));
+
+        // if data is empty then handle them with default value by not passing
+        if ($data['max_capacity'] == '') unset($data['max_capacity']);
+        if ($data['registration_fee'] == '') unset($data['registration_fee']);
+        if ($data['start_time'] == '') unset($data['start_time']);
+        if ($data['end_time'] == '') unset($data['end_time']);
+
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
 

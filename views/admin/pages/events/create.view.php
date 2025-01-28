@@ -123,7 +123,7 @@ ob_start(); ?>
             imageSelector.removeClass('is-invalid');
             $(".errors").remove();
 
-            console.log(file);
+            // console.log(file);
             // check file type validation
             var file_type = file.type;
             if (!acceped_types.includes(file_type)) {
@@ -222,6 +222,18 @@ ob_start(); ?>
 
 
                             <div class="form-group col-12 col-lg-12 mb-3">
+                                <label for="_google_map_loc">Google Map Location</label>
+                                <input type="text" name="google_map_location" id="_google_map_loc" value="<?= old('google_map_location') ?>" class="form-control <?= hasError('google_map_location') ? 'is-invalid' : '' ?>" placeholder="Google Map iFrame">
+
+                                <?php foreach (errors('google_map_location') as $error) : ?>
+                                    <span class="invalid-feedback" role="alert">
+                                        <?= $error ?>
+                                    </span>
+                                <?php endforeach; ?>
+                            </div>
+
+
+                            <div class="form-group col-12 col-lg-12 mb-3">
                                 <label for="_desc">Description</label>
                                 <textarea name="description" id="_desc" rows="5" class="text-editor form-control <?= hasError('description') ? 'is-invalid' : '' ?>"
                                     style="width: 100%; min-height: 200px;
@@ -234,11 +246,11 @@ ob_start(); ?>
                                 <?php endforeach; ?>
                             </div>
 
-                            <div class="form-group col-12 col-lg-4 mb-3">
+                            <div class="form-group col-12 col-md-6 col-lg-3 mb-3">
                                 <label for="_start_time">Start Time</label>
                                 <div class="form-group">
                                     <div class="input-group date" id="_start_time" data-target-input="nearest">
-                                        <input type="text" name="start_time" class="form-control datetimepicker-input" data-target="#_start_time" />
+                                        <input type="text" name="start_time" class="form-control datetimepicker-input" data-target="#_start_time" placeholder="YYYY-MM-DD HH:MM" />
                                         <div class="input-group-append" data-target="#_start_time" data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                         </div>
@@ -252,11 +264,11 @@ ob_start(); ?>
                                 <?php endforeach; ?>
                             </div>
 
-                            <div class="form-group col-12 col-lg-4 mb-3">
+                            <div class="form-group col-12 col-md-6 col-lg-3 mb-3">
                                 <label for="_end_time">End Time</label>
                                 <div class="form-group">
                                     <div class="input-group date" id="_end_time" data-target-input="nearest">
-                                        <input type="text" name="end_time" class="form-control datetimepicker-input" data-target="#_end_time" />
+                                        <input type="text" name="end_time" class="form-control datetimepicker-input" data-target="#_end_time" placeholder="YYYY-MM-DD HH:MM" />
                                         <div class="input-group-append" data-target="#_end_time" data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                         </div>
@@ -271,11 +283,23 @@ ob_start(); ?>
                             </div>
 
 
-                            <div class="form-group col-12 col-lg-4 mb-3">
+                            <div class="form-group col-12 col-md-6 col-lg-3 mb-3">
                                 <label for="_capacity" title="Keep empty for unlimited capacity!">Max Capacity</label>
                                 <input type="number" name="max_capacity" id="_capacity" value="<?= old('max_capacity') ?>" class="form-control <?= hasError('max_capacity') ? 'is-invalid' : '' ?>" min="0" step="1" placeholder="Keep empty for unlimited capacity">
 
                                 <?php foreach (errors('max_capacity') as $error) : ?>
+                                    <span class="invalid-feedback" role="alert">
+                                        <?= $error ?>
+                                    </span>
+                                <?php endforeach; ?>
+                            </div>
+
+
+                            <div class="form-group col-12 col-md-6 col-lg-3 mb-3">
+                                <label for="_fee" title="Keep empty for free entry!">Registration Fee</label>
+                                <input type="number" name="registration_fee" id="_fee" value="<?= old('registration_fee') ?>" class="form-control <?= hasError('registration_fee') ? 'is-invalid' : '' ?>" min="0" step="1" placeholder="0">
+
+                                <?php foreach (errors('registration_fee') as $error) : ?>
                                     <span class="invalid-feedback" role="alert">
                                         <?= $error ?>
                                     </span>
