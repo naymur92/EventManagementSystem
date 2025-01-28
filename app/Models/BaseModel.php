@@ -164,7 +164,8 @@ abstract class BaseModel implements ModelInterface
     public function getAll(): array
     {
         $db = DB::getInstance();
-        return $db->getAll($this->table);
+        $results = $db->getAll($this->table);
+        return $this->filterProtectedFields($results);
     }
 
 
@@ -193,7 +194,7 @@ abstract class BaseModel implements ModelInterface
      */
     public function where(string $field, string $operator, $value): self
     {
-        DB::getInstance()->table($this->table)->where($field, $operator, $value);
+        DB::getInstance()->where($field, $operator, $value);
         return $this;
     }
 
@@ -207,7 +208,7 @@ abstract class BaseModel implements ModelInterface
      */
     public function orWhere(string $field, string $operator, $value): self
     {
-        DB::getInstance()->table($this->table)->orWhere($field, $operator, $value);
+        DB::getInstance()->orWhere($field, $operator, $value);
         return $this;
     }
 
@@ -221,7 +222,7 @@ abstract class BaseModel implements ModelInterface
      */
     public function whereIn(string $field, array $values): self
     {
-        DB::getInstance()->table($this->table)->whereIn($field, $values);
+        DB::getInstance()->whereIn($field, $values);
         return $this;
     }
 
@@ -235,9 +236,49 @@ abstract class BaseModel implements ModelInterface
      */
     public function whereBetween(string $field, $start, $end): self
     {
-        DB::getInstance()->table($this->table)->whereBetween($field, $start, $end);
+        DB::getInstance()->whereBetween($field, $start, $end);
         return $this;
     }
+
+    /**
+     * Add order by filter to columns
+     *
+     * @param string $column
+     * @param string $direction
+     * @return self
+     */
+    public function orderBy(string $column, string $direction = 'ASC'): self
+    {
+        DB::getInstance()->orderBy($column, $direction);
+        return $this;
+    }
+
+
+    /**
+     * Select columns
+     *
+     * @param array $columns
+     * @return self
+     */
+    public function select(array $columns): self
+    {
+        DB::getInstance()->select($columns);
+        return $this;
+    }
+
+
+    /**
+     * Add new select columns to previous
+     *
+     * @param array $columns
+     * @return self
+     */
+    public function addSelect(array $columns): self
+    {
+        DB::getInstance()->addSelect($columns);
+        return $this;
+    }
+
 
     /**
      * Get all data from table using query builder
@@ -246,9 +287,11 @@ abstract class BaseModel implements ModelInterface
      */
     public function get(): array
     {
-        return DB::getInstance()
+        $results = DB::getInstance()
             ->table($this->table)
             ->get();
+
+        return $this->filterProtectedFields($results);
     }
 
     /**
@@ -269,5 +312,24 @@ abstract class BaseModel implements ModelInterface
         }
 
         return $instance;
+    }
+
+    /**
+     * Filter protected fields
+     *
+     * @param array $results
+     * @return array
+     */
+    private function filterProtectedFields(array $results): array
+    {
+        // If there are no protected fields, return as is
+        if (empty($this->protected)) {
+            return $results;
+        }
+
+        // Remove protected fields from each result
+        return array_map(function ($record) {
+            return array_diff_key($record, array_flip($this->protected));
+        }, $results);
     }
 }
