@@ -17,9 +17,9 @@ ob_start(); ?>
         <div class="col-12 col-xl-8">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                    <h5 class="m-0 text-primary">Auth User Details</h5>
+                    <h5 class="m-0 text-primary">Event Details</h5>
 
-                    <a href="<?= route("/admin/users") ?>" class="btn waves-effect waves-light br-5 btn-secondary">
+                    <a href="<?= route("/admin/events") ?>" class="btn waves-effect waves-light br-5 btn-secondary">
                         <i class="fas fa-angle-left"></i> Back
                     </a>
                 </div>
@@ -31,44 +31,41 @@ ob_start(); ?>
                             <table class="show-table table border table-bordered">
                                 <tr>
                                     <th style="width: 20%;">Name</th>
-                                    <td><?= $user->name ?></td>
+                                    <td><?= $event->name ?></td>
                                 </tr>
 
                                 <tr>
                                     <th>Email</th>
-                                    <td><?= $user->email ?></td>
+                                    <td><?= $event->email ?></td>
                                 </tr>
 
                                 <tr>
                                     <th>Mobile</th>
-                                    <td><?= $user->mobile ?></td>
-                                </tr>
-
-                                <tr>
-                                    <th>User Type</th>
-                                    <td>
-                                        <?php if ($user->type == 1): ?>
-                                            <span class="badge badge-pill badge-primary">Super User</span>
-                                        <?php elseif ($user->type == 2): ?>
-                                            <span class="badge badge-pill badge-info">Host User</span>
-                                        <?php elseif ($user->type == 3): ?>
-                                            <span class="badge badge-pill badge-secondary">General User</span>
-                                        <?php endif; ?>
-                                    </td>
+                                    <td><?= $event->mobile ?></td>
                                 </tr>
 
                                 <tr>
                                     <th>Status</th>
                                     <td>
-                                        <span class="badge badge-pill <?= $user->status == 0 ? 'badge-danger' : 'badge-success' ?>">
-                                            <?= $user->status == 0 ? 'Inactive' : 'Active' ?>
+                                        <span class="badge badge-pill <?= $event->status == 0 ? 'badge-danger' : 'badge-success' ?>">
+                                            <?= $event->status == 0 ? 'Inactive' : 'Active' ?>
                                         </span>
                                     </td>
                                 </tr>
 
                                 <tr>
+                                    <th style="width: 20%;">Location</th>
+                                    <td><?= $event->location ?? '' ?></td>
+                                </tr>
+
+                                <tr>
+                                    <th>Description</th>
+                                    <td><?= htmlspecialchars_decode($event->description ?? '') ?></td>
+                                </tr>
+
+                                <tr>
                                     <th>Joined Date</th>
-                                    <td><?= date('d M, Y - H:i A', strtotime($user->created_at)) ?></td>
+                                    <td><?= date('d M, Y - H:i A', strtotime($event->created_at)) ?></td>
                                 </tr>
 
                             </table>
@@ -76,7 +73,7 @@ ob_start(); ?>
 
                         <div class="col-12 col-md-4 text-center">
                             <?php
-                            $profilePicture = $user->getProfilePicture();
+                            $profilePicture = $event->getProfilePicture();
                             if ($profilePicture): ?>
                                 <img class="img-thumbnail rounded-circle" src="<?= getBaseUrl() . "/uploads/{$profilePicture['filepath']}/{$profilePicture['filename']}" ?>"
                                     style="width: 20vw;">
@@ -87,36 +84,12 @@ ob_start(); ?>
                         </div>
                     </div>
 
-
-                    <!-- host details -->
-                    <?php if ($user->type == 2): ?>
-                        <div class="row align-items-center justify-content-between mt-5">
-                            <div class="col-12">
-                                <h5 class="text-primary">Host Details</h5>
-
-                                <table class="show-table table border table-bordered">
-                                    <tr>
-                                        <th style="width: 20%;">Location</th>
-                                        <td><?= $hostDetails->location ?? '' ?></td>
-                                    </tr>
-
-                                    <tr>
-                                        <th>Description</th>
-                                        <td><?= htmlspecialchars_decode($hostDetails->description ?? '') ?></td>
-                                    </tr>
-                                </table>
-                            </div>
-
-                        </div>
-                    <?php endif; ?>
-
-
                 </div>
                 <div class="card-footer d-flex justify-content-between">
-                    <?php if ($user->user_id != 1 && $user->user_id != authUser()->user_id): ?>
+                    <?php if ($event->user_id != 1 && $event->user_id != authUser()->user_id): ?>
                         <!-- set inactive -->
-                        <?php if ($user->status == 1): ?>
-                            <form action="<?= route("/admin/users/{$user->user_id}/change-status") ?>" method="POST" onsubmit="swalConfirmationOnSubmit(event, 'Are you sure?');">
+                        <?php if ($event->status == 1): ?>
+                            <form action="<?= route("/admin/events/{$event->user_id}/change-status") ?>" method="POST" onsubmit="swalConfirmationOnSubmit(event, 'Are you sure?');">
                                 <?= csrfField() ?>
                                 <input type="hidden" name="_method" value="PUT">
 
@@ -127,8 +100,8 @@ ob_start(); ?>
                         <?php endif; ?>
 
                         <!-- set active -->
-                        <?php if ($user->status == 0): ?>
-                            <form action="<?= route("/admin/users/{$user->user_id}/change-status") ?>" method="POST" onsubmit="swalConfirmationOnSubmit(event, 'Are you sure?');">
+                        <?php if ($event->status == 0): ?>
+                            <form action="<?= route("/admin/events/{$event->user_id}/change-status") ?>" method="POST" onsubmit="swalConfirmationOnSubmit(event, 'Are you sure?');">
                                 <?= csrfField() ?>
                                 <input type="hidden" name="_method" value="PUT">
 
@@ -138,7 +111,7 @@ ob_start(); ?>
                             </form>
                         <?php endif; ?>
 
-                        <!-- <form action="<?= route("/admin/users/{$user->user_id}/delete") ?>"
+                        <!-- <form action="<?= route("/admin/events/{$event->user_id}/delete") ?>"
                             onsubmit="swalConfirmationOnSubmit(event, 'Are you sure to delete?');"
                             method="POST">
                             <?= csrfField() ?>
@@ -147,7 +120,7 @@ ob_start(); ?>
                             <button class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
                         </form> -->
 
-                        <a href="<?= route("/admin/users/{$user->user_id}/edit") ?>" class="btn btn-outline-warning br-5 waves-effect waves-light">
+                        <a href="<?= route("/admin/events/{$event->user_id}/edit") ?>" class="btn btn-outline-warning br-5 waves-effect waves-light">
                             <i class="fa-solid fa-pen-to-square"></i> Edit
                         </a>
                     <?php endif; ?>
