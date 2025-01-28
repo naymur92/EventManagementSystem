@@ -76,13 +76,21 @@ abstract class BaseModel implements ModelInterface
      * Insert data to table
      *
      * @param array $data
-     * @return boolean
+     * @return int|null
      */
-    public function insert(array $data): bool
+    public function insert(array $data): ?int
     {
         $data = $this->filterFillable($data);
         $db = DB::getInstance();
-        return $db->insert($this->table, $data);
+        $lastInsertId = $db->insert($this->table, $data);
+
+        if ($lastInsertId) {
+            // Dynamically set the primary key property on the current instance
+            $primaryKey = $this->primaryKey;
+            $this->$primaryKey = $lastInsertId;
+        }
+
+        return $lastInsertId;
     }
 
     /**
