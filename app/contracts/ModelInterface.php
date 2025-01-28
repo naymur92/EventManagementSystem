@@ -16,6 +16,9 @@ interface ModelInterface
     public function orWhere(string $field, string $operator, $value): self;
     public function whereIn(string $field, array $values): self;
     public function whereBetween(string $field, $start, $end): self;
+    public function orderBy(string $column, string $direction = 'ASC'): self;
+    public function select(array $columns): self;
+    public function addSelect(array $columns): self;
     // public function when(bool $condition, callable $callback): self;
     public function get(): array;
 }
