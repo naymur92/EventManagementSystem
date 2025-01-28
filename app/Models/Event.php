@@ -10,5 +10,5 @@ class Event extends BaseModel
 
     protected $table = 'events';
     protected $primaryKey = 'event_id';
-    protected array $fillable = ['name', 'location', 'description', 'start_time', 'end_time', 'max_capacity', 'current_capacity', 'status', 'user_id', 'created_at', 'updated_at'];
+    protected array $fillable = ['name', 'location', 'google_map_location', 'description', 'start_time', 'end_time', 'max_capacity', 'registration_fee', 'current_capacity', 'status', 'user_id', 'created_at', 'updated_at'];
 }
