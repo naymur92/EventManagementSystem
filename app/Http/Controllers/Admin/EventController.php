@@ -47,20 +47,17 @@ class EventController extends Controller
         // Define sanitization rules
         $request->setSanitizationRules([
             'name' => ['string'],
-            'email' => ['email'],
-            'mobile' => ['string'],
-            'type' => ['integer'],
-            'status' => ['integer'],
-            'password' => ['string'],
+            'location' => ['string'],
+            'description' => ['string'],
+            'max_capacity' => ['integer'],
         ]);
 
         // Validation rules
         $rules = [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:127',
-            'mobile' => 'string|max:15',
-            'type' => 'required|integer',
-            'password' => 'required|string|min:8',
+            'location' => 'required|string|max:255',
+            'start_time' => 'required',
+            'max_capacity' => 'required|integer|min:0',
         ];
 
         // Validate data
@@ -74,19 +71,33 @@ class EventController extends Controller
             $errorFound = true;
         }
 
-        $email = $request->input('email');
-        if ($email != "") {
-            $usersModel = new User();
-            $user = $usersModel->where('email', '=', $email)->get();
+        // image validation
+        if (empty($_FILES) || !isset($_FILES['banner_image'])) {
+            Session::setPopup('popup_error', "Please select an image first!");
 
-            if (count($user) > 0) {
-                $errorFound = true;
-                $errors['email'][] = "Email must be unique!";
-            }
+            $errorFound = true;
         }
 
+        $maxSize    = 1024 * 1024;  // 1 MB
+        $acceptable = array(
+            'image/jpeg',
+            'image/jpg',
+            'image/gif',
+            'image/png'
+        );
+
+        if (($_FILES['banner_image']['size'] >= $maxSize) || ($_FILES["banner_image"]["size"] == 0)) {
+            Session::flash('flash_error', 'File too large. File must be less than 1 megabyte.');
+            $errorFound = true;
+        }
+
+        if (!in_array($_FILES['banner_image']['type'], $acceptable) && (!empty($_FILES["banner_image"]["type"]))) {
+            Session::flash('flash_error', 'Invalid file type. Only JPG, GIF and PNG types are accepted.');
+            $errorFound = true;
+        }
+
+
         if ($errorFound) {
-            // set errors and old data into session
             $_SESSION['error'] = $errors;
             $_SESSION['old'] = $request->all();
 
@@ -95,16 +106,40 @@ class EventController extends Controller
 
         $data = $request->validated();
 
-        $usersModel = new User();
+        dd($data);
 
-        $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
-        $data['created_by'] = Auth::user()->user_id;
+        $data['user_id'] = Auth::user()->user_id;
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
 
-        $usersModel->insert($data);
+        $event = new Event();
+        $event_id = $event->insert($data);
 
-        Session::flash('flash_success', "User created successfully.");
+        // start file upload
+        if ($event_id) {
+            $filePath = 'events';
+
+            $name = $_FILES["banner_image"]["name"];
+            $ext = (explode(".", $name));
+            $ext = end($ext);;
+
+            $fileName = $event->event_id . '_' . time() . '.' . $ext;
+            move_uploaded_file($_FILES['banner_image']['tmp_name'], UPLOAD_DIR . "$filePath/$fileName");
+
+            $event->saveFile([
+                'filepath' => $filePath,
+                'filename' => $fileName,
+                'fileinfo' => "banner_image",
+                'created_by' => Auth::user()->user_id,
+                'created_at' => date('Y-m-d H:i:s'),
+            ]);
+
+            Session::flash('flash_success', "Event created successfully.");
+        } else {
+            Session::flash('flash_error', "Something went wrong. Please try again!");
+            return redirect('/admin/events/create');
+        }
+
 
         return redirect('/admin/events');
     }

@@ -20,6 +20,7 @@ ob_start(); ?>
         align-items: center;
         justify-content: center;
         opacity: 1;
+        background-color: #ddd;
     }
 
     .image-remove-btn {
@@ -72,23 +73,86 @@ ob_start(); ?>
 
 
 <script>
+    const maxSize = 1024;
+    const accepedTypes = [
+        "image/png",
+        "image/jpeg",
+        "image/gif",
+    ];
+
+    const imageRequired = false;
+    const imageSelector = $("#_attachment");
+    const container = $("#image_container");
+    const imageRemoveBtn = $('.remove-btn');
+
     $(document).ready(function() {
-        const maxSize = 1024;
-        const maxFiles = 1;
-        const accepedTypes = [
+        var img = container.children('img');
+        var old_src = img.attr('src');
+
+        container.hide();
+        imageSelector.val("");
+
+        // console.log(img.attr('src'));
+
+        const acceped_types = [
             "image/png",
             "image/jpeg",
+            "image/gif",
         ];
-        const requiredFile = false;
+        imageSelector.on('change', function(event) {
+            const file = event.target.files[0];
+            imageSelector.removeClass('is-invalid');
+            $(".errors").remove();
 
-        const fileSelector = $("#_attachment");
-        const imageContainer = $("#selected_image_container");
-        const fileContainer = $("#selected_file_container");
-        const formSelector = $('#notice_add_form');
+            console.log(file);
+            // check file type validation
+            var file_type = file.type;
+            if (!acceped_types.includes(file_type)) {
+                imageSelector.addClass('is-invalid');
+                $("<span class='errors invalid-feedback' role='alert'><strong>Unsupported filetype!</strong></span>")
+                    .insertAfter(imageSelector);
 
-        multipleFileSelection(fileSelector, imageContainer, fileContainer, formSelector, maxSize, maxFiles,
-            accepedTypes, requiredFile);
+                // remove img from dom
+                imageSelector.val("");
+            } else if (file.size > maxSize * 1024) {
+                imageSelector.addClass('is-invalid');
+                $("<span class='errors invalid-feedback' role='alert'><strong>Maximum filesize is 1 MB!</strong></span>")
+                    .insertAfter(imageSelector);
 
+                // remove img from dom
+                imageSelector.val("");
+            } else {
+                let imgUrl = URL.createObjectURL(file);
+                img.attr('src', imgUrl);
+
+                container.show();
+            }
+
+        });
+
+        // remove image
+        imageRemoveBtn.on('click', function() {
+            imageSelector.val("");
+            img.attr('src', old_src);
+
+            container.hide();
+        });
+
+        // on submit form
+        $("#event_add_form").on('submit', function(e) {
+            e.preventDefault();
+
+            imageSelector.removeClass('is-invalid');
+            $(".errors").remove();
+
+            if (old_src == img.attr('src')) {
+                imageSelector.addClass('is-invalid');
+                $("<span class='errors invalid-feedback' role='alert'><strong>Select an image first!</strong></span>")
+                    .insertAfter(imageSelector);
+            } else if (swalConfirmationOnSubmit(event, 'Are you sure?')) {
+                document.getElementById("event_add_form").submit();
+            }
+        });
     });
 </script>
 <?php $scriptsBlock = ob_get_clean();
@@ -107,7 +171,8 @@ ob_start(); ?>
                     </a>
                 </div>
 
-                <form action="<?= route('/admin/events') ?>" method="POST" enctype="multipart/form-data" onsubmit="swalConfirmationOnSubmit(event, 'Are you sure to create user?');">
+                <!--  onsubmit="swalConfirmationOnSubmit(event, 'Are you sure to create user?');" -->
+                <form action="<?= route('/admin/events') ?>" method="POST" id="event_add_form" enctype="multipart/form-data">
                     <?= csrfField() ?>
 
                     <div class="card-body">
@@ -194,17 +259,15 @@ ob_start(); ?>
                                 <!-- file selector -->
                                 <div class="form-group col-12 col-lg-12 mb-3">
                                     <label for="_attachment">Select Image</label>
-                                    <input type="file" id="_attachment" class="form-control" name="files[]" accept="image/png,image/jpeg">
+                                    <input type="file" id="_attachment" class="form-control" name="banner_image" accept="image/png,image/jpeg">
                                 </div>
 
                                 <!-- preview selected files -->
                                 <div class="col-12 col-lg-12 mb-3" style="padding: 0px 12px">
-                                    <h6 class="text-dark">Selected File</h6>
-                                    <hr class="m-0 p-0 mb-2" style="width: 100%;" />
-
-                                    <div id="selected_image_container" class="d-flex"></div>
-
-                                    <ol id="selected_file_container" class=""></ol>
+                                    <div id="image_container" style="position: relative; width: fit-content">
+                                        <img class="img-thumbnail" src="" style="width: 20vw;">
+                                        <i class="fas fa-times text-danger remove-btn image-remove-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove Image"></i>
+                                    </div>
                                 </div>
                             </div>
                         </fieldset>
