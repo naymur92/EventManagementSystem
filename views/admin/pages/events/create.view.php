@@ -6,6 +6,14 @@ ob_start(); ?>
 <!-- summernote -->
 <link rel="stylesheet" href="<?= getBaseUrl() ?>/admin_assets/vendor/summernote/summernote-bs4.css">
 
+<!-- DateTimePicker CSS -->
+<link rel="stylesheet" href="<?= getBaseUrl() ?>/admin_assets/vendor/tempusdominus/tempusdominus-bootstrap-4.min.css" crossorigin="anonymous" />
+<style>
+    .bootstrap-datetimepicker-widget.dropdown-menu {
+        width: auto;
+    }
+</style>
+
 <style>
     .file-remove-btn,
     .image-remove-btn {
@@ -46,28 +54,39 @@ ob_start(); ?>
     })
 </script>
 
+<!-- DateTimePicker -->
+<script src="<?= getBaseUrl() ?>/admin_assets/vendor/tempusdominus/tempusdominus-bootstrap-4.min.js"></script>
 <script>
-    let start_date_val = document.getElementById('_start_date').value;
-    let end_date_val = document.getElementById('_end_date').value;
-    $("#_start_date").datepicker({
-        format: "yyyy-mm-dd",
-        orientation: "bottom left",
-        autoClose: true,
-        value: start_date_val
-    });
-    $("#_end_date").datepicker({
-        format: "yyyy-mm-dd",
-        orientation: "bottom left",
-        autoClose: true,
-        startDate: $("#_start_date").val() == '' ? 'd' : $("#_start_date").val(),
-        value: end_date_val
-    });
+    $(function() {
+        let start_time_val = document.getElementById('_start_time').value;
+        let end_time_val = document.getElementById('_end_time').value;
 
-    // set startDate of end_date based on start_date selection
-    $(document).ready(function() {
-        $("#_start_date").on('change', function() {
-            $("#_end_date").data('datepicker').setStartDate($(this).val())
-        })
+        $('#_start_time').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm',
+            icons: {
+                time: 'fa-regular fa-clock',
+            },
+            minDate: moment(),
+            value: start_time_val
+        });
+        $('#_end_time').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm',
+            icons: {
+                time: 'fa-regular fa-clock'
+            },
+            showClear: true,
+            autoClose: true,
+            minDate: $("#_start_time").val() == '' ? moment() : $("#_start_time").val(),
+            value: end_time_val,
+        });
+
+        // set startDate of end_date based on start_date selection
+        $('#_start_time').on('change.datetimepicker', function(e) {
+            var selectedDate = e.date;
+            $('#_end_time').datetimepicker('minDate', selectedDate);
+        });
+
+
     });
 </script>
 
@@ -217,7 +236,14 @@ ob_start(); ?>
 
                             <div class="form-group col-12 col-lg-4 mb-3">
                                 <label for="_start_time">Start Time</label>
-                                <input type="text" name="start_time" id="_start_time" value="<?= old('start_time') ?>" class="form-control <?= hasError('start_time') ? 'is-invalid' : '' ?>" placeholder="YYYY-MM-DD HH:MM:SS">
+                                <div class="form-group">
+                                    <div class="input-group date" id="_start_time" data-target-input="nearest">
+                                        <input type="text" name="start_time" class="form-control datetimepicker-input" data-target="#_start_time" />
+                                        <div class="input-group-append" data-target="#_start_time" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <?php foreach (errors('start_time') as $error) : ?>
                                     <span class="invalid-feedback" role="alert">
@@ -228,7 +254,14 @@ ob_start(); ?>
 
                             <div class="form-group col-12 col-lg-4 mb-3">
                                 <label for="_end_time">End Time</label>
-                                <input type="text" name="end_time" id="_end_time" value="<?= old('end_time') ?>" class="form-control <?= hasError('end_time') ? 'is-invalid' : '' ?>" placeholder="YYYY-MM-DD HH:MM:SS">
+                                <div class="form-group">
+                                    <div class="input-group date" id="_end_time" data-target-input="nearest">
+                                        <input type="text" name="end_time" class="form-control datetimepicker-input" data-target="#_end_time" />
+                                        <div class="input-group-append" data-target="#_end_time" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <?php foreach (errors('end_time') as $error) : ?>
                                     <span class="invalid-feedback" role="alert">
