@@ -13,6 +13,7 @@ class DB
     private array $conditions = [];
     private array $selectColumns = ['*'];
     private array $params = [];
+    private array $orderBy = [];
 
     private bool $isGrouped = false;
 
@@ -308,6 +309,17 @@ class DB
         return $this;
     }
 
+    public function orderBy(string $column, string $direction = 'ASC'): self
+    {
+        $direction = strtoupper($direction);
+        if (!in_array($direction, ['ASC', 'DESC'])) {
+            $direction = 'ASC';
+        }
+
+        $this->orderBy[] = "$column $direction";
+        return $this;
+    }
+
     /**
      * Get all data from query builder
      *
@@ -321,6 +333,11 @@ class DB
         // Add conditions if any
         if (!empty($this->conditions)) {
             $sql .= ' WHERE ' . implode(' ', $this->conditions);
+        }
+
+        // Order by clauses
+        if (!empty($this->orderBy)) {
+            $sql .= " ORDER BY " . implode(', ', $this->orderBy);
         }
 
         $stmt = self::query($sql, $this->params);
@@ -338,6 +355,9 @@ class DB
     private function reset(): void
     {
         $this->conditions = [];
+        $this->selectColumns = ['*'];
+        $this->params = [];
+        $this->orderBy = [];
     }
 
     /**
