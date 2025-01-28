@@ -248,9 +248,9 @@ ob_start(); ?>
 
                             <div class="form-group col-12 col-md-6 col-lg-3 mb-3">
                                 <label for="_start_time">Start Time</label>
-                                <div class="form-group">
+                                <div class="form-group <?= hasError('start_time') ? 'is-invalid' : '' ?>">
                                     <div class="input-group date" id="_start_time" data-target-input="nearest">
-                                        <input type="text" name="start_time" class="form-control datetimepicker-input" data-target="#_start_time" placeholder="YYYY-MM-DD HH:MM" />
+                                        <input type="text" name="start_time" value="<?= old('start_time') ?>" class="form-control datetimepicker-input" data-target="#_start_time" placeholder="YYYY-MM-DD HH:MM" />
                                         <div class="input-group-append" data-target="#_start_time" data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                         </div>
@@ -266,9 +266,9 @@ ob_start(); ?>
 
                             <div class="form-group col-12 col-md-6 col-lg-3 mb-3">
                                 <label for="_end_time">End Time</label>
-                                <div class="form-group">
+                                <div class="form-group <?= hasError('end_time') ? 'is-invalid' : '' ?>">
                                     <div class="input-group date" id="_end_time" data-target-input="nearest">
-                                        <input type="text" name="end_time" class="form-control datetimepicker-input" data-target="#_end_time" placeholder="YYYY-MM-DD HH:MM" />
+                                        <input type="text" name="end_time" value="<?= old('end_time') ?>" class="form-control datetimepicker-input" data-target="#_end_time" placeholder="YYYY-MM-DD HH:MM" />
                                         <div class="input-group-append" data-target="#_end_time" data-toggle="datetimepicker">
                                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                         </div>
