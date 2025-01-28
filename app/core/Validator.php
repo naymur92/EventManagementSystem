@@ -63,7 +63,7 @@ class Validator
         switch ($ruleName) {
             case 'required':
                 if (empty($value)) {
-                    $this->addError($field, "$field is required.");
+                    $this->addError($field, "This is required.");
                 }
                 break;
 
