@@ -71,8 +71,8 @@ ob_start(); ?>
                                         <td class="text-center align-middle"><?= $event['current_capacity'] ?></td>
                                         <td class="text-center align-middle"><?= $event['start_time'] ?></td>
                                         <td class="text-center align-middle">
-                                            <span class="badge badge-pill <?= $event['status'] == 0 ? 'badge-danger' : 'badge-success' ?>">
-                                                <?= $event['status'] == 0 ? 'Inactive' : 'Active' ?>
+                                            <span class="badge badge-pill <?= ($event['start_time'] != '' && $event['start_time'] < date('Y-m-d H:i:s')) || $event['status'] == 0 ? 'badge-danger' : 'badge-success' ?>">
+                                                <?= $event['start_time'] != '' && $event['start_time'] < date('Y-m-d H:i:s') ? 'Ended' : ($event['status'] == 0 ? 'Inactive' : 'Published') ?>
                                             </span>
                                         </td>
                                         <td class="align-middle">

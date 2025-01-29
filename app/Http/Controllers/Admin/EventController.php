@@ -65,7 +65,7 @@ class EventController extends Controller
         $request->setSanitizationRules([
             'name' => ['string'],
             'location' => ['string'],
-            'google_map_location' => ['url'],
+            'google_map_location' => ['string'],
             'description' => ['string'],
             'max_capacity' => ['integer'],
             'registration_fee' => ['integer'],
@@ -75,7 +75,7 @@ class EventController extends Controller
         $rules = [
             'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
-            'google_map_location' => 'url|max:1024',
+            'google_map_location' => 'string|max:1024',
             'max_capacity' => 'integer|min:0',
             'registration_fee' => 'integer|min:0',
         ];
@@ -153,9 +153,7 @@ class EventController extends Controller
         if ($event_id) {
             $filePath = 'events';
 
-            $name = $_FILES["banner_image"]["name"];
-            $ext = (explode(".", $name));
-            $ext = end($ext);;
+            $ext = pathinfo($_FILES["banner_image"]["name"], PATHINFO_EXTENSION);
 
             $fileName = $event->event_id . '_' . time() . '.' . $ext;
             move_uploaded_file($_FILES['banner_image']['tmp_name'], UPLOAD_DIR . "$filePath/$fileName");
@@ -196,6 +194,7 @@ class EventController extends Controller
         }
 
         $hostDetails = $event->getHostDetail();
+        // dd($hostDetails);
 
         view('admin.pages.events.show', array('title' => "Events | View Event", 'event' => $event, 'hostDetails' => $hostDetails));
     }
@@ -217,7 +216,7 @@ class EventController extends Controller
             return redirect('/admin/events');
         }
 
-        view('admin.pages.users.edit', array('title' => "Edit User", 'user' => $user));
+        view('admin.pages.events.edit', array('title' => "Events | Edit Event", 'event' => $event));
     }
 
 

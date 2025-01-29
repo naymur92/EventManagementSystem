@@ -99,7 +99,7 @@ ob_start(); ?>
         "image/gif",
     ];
 
-    const imageRequired = false;
+    const imageRequired = true;
     const imageSelector = $("#_attachment");
     const container = $("#image_container");
     const imageRemoveBtn = $('.remove-btn');
@@ -164,7 +164,7 @@ ob_start(); ?>
             imageSelector.removeClass('is-invalid');
             $(".errors").remove();
 
-            if (old_src == img.attr('src')) {
+            if (imageRequired && old_src == img.attr('src')) {
                 imageSelector.addClass('is-invalid');
                 $("<span class='errors invalid-feedback' role='alert'><strong>Select an image first!</strong></span>")
                     .insertAfter(imageSelector);
@@ -199,7 +199,7 @@ ob_start(); ?>
 
                             <div class="form-group col-12 col-lg-12 mb-3">
                                 <label for="_name">Event Name <span class="text-danger"><i class="fas fa-xs fa-asterisk"></i></span></label>
-                                <input type="text" name="name" id="_name" value="<?= old('name') ?>" class="form-control <?= hasError('name') ? 'is-invalid' : '' ?>" placeholder="Full Name">
+                                <input type="text" name="name" id="_name" value="<?= old('name') ?>" class="form-control <?= hasError('name') ? 'is-invalid' : '' ?>" placeholder="Event Name">
 
                                 <?php foreach (errors('name') as $error) : ?>
                                     <span class="invalid-feedback" role="alert">
@@ -211,7 +211,7 @@ ob_start(); ?>
 
                             <div class="form-group col-12 col-lg-12 mb-3">
                                 <label for="_loc">Event Location</label>
-                                <input type="text" name="location" id="_loc" value="<?= old('location') ?>" class="form-control <?= hasError('location') ? 'is-invalid' : '' ?>" placeholder="Full location">
+                                <input type="text" name="location" id="_loc" value="<?= old('location') ?>" class="form-control <?= hasError('location') ? 'is-invalid' : '' ?>" placeholder="Event location">
 
                                 <?php foreach (errors('location') as $error) : ?>
                                     <span class="invalid-feedback" role="alert">
@@ -222,8 +222,8 @@ ob_start(); ?>
 
 
                             <div class="form-group col-12 col-lg-12 mb-3">
-                                <label for="_google_map_loc">Google Map Location</label>
-                                <input type="text" name="google_map_location" id="_google_map_loc" value="<?= old('google_map_location') ?>" class="form-control <?= hasError('google_map_location') ? 'is-invalid' : '' ?>" placeholder="Google Map iFrame">
+                                <label for="_google_map_loc">Google Map Location <small>(Medium iFrame HTML)</small></label>
+                                <input type="text" name="google_map_location" id="_google_map_loc" value="<?= old('google_map_location') ?>" class="form-control <?= hasError('google_map_location') ? 'is-invalid' : '' ?>" placeholder="<iframe src='https://www.google.com/maps/embed?\'></iframe>">
 
                                 <?php foreach (errors('google_map_location') as $error) : ?>
                                     <span class="invalid-feedback" role="alert">
@@ -237,7 +237,7 @@ ob_start(); ?>
                                 <label for="_desc">Description</label>
                                 <textarea name="description" id="_desc" rows="5" class="text-editor form-control <?= hasError('description') ? 'is-invalid' : '' ?>"
                                     style="width: 100%; min-height: 200px;
-                                    font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"><?= old('description', $hostDetails->description ?? '') ?></textarea>
+                                    font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"><?= old('description') ?></textarea>
 
                                 <?php foreach (errors('description') as $error) : ?>
                                     <span class="invalid-feedback" role="alert">
