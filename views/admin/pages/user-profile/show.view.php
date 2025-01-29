@@ -154,21 +154,21 @@ ob_start(); ?>
                             <?php
                             $profilePicture = $user->getProfilePicture();
                             if ($profilePicture): ?>
-                                <img class="img-thumbnail rounded-circle" src="<?= getBaseUrl() . "/uploads/{$profilePicture['filepath']}/{$profilePicture['filename']}" ?>"
+                                <img class="img-thumbnail" src="<?= getBaseUrl() . "/uploads/{$profilePicture['filepath']}/{$profilePicture['filename']}" ?>"
                                     style="width: 20vw;">
                             <?php else: ?>
-                                <img class="img-thumbnail rounded-circle" src="<?= getBaseUrl() ?>/uploads/users/user.png" style="width: 20vw;">
+                                <img class="img-thumbnail" src="<?= getBaseUrl() ?>/uploads/users/user.png" style="width: 20vw;">
                             <?php endif; ?>
 
                             <br>
-                            <button class="btn btn-outline-success mt-2" data-toggle="modal" data-target="#profilePictureChangeModal">Change Profile Picture</button>
+                            <button class="btn btn-outline-success mt-2" data-toggle="modal" data-target="#profilePictureChangeModal">Change Profile Image</button>
 
-                            <!-- profile picture change modal -->
+                            <!-- Profile Image change modal -->
                             <div class="modal fade" id="profilePictureChangeModal" tabindex="-1" aria-labelledby="profilePictureChangeModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="profilePictureChangeModalLabel">Profile Picture Change
+                                            <h5 class="modal-title" id="profilePictureChangeModalLabel">Profile Image Change
                                             </h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
@@ -183,20 +183,20 @@ ob_start(); ?>
                                             <div class="modal-body text-center">
                                                 <div id="img_container" style="position: relative;">
 
-                                                    <!-- @if (Auth::user()->profilePicture)
-                                                    <img class="img-thumbnail rounded-circle"
-                                                        src="{{ asset('/') }}{{ Auth::user()->profilePicture->filepath . '/' . Auth::user()->profilePicture->filename }}"
-                                                        style="width: 15vw;">
-                                                    @else
-                                                    <img class="img-thumbnail rounded-circle" src="{{ asset('/') }}assets/uploads/users/user.png" style="width: 15vw;">
-                                                    @endif -->
-                                                    <img class="img-thumbnail rounded-circle" src="<?= getBaseUrl() ?>/uploads/users/user.png" style="width: 20vw;">
+                                                    <?php
+                                                    if ($profilePicture): ?>
+                                                        <img class="img-thumbnail" src="<?= getBaseUrl() . "/uploads/{$profilePicture['filepath']}/{$profilePicture['filename']}" ?>"
+                                                            style="width: 15vw;">
+                                                    <?php else: ?>
+                                                        <img class="img-thumbnail" src="<?= getBaseUrl() ?>/uploads/users/user.png" style="width: 15vw;">
+                                                    <?php endif; ?>
+                                                    <!-- <img class="img-thumbnail rounded-circle" src="<?= getBaseUrl() ?>/uploads/users/user.png" style="width: 20vw;"> -->
 
                                                     <i class="image-remove-btn fas fa-trash text-danger"></i>
                                                 </div>
 
                                                 <div class="form-group mt-3">
-                                                    <label for="_pp">Select Profile Picture</label>
+                                                    <label for="_pp">Select Profile Image</label>
                                                     <input type="file" id="_pp" class="form-control" name="profile_picture" accept="image/png,image/jpeg,image/gif">
                                                 </div>
                                             </div>
@@ -219,7 +219,7 @@ ob_start(); ?>
 
                                 <table class="show-table table border table-bordered">
                                     <tr>
-                                        <th style="width: 20%;">Location</th>
+                                        <th style="width: 20%;">Address</th>
                                         <td><?= $hostDetails->location ?? '' ?></td>
                                     </tr>
 

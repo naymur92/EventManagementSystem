@@ -96,7 +96,7 @@ ob_start(); ?>
 
                                 <table class="show-table table border table-bordered">
                                     <tr>
-                                        <th style="width: 20%;">Location</th>
+                                        <th style="width: 20%;">Address</th>
                                         <td><?= $hostDetails->location ?? '' ?></td>
                                     </tr>
 

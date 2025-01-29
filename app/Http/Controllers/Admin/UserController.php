@@ -340,9 +340,7 @@ class UserController extends Controller
 
         $filePath =  'users';
 
-        $name = $_FILES["profile_picture"]["name"];
-        $ext = (explode(".", $name));
-        $ext = end($ext);;
+        $ext = pathinfo($_FILES["profile_picture"]["name"], PATHINFO_EXTENSION);
 
         $fileName = $user->user_id . '_' . time() . '.' . $ext;
         move_uploaded_file($_FILES['profile_picture']['tmp_name'], UPLOAD_DIR . "$filePath/$fileName");

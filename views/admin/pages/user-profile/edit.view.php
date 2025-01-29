@@ -102,7 +102,7 @@ ob_start(); ?>
                                     </div>
 
                                     <div class="form-group col-12 col-lg-12 mb-3">
-                                        <label for="_loc">Location <span class="text-danger"><i class="fas fa-xs fa-asterisk"></i></span></label>
+                                        <label for="_loc">Address <span class="text-danger"><i class="fas fa-xs fa-asterisk"></i></span></label>
                                         <input type="text" id="_loc" name="location" value="<?= old('location', $hostDetails->location ?? '') ?>" class="form-control <?= hasError('location') ? 'is-invalid' : '' ?>" placeholder="Address">
 
                                         <?php foreach (errors('location') as $error) : ?>
