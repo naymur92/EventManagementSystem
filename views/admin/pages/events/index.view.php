@@ -83,7 +83,8 @@ ob_start(); ?>
                                                 </a>
 
                                                 <!-- set inactive -->
-                                                <?php if ($event['status'] == 1): ?>
+                                                <?php if ($event['status'] == 1 && authUser()->type == 1): ?>
+                                                    <!-- only super user can unpublish the event -->
                                                     <form action="<?= route("/admin/events/{$event['event_id']}/change-status") ?>" method="POST"
                                                         onsubmit="swalConfirmationOnSubmit(event, 'Are you sure?');">
                                                         <?= csrfField() ?>
@@ -94,7 +95,7 @@ ob_start(); ?>
                                                         <input type="submit" class="hidden-submit-btn" hidden>
 
                                                         <a type="button" data-toggle="tooltip" data-placement="top"
-                                                            title="Mark Inactive" class="table-data-modify-icon mr-2"
+                                                            title="Unpublish" class="table-data-modify-icon mr-2"
                                                             onclick="$(this).closest('form').find('.hidden-submit-btn').click()">
                                                             <span class="badge badge-danger"><i class="fa-solid fa-xmark"></i></span>
                                                         </a>
@@ -114,7 +115,7 @@ ob_start(); ?>
                                                         <input type="submit" class="hidden-submit-btn" hidden>
 
                                                         <a type="button" data-toggle="tooltip" data-placement="top"
-                                                            title="Mark Active" class="table-data-modify-icon mr-2" onclick="$(this).closest('form').find('.hidden-submit-btn').click()">
+                                                            title="Publish" class="table-data-modify-icon mr-2" onclick="$(this).closest('form').find('.hidden-submit-btn').click()">
                                                             <span class="badge badge-success"><i class="fa-solid fa-check"></i></span>
                                                         </a>
                                                     </form>

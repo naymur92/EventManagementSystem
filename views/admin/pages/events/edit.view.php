@@ -201,6 +201,7 @@ ob_start(); ?>
                 <!--  onsubmit="swalConfirmationOnSubmit(event, 'Are you sure to create user?');" -->
                 <form action="<?= route("/admin/events/{$event->event_id}/update") ?>" method="POST" id="event_edit_form" enctype="multipart/form-data">
                     <?= csrfField() ?>
+                    <input type="hidden" name="_method" value="PUT">
 
                     <div class="card-body">
                         <div class="row">

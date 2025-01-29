@@ -61,7 +61,6 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        // Define sanitization rules
         $request->setSanitizationRules([
             'name' => ['string'],
             'location' => ['string'],
@@ -187,7 +186,7 @@ class EventController extends Controller
     {
         $event = (new Event)->find($event_id);
 
-        if (!$event || $event->user_id != Auth::user()->user_id) {
+        if (!$event || ($event->user_id != Auth::user()->user_id && Auth::user()->type != 1)) {
             Session::flash('flash_error', "Invalid action!");
 
             return redirect('/admin/events');
@@ -237,21 +236,22 @@ class EventController extends Controller
             return redirect('/admin/events');
         }
 
-        // Define sanitization rules
         $request->setSanitizationRules([
             'name' => ['string'],
-            'mobile' => ['string'],
-            'type' => ['integer'],
-            'status' => ['integer'],
-            'password' => ['string'],
+            'location' => ['string'],
+            'google_map_location' => ['string'],
+            'description' => ['string'],
+            'max_capacity' => ['integer'],
+            'registration_fee' => ['integer'],
         ]);
 
         // Validation rules
         $rules = [
             'name' => 'required|string|max:255',
-            'mobile' => 'string|max:15',
-            'type' => 'required|integer',
-            'password' => 'string|min:8',
+            'location' => 'required|string|max:255',
+            'google_map_location' => 'string|max:1024',
+            'max_capacity' => 'integer|min:0',
+            'registration_fee' => 'integer|min:0',
         ];
 
         // Validate data
@@ -259,27 +259,109 @@ class EventController extends Controller
 
         $errors = $request->errors();
 
+        $errorFound = false;
+
         if (!empty($errors)) {
-            // set errors and old data into session
+            $errorFound = true;
+        }
+
+
+        // image validation
+        $updateBanner = false;
+        if (isset($_FILES["banner_image"]["name"]) && strlen($_FILES["banner_image"]["name"]) > 0) {
+            $maxSize    = 1024 * 1024;  // 1 MB
+            $acceptable = array(
+                'image/jpeg',
+                'image/jpg',
+                'image/gif',
+                'image/png'
+            );
+
+            if (($_FILES['banner_image']['size'] >= $maxSize) || ($_FILES["banner_image"]["size"] == 0)) {
+                Session::flash('flash_error', 'File too large. File must be less than 1 megabyte.');
+                $errorFound = true;
+            }
+
+            if (!in_array($_FILES['banner_image']['type'], $acceptable) && (!empty($_FILES["banner_image"]["type"]))) {
+                Session::flash('flash_error', 'Invalid file type. Only JPG, GIF and PNG types are accepted.');
+                $errorFound = true;
+            }
+
+            $updateBanner = true;
+        }
+
+        $totalRegistered = $event->max_capacity - $event->current_capacity;
+
+        // validate max capacity available capacity
+        if ($request->input('max_capacity') < $event->max_capacity && $totalRegistered > (int) $request->input('max_capacity')) {
+            $errorFound = true;
+            $errors['max_capacity'][] = "Invalid seat capacity to reduce!";
+        }
+
+        if ($errorFound) {
             $_SESSION['error'] = $errors;
             $_SESSION['old'] = $request->all();
 
-            return redirect("/admin/events/$user_id/edit");
+            return redirect("/admin/events/{$event->event_id}/edit");
         }
 
         $data = $request->validated();
 
-        if (strlen($data['password'] > 0)) {
-            $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
-        } else {
-            unset($data['password']);
+        // format datetime
+        if ($data['start_time'] != '')
+            $data['start_time'] = date('Y-m-d H:i:s', strtotime($data['start_time']));
+        if ($data['end_time'] != '')
+            $data['end_time'] = date('Y-m-d H:i:s', strtotime($data['end_time']));
+
+        // recalculate current capacity when changed max capacity
+        if ($data['max_capacity'] < $event->max_capacity) {
+            $data['current_capacity'] = $data['max_capacity'] - $totalRegistered;
         }
-        $data['updated_by'] = Auth::user()->user_id;
+
+        if ($data['registration_fee'] == '') unset($data['registration_fee']);
+        if ($data['start_time'] == '') unset($data['start_time']);
+        if ($data['end_time'] == '') unset($data['end_time']);
+
+        $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
 
-        $user->update($data);
+        $event->update($data);
 
-        Session::flash('flash_success', "User updated successfully!");
+        // banner update
+        if ($updateBanner) {
+            $existingFile = $event->getBanner();
+
+            $filePath =  'events';
+
+            $ext = pathinfo($_FILES["banner_image"]["name"], PATHINFO_EXTENSION);
+            $fileName = $event->event_id . '_' . time() . '.' . $ext;
+            move_uploaded_file($_FILES['banner_image']['tmp_name'], UPLOAD_DIR . "$filePath/$fileName");
+
+            $event->saveFile([
+                'filepath' => $filePath,
+                'filename' => $fileName,
+                'fileinfo' => "banner_image",
+                'created_by' => Auth::user()->user_id,
+                'created_at' => date('Y-m-d H:i:s'),
+            ]);
+
+
+            // delete existing files
+            if (!empty($existingFile)) {
+                // set deleted in DB
+                (new File())->update(array(
+                    'deleted_by' => Auth::user()->user_id,
+                    'deleted_at' => date('Y-m-d H:i:s')
+                ), $existingFile['file_id']);
+
+                // remove file from storage
+                $existingFilePath = "{$existingFile['filepath']}/{$existingFile['filename']}";
+                if (file_exists(UPLOAD_DIR . $existingFilePath))
+                    unlink(UPLOAD_DIR . $existingFilePath);
+            }
+        }
+
+        Session::flash('flash_success', "Event updated successfully!");
 
         return redirect('/admin/events');
     }
@@ -296,13 +378,29 @@ class EventController extends Controller
     {
         $event = (new Event)->find($event_id);
 
-        if (!$event || $event->user_id != Auth::user()->user_id) {
+        if (!$event || ($event->user_id != Auth::user()->user_id && Auth::user()->type != 1)) {
             Session::flash('flash_error', "Invalid action!");
 
             return redirect('/admin/events');
         }
 
+        $existingFile = $event->getBanner();
+
         $event->delete();
+
+        // delete existing files
+        if (!empty($existingFile)) {
+            // set deleted in DB
+            (new File())->update(array(
+                'deleted_by' => Auth::user()->user_id,
+                'deleted_at' => date('Y-m-d H:i:s')
+            ), $existingFile['file_id']);
+
+            // remove file from storage
+            $existingFilePath = "{$existingFile['filepath']}/{$existingFile['filename']}";
+            if (file_exists(UPLOAD_DIR . $existingFilePath))
+                unlink(UPLOAD_DIR . $existingFilePath);
+        }
 
         Session::flash('flash_success', "Event deleted successfully!");
 
@@ -321,7 +419,17 @@ class EventController extends Controller
     {
         $event = (new Event)->find($event_id);
 
-        if (!$event || $event->user_id != Auth::user()->user_id) {
+        $errorFound = false;
+        if (!$event || ($event->user_id != Auth::user()->user_id && Auth::user()->type != 1)) {
+            $errorFound = true;
+        }
+
+        // verify if have any registration
+        if ($event->max_capacity != $event->current_capacity && Auth::user()->type != 1) {
+            $errorFound = true;
+        }
+
+        if ($errorFound) {
             Session::flash('flash_error', "Invalid action!");
 
             return redirect('/admin/events');
