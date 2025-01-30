@@ -6,6 +6,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="csrf-token" content="<?= csrf(); ?>">
+
+
     <title>Eventify Events</title>
 
     <!--=====FAB ICON=======-->
@@ -33,6 +37,9 @@
 
     <!--=====  JS SCRIPT LINK =======-->
     <script src="<?= getBaseUrl() ?>/assets/js/vendor/jquery-3.7.1.min.js"></script>
+
+
+    <script src="<?= getBaseUrl() ?>/assets/js/ajax.js"></script>
 </head>
 
 <body class="homepage1-body">

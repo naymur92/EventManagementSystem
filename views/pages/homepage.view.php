@@ -1,6 +1,23 @@
 <?php
 $layoutFile = 'layouts.main';
+
+################## extra styles section ##################
+ob_start(); ?>
+
+<?php $stylesBlock = ob_get_clean();
+
+################## extra scripts section ##################
+ob_start(); ?>
+<script>
+    callApi("<?= route('/api/get-event-schedules') ?>", {
+        limit: 4
+    }).then((response) => {
+        console.log(response)
+    });
+</script>
+<?php $scriptsBlock = ob_get_clean();
 ?>
+
 
 <!--===== HERO AREA STARTS =======-->
 <div class="inner-page-header" style="background-image: url(assets/img/bg/header-bg12.png)">

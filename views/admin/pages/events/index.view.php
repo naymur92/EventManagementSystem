@@ -68,7 +68,7 @@ ob_start(); ?>
                                         <td class="align-middle"><?= $event['name'] ?></td>
                                         <td class="align-middle"><?= $event['location'] ?></td>
                                         <td class="align-middle"><?= $hostUsers[$event['user_id']] ?></td>
-                                        <td class="text-center align-middle"><?= $event['current_capacity'] ?></td>
+                                        <td class="text-center align-middle"><?= $event['max_capacity'] > 0 ? $event['current_capacity'] : "Unlimited" ?></td>
                                         <td class="text-center align-middle"><?= $event['start_time'] ?></td>
                                         <td class="text-center align-middle">
                                             <span class="badge badge-pill <?= ($event['start_time'] != '' && $event['start_time'] < date('Y-m-d H:i:s')) || $event['status'] == 0 ? 'badge-danger' : 'badge-success' ?>">
