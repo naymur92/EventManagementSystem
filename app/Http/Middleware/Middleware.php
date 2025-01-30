@@ -10,6 +10,7 @@ class Middleware
         'superuser' => SuperUserMiddleware::class,
         'hostuser' => HostUserMiddleware::class,
         'super&host' => SuperAndHostUserMiddleware::class,
+        'cors' => CorsMiddleware::class,
     ];
 
     public static function resolve(array $keys): void
