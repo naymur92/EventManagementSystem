@@ -9,10 +9,17 @@ class Request
     private array $errors = [];
     private array $validatedData = [];
     protected ?Validator $validator = null;
+    protected array $headers;
 
     public function __construct()
     {
         $this->data = $_REQUEST;
+        $this->headers = getallheaders();
+    }
+
+    public function header($key, $default = null)
+    {
+        return $this->headers[$key] ?? $default;
     }
 
     /**
