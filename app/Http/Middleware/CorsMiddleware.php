@@ -2,9 +2,16 @@
 
 namespace App\Http\Middleware;
 
+use App\Core\Config;
+
 class CorsMiddleware
 {
-    private $allowedOrigins = ['http://localhost:8000'];
+    private $allowedOrigins;
+
+    public function __construct()
+    {
+        $this->allowedOrigins = Config::get('config.cors-allowed-origins');
+    }
 
     public function handle()
     {
