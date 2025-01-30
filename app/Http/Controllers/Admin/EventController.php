@@ -75,6 +75,7 @@ class EventController extends Controller
             'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
             'google_map_location' => 'string|max:1024',
+            'start_time' => 'required',
             'max_capacity' => 'integer|min:0',
             'registration_fee' => 'integer|min:0',
         ];
@@ -250,6 +251,7 @@ class EventController extends Controller
             'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
             'google_map_location' => 'string|max:1024',
+            'start_time' => 'required',
             'max_capacity' => 'integer|min:0',
             'registration_fee' => 'integer|min:0',
         ];

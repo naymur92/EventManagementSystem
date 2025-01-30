@@ -260,7 +260,7 @@ ob_start(); ?>
                             </div>
 
                             <div class="form-group col-12 col-md-6 col-lg-3 mb-3">
-                                <label for="_start_time">Start Time</label>
+                                <label for="_start_time">Start Time <span class="text-danger"><i class="fas fa-xs fa-asterisk"></i></span></label>
                                 <div class="form-group <?= hasError('start_time') ? 'is-invalid' : '' ?>">
                                     <div class="input-group date" id="_start_time" data-target-input="nearest">
                                         <input type="text" name="start_time" value="<?= old('start_time', $event->start_time) ?>" class="form-control datetimepicker-input" data-target="#_start_time" placeholder="YYYY-MM-DD HH:MM" />
