@@ -51,3 +51,4 @@ $router->post('/logout', [AuthenticationController::class, 'logout'])->only(['au
 
 // Apis
 $router->post('/api/get-event-schedules', [EventApiController::class, 'getEventSchedules'])->only(['cors']);
+$router->post('/api/get-events', [EventApiController::class, 'getEvents'])->only(['cors']);

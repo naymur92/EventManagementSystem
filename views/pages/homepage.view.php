@@ -3,14 +3,28 @@ $layoutFile = 'layouts.main';
 
 ################## extra styles section ##################
 ob_start(); ?>
+<style>
+    .custom-brand-box {
+        border-radius: 8px;
+        border: 1px solid rgba(26, 23, 25, 0.05);
+        background: #FFF;
+        text-align: center;
+        padding: 30px;
+        transition: all 0.4s;
+        margin-bottom: 30px;
+    }
 
+    /* .brands1-section-area .brand-box img {} */
+</style>
 <?php $stylesBlock = ob_get_clean();
 
 ################## extra scripts section ##################
 ob_start(); ?>
 <script>
     var eventSchedules = [];
+    var events = [];
 
+    // dom related functions
     function generateSchedules(schedules) {
         let output = '';
         let isActive = true;
@@ -30,7 +44,7 @@ ob_start(); ?>
 
             output += `
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link ${isActive ? 'active' : ''}" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+                        <button class="nav-link ${isActive ? 'active' : ''} schedule-button" data-schedule-date="${scheduleDate}" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
                             <span class="day">Day ${i + 1}</span>
                             <span class="vl-flex">
                                 <span class="cal">${day}</span>
@@ -47,17 +61,80 @@ ob_start(); ?>
         $(".schedule-area").html(output ?? "No Content!");
     }
 
-    async function main() {
-        let scheduleLimit = 4;
-        eventSchedules = await getEventSchedules(scheduleLimit);
+    function generateEvents(events) {
+        let output = '';
+        let data_eos_duration = 800;
+        for (let event of events) {
+            output += `
+                    <div class="tabs-widget-boxarea" data-aos="fade-up" data-aos-duration="${data_eos_duration}">
+                        <div class="row align-items-center">
+                            <div class="col-lg-4">
+                                <div class="img1">
+                                    <img src="<?= getBaseUrl() ?>${event.banner_image}" alt="" />
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="content-area">
+                                    <ul>
+                                        <li>
+                                            <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/clock1.svg" alt="" /> ${event.start_time} <span> | </span></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/location1.svg" alt="" /> ${event.location} </a>
+                                        </li>
+                                    </ul>
+                                    <div class="space20"></div>
+                                    <a href="<?= getBaseUrl() ?>/events/${event.event_id}/view-details" class="head">${event.name}</a>
+                                    <div class="space32"></div>
+                                    <div class="btn-area1">
+                                        <a href="<?= getBaseUrl() ?>/events/${event.event_id}/view-details" class="vl-btn1">Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space30"></div>
+                `;
+
+            data_eos_duration += 200;
+        }
+
+        $(".event-area").html(output ?? "No Content!");
     }
 
+    // main function
+    async function main() {
+        eventSchedules = await getEventSchedules({
+            limit: 4
+        });
+
+        // get events on first date
+        if (eventSchedules.length > 0) {
+            events = await getEvents({
+                date: eventSchedules[0].start_time
+            });
+        }
+    }
+
+    // call function at beginning
     $(function() {
         main().then(() => {
             // get events of first schedule
             generateSchedules(eventSchedules);
+
+            generateEvents(events);
         })
     })
+
+
+    // get events and print when click schedule button
+    $(document).on('click', '.schedule-button', function() {
+        getEvents({
+            date: $(this).attr('data-schedule-date')
+        }).then((events) => {
+            generateEvents(events)
+        })
+    });
 </script>
 <?php $scriptsBlock = ob_get_clean();
 ?>
@@ -96,415 +173,16 @@ ob_start(); ?>
         <div class="row">
             <div class="col-lg-12">
                 <div data-aos="fade-up" data-aos-duration="900">
-                    <ul class="nav nav-pills space-margin60 schedule-area" id="pills-tab" role="tablist">
-
-                        <!-- <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
-                                <span class="vl-flex">
-                                    <span class="cal">01</span>
-                                    <span class="date">JAN <br />
-                                        2025</span>
-                                </span>
-                            </button>
-                        </li> -->
-
-                    </ul>
+                    <!-- Event Schedule Section -->
+                    <ul class="nav nav-pills space-margin60 schedule-area"></ul>
                 </div>
-                <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-                        <div class="tabs-widget-boxarea" data-aos="fade-up" data-aos-duration="800">
-                            <div class="row align-items-center">
-                                <div class="col-lg-4">
-                                    <div class="img1">
-                                        <img src="<?= getBaseUrl() ?>/assets/img/all-images/event/event-img1.png" alt="" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-8">
-                                    <div class="content-area">
-                                        <ul>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/clock1.svg" alt="" /> 10:00 AM -12:00 PM <span> | </span></a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/location1.svg" alt="" /> 26/C Asana, New York </a>
-                                            </li>
-                                        </ul>
-                                        <div class="space20"></div>
-                                        <a href="event-single" class="head">Innovate 2025 Your Pathway to Business Transformation</a>
-                                        <div class="space16"></div>
-                                        <p>The Innovate 2025 conference is meticulously designed to provide you with a rich, immersive experience that drives actionable insights & fosters collaboration from keynote presentations.</p>
-                                        <div class="space32"></div>
-                                        <div class="btn-area1">
-                                            <a href="pricing-plan" class="vl-btn1">purchase ticket now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="space30"></div>
-                        <div class="tabs-widget-boxarea" data-aos="fade-up" data-aos-duration="1000">
-                            <div class="row align-items-center">
-                                <div class="col-lg-4">
-                                    <div class="img1">
-                                        <img src="<?= getBaseUrl() ?>/assets/img/all-images/event/event-img2.png" alt="" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-8">
-                                    <div class="content-area">
-                                        <ul>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/clock1.svg" alt="" /> 10:00 AM -12:00 PM <span> | </span></a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/location1.svg" alt="" /> 26/C Asana, New York </a>
-                                            </li>
-                                        </ul>
-                                        <div class="space20"></div>
-                                        <a href="event-single" class="head">Innovate 2025 A Full-Day Journey the Future of Business</a>
-                                        <div class="space16"></div>
-                                        <p>The Innovate 2025 conference is meticulously designed to provide you with a rich, immersive experience that drives actionable insights & fosters collaboration from keynote presentations.</p>
-                                        <div class="space32"></div>
-                                        <div class="btn-area1">
-                                            <a href="pricing-plan" class="vl-btn1">purchase ticket now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="space30"></div>
-                        <div class="tabs-widget-boxarea" data-aos="fade-up" data-aos-duration="1200">
-                            <div class="row align-items-center">
-                                <div class="col-lg-4">
-                                    <div class="img1">
-                                        <img src="<?= getBaseUrl() ?>/assets/img/all-images/event/event-img3.png" alt="" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-8">
-                                    <div class="content-area">
-                                        <ul>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/clock1.svg" alt="" /> 10:00 AM -12:00 PM <span> | </span></a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/location1.svg" alt="" /> 26/C Asana, New York </a>
-                                            </li>
-                                        </ul>
-                                        <div class="space20"></div>
-                                        <a href="event-single" class="head">Innovate 2025 Charting the Course for Business Success</a>
-                                        <div class="space16"></div>
-                                        <p>The Innovate 2025 conference is meticulously designed to provide you with a rich, immersive experience that drives actionable insights & fosters collaboration from keynote presentations.</p>
-                                        <div class="space32"></div>
-                                        <div class="btn-area1">
-                                            <a href="pricing-plan" class="vl-btn1">purchase ticket now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-                        <div class="tabs-widget-boxarea">
-                            <div class="row align-items-center">
-                                <div class="col-lg-3">
-                                    <div class="img1">
-                                        <img src="<?= getBaseUrl() ?>/assets/img/all-images/event/event-img1.png" alt="" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-9">
-                                    <div class="content-area">
-                                        <ul>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/clock1.svg" alt="" /> 10:00 AM -12:00 PM <span> | </span></a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/location1.svg" alt="" /> 26/C Asana, New York </a>
-                                            </li>
-                                        </ul>
-                                        <div class="space20"></div>
-                                        <a href="event-single" class="head">Innovate 2025 Your Pathway to Business Transformation</a>
-                                        <div class="space16"></div>
-                                        <p>The Innovate 2025 conference is meticulously designed to provide you with a rich, immersive experience that drives actionable insights & fosters collaboration from keynote presentations.</p>
-                                        <div class="space32"></div>
-                                        <div class="btn-area1">
-                                            <a href="pricing-plan" class="vl-btn1">purchase ticket now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
-                        <div class="tabs-widget-boxarea">
-                            <div class="row align-items-center">
-                                <div class="col-lg-4">
-                                    <div class="img1">
-                                        <img src="<?= getBaseUrl() ?>/assets/img/all-images/event/event-img1.png" alt="" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-8">
-                                    <div class="content-area">
-                                        <ul>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/clock1.svg" alt="" /> 10:00 AM -12:00 PM <span> | </span></a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/location1.svg" alt="" /> 26/C Asana, New York </a>
-                                            </li>
-                                        </ul>
-                                        <div class="space20"></div>
-                                        <a href="event-single" class="head">Innovate 2025 Your Pathway to Business Transformation</a>
-                                        <div class="space16"></div>
-                                        <p>The Innovate 2025 conference is meticulously designed to provide you with a rich, immersive experience that drives actionable insights & fosters collaboration from keynote presentations.</p>
-                                        <div class="space32"></div>
-                                        <div class="btn-area1">
-                                            <a href="pricing-plan" class="vl-btn1">purchase ticket now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="space30"></div>
-                        <div class="tabs-widget-boxarea">
-                            <div class="row align-items-center">
-                                <div class="col-lg-4">
-                                    <div class="img1">
-                                        <img src="<?= getBaseUrl() ?>/assets/img/all-images/event/event-img2.png" alt="" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-8">
-                                    <div class="content-area">
-                                        <ul>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/clock1.svg" alt="" /> 10:00 AM -12:00 PM <span> | </span></a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/location1.svg" alt="" /> 26/C Asana, New York </a>
-                                            </li>
-                                        </ul>
-                                        <div class="space20"></div>
-                                        <a href="event-single" class="head">Innovate 2025 A Full-Day Journey the Future of Business</a>
-                                        <div class="space16"></div>
-                                        <p>The Innovate 2025 conference is meticulously designed to provide you with a rich, immersive experience that drives actionable insights & fosters collaboration from keynote presentations.</p>
-                                        <div class="space32"></div>
-                                        <div class="btn-area1">
-                                            <a href="pricing-plan" class="vl-btn1">purchase ticket now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="space30"></div>
-                        <div class="tabs-widget-boxarea">
-                            <div class="row align-items-center">
-                                <div class="col-lg-4">
-                                    <div class="img1">
-                                        <img src="<?= getBaseUrl() ?>/assets/img/all-images/event/event-img3.png" alt="" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-8">
-                                    <div class="content-area">
-                                        <ul>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/clock1.svg" alt="" /> 10:00 AM -12:00 PM <span> | </span></a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/location1.svg" alt="" /> 26/C Asana, New York </a>
-                                            </li>
-                                        </ul>
-                                        <div class="space20"></div>
-                                        <a href="event-single" class="head">Innovate 2025 Charting the Course for Business Success</a>
-                                        <div class="space16"></div>
-                                        <p>The Innovate 2025 conference is meticulously designed to provide you with a rich, immersive experience that drives actionable insights & fosters collaboration from keynote presentations.</p>
-                                        <div class="space32"></div>
-                                        <div class="btn-area1">
-                                            <a href="pricing-plan" class="vl-btn1">purchase ticket now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="pills-contact1" role="tabpanel" aria-labelledby="pills-contact1-tab" tabindex="0">
-                        <div class="tabs-widget-boxarea">
-                            <div class="row align-items-center">
-                                <div class="col-lg-4">
-                                    <div class="img1">
-                                        <img src="<?= getBaseUrl() ?>/assets/img/all-images/event/event-img1.png" alt="" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-8">
-                                    <div class="content-area">
-                                        <ul>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/clock1.svg" alt="" /> 10:00 AM -12:00 PM <span> | </span></a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/location1.svg" alt="" /> 26/C Asana, New York </a>
-                                            </li>
-                                        </ul>
-                                        <div class="space20"></div>
-                                        <a href="event-single" class="head">Innovate 2025 Your Pathway to Business Transformation</a>
-                                        <div class="space16"></div>
-                                        <p>The Innovate 2025 conference is meticulously designed to provide you with a rich, immersive experience that drives actionable insights & fosters collaboration from keynote presentations.</p>
-                                        <div class="space32"></div>
-                                        <div class="btn-area1">
-                                            <a href="pricing-plan" class="vl-btn1">purchase ticket now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="space30"></div>
-                        <div class="tabs-widget-boxarea">
-                            <div class="row align-items-center">
-                                <div class="col-lg-4">
-                                    <div class="img1">
-                                        <img src="<?= getBaseUrl() ?>/assets/img/all-images/event/event-img2.png" alt="" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-8">
-                                    <div class="content-area">
-                                        <ul>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/clock1.svg" alt="" /> 10:00 AM -12:00 PM <span> | </span></a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/location1.svg" alt="" /> 26/C Asana, New York </a>
-                                            </li>
-                                        </ul>
-                                        <div class="space20"></div>
-                                        <a href="event-single" class="head">Innovate 2025 A Full-Day Journey the Future of Business</a>
-                                        <div class="space16"></div>
-                                        <p>The Innovate 2025 conference is meticulously designed to provide you with a rich, immersive experience that drives actionable insights & fosters collaboration from keynote presentations.</p>
-                                        <div class="space32"></div>
-                                        <div class="btn-area1">
-                                            <a href="pricing-plan" class="vl-btn1">purchase ticket now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="space30"></div>
-                        <div class="tabs-widget-boxarea">
-                            <div class="row align-items-center">
-                                <div class="col-lg-4">
-                                    <div class="img1">
-                                        <img src="<?= getBaseUrl() ?>/assets/img/all-images/event/event-img3.png" alt="" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-8">
-                                    <div class="content-area">
-                                        <ul>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/clock1.svg" alt="" /> 10:00 AM -12:00 PM <span> | </span></a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/location1.svg" alt="" /> 26/C Asana, New York </a>
-                                            </li>
-                                        </ul>
-                                        <div class="space20"></div>
-                                        <a href="event-single" class="head">Innovate 2025 Charting the Course for Business Success</a>
-                                        <div class="space16"></div>
-                                        <p>The Innovate 2025 conference is meticulously designed to provide you with a rich, immersive experience that drives actionable insights & fosters collaboration from keynote presentations.</p>
-                                        <div class="space32"></div>
-                                        <div class="btn-area1">
-                                            <a href="pricing-plan" class="vl-btn1">purchase ticket now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="pills-contact2" role="tabpanel" aria-labelledby="pills-contact2-tab" tabindex="0">
-                        <div class="tabs-widget-boxarea">
-                            <div class="row align-items-center">
-                                <div class="col-lg-4">
-                                    <div class="img1">
-                                        <img src="<?= getBaseUrl() ?>/assets/img/all-images/event/event-img1.png" alt="" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-8">
-                                    <div class="content-area">
-                                        <ul>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/clock1.svg" alt="" /> 10:00 AM -12:00 PM <span> | </span></a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/location1.svg" alt="" /> 26/C Asana, New York </a>
-                                            </li>
-                                        </ul>
-                                        <div class="space20"></div>
-                                        <a href="event-single" class="head">Innovate 2025 Your Pathway to Business Transformation</a>
-                                        <div class="space16"></div>
-                                        <p>The Innovate 2025 conference is meticulously designed to provide you with a rich, immersive experience that drives actionable insights & fosters collaboration from keynote presentations.</p>
-                                        <div class="space32"></div>
-                                        <div class="btn-area1">
-                                            <a href="pricing-plan" class="vl-btn1">purchase ticket now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="space30"></div>
-                        <div class="tabs-widget-boxarea">
-                            <div class="row align-items-center">
-                                <div class="col-lg-4">
-                                    <div class="img1">
-                                        <img src="<?= getBaseUrl() ?>/assets/img/all-images/event/event-img2.png" alt="" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-8">
-                                    <div class="content-area">
-                                        <ul>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/clock1.svg" alt="" /> 10:00 AM -12:00 PM <span> | </span></a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/location1.svg" alt="" /> 26/C Asana, New York </a>
-                                            </li>
-                                        </ul>
-                                        <div class="space20"></div>
-                                        <a href="event-single" class="head">Innovate 2025 A Full-Day Journey the Future of Business</a>
-                                        <div class="space16"></div>
-                                        <p>The Innovate 2025 conference is meticulously designed to provide you with a rich, immersive experience that drives actionable insights & fosters collaboration from keynote presentations.</p>
-                                        <div class="space32"></div>
-                                        <div class="btn-area1">
-                                            <a href="pricing-plan" class="vl-btn1">purchase ticket now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="space30"></div>
-                        <div class="tabs-widget-boxarea">
-                            <div class="row align-items-center">
-                                <div class="col-lg-4">
-                                    <div class="img1">
-                                        <img src="<?= getBaseUrl() ?>/assets/img/all-images/event/event-img3.png" alt="" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-8">
-                                    <div class="content-area">
-                                        <ul>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/clock1.svg" alt="" /> 10:00 AM -12:00 PM <span> | </span></a>
-                                            </li>
-                                            <li>
-                                                <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/location1.svg" alt="" /> 26/C Asana, New York </a>
-                                            </li>
-                                        </ul>
-                                        <div class="space20"></div>
-                                        <a href="event-single" class="head">Innovate 2025 Charting the Course for Business Success</a>
-                                        <div class="space16"></div>
-                                        <p>The Innovate 2025 conference is meticulously designed to provide you with a rich, immersive experience that drives actionable insights & fosters collaboration from keynote presentations.</p>
-                                        <div class="space32"></div>
-                                        <div class="btn-area1">
-                                            <a href="pricing-plan" class="vl-btn1">purchase ticket now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
+                <div class="tab-content">
+                    <!-- Event List Section -->
+                    <div class="tab-pane show active event-area" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0"></div>
+
+                    <div class="d-flex justify-content-center">
+                        <a href="<?= getBaseUrl() ?>" class="vl-btn1">Show All Events</a>
                     </div>
                 </div>
             </div>
@@ -522,58 +200,54 @@ ob_start(); ?>
                 <div class="brand-header heading2 space-margin60 text-center">
                     <h5 data-aos="fade-left" data-aos-duration="800">general sponsors</h5>
                     <div class="space16"></div>
-                    <h2 class="text-anime-style-3">Our Official Sponsors</h2>
+                    <h2 class="text-anime-style-3">Our Hosts</h2>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-duration="800">
-                <div class="brand-box">
-                    <img src="<?= getBaseUrl() ?>/assets/img/elements/brand-img1.png" alt="" />
+
+            <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-duration="800">
+                <div class="custom-brand-box row justify-content-between align-items-center">
+                    <img class="col-3" src="<?= getBaseUrl() ?>/assets/img/elements/brand-img1.png" alt="" />
+                    <h5 class="col-9">Our Official Sponsors Our Official Sponsors</h5>
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-duration="900">
-                <div class="brand-box">
-                    <img src="<?= getBaseUrl() ?>/assets/img/elements/brand-img2.png" alt="" />
+            <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-duration="900">
+                <div class="custom-brand-box row justify-content-between align-items-center">
+                    <img class="col-3" src="<?= getBaseUrl() ?>/assets/img/elements/brand-img2.png" alt="" />
+                    <h5 class="col-9">Our Official Sponsors Our Official Sponsors</h5>
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-duration="1000">
-                <div class="brand-box">
-                    <img src="<?= getBaseUrl() ?>/assets/img/elements/brand-img3.png" alt="" />
+            <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-duration="1000">
+                <div class="custom-brand-box row justify-content-between align-items-center">
+                    <img class="col-3" src="<?= getBaseUrl() ?>/assets/img/elements/brand-img3.png" alt="" />
+                    <h5 class="col-9">Our Official Sponsors Our Official Sponsors</h5>
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-duration="1100">
-                <div class="brand-box">
-                    <img src="<?= getBaseUrl() ?>/assets/img/elements/brand-img4.png" alt="" />
+            <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-duration="1100">
+                <div class="custom-brand-box row justify-content-between align-items-center">
+                    <img class="col-3" src="<?= getBaseUrl() ?>/assets/img/elements/brand-img4.png" alt="" />
+                    <h5 class="col-9">Our Official Sponsors Our Official Sponsors</h5>
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-duration="900">
-                <div class="brand-box">
-                    <img src="<?= getBaseUrl() ?>/assets/img/elements/brand-img5.png" alt="" />
+            <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-duration="900">
+                <div class="custom-brand-box row justify-content-between align-items-center">
+                    <img class="col-3" src="<?= getBaseUrl() ?>/assets/img/elements/brand-img5.png" alt="" />
+                    <h5 class="col-9">Our Official Sponsors Our Official Sponsors</h5>
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-duration="1000">
-                <div class="brand-box">
-                    <img src="<?= getBaseUrl() ?>/assets/img/elements/brand-img6.png" alt="" />
+            <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-duration="1000">
+                <div class="custom-brand-box row justify-content-between align-items-center">
+                    <img class="col-3" src="<?= getBaseUrl() ?>/assets/img/elements/brand-img6.png" alt="" />
+                    <h5 class="col-9">Our Official Sponsors Our Official Sponsors</h5>
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-duration="1100">
-                <div class="brand-box">
-                    <img src="<?= getBaseUrl() ?>/assets/img/elements/brand-img7.png" alt="" />
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-duration="1200">
-                <div class="brand-box">
-                    <img src="<?= getBaseUrl() ?>/assets/img/elements/brand-img8.png" alt="" />
-                </div>
-            </div>
         </div>
     </div>
 </div>

@@ -10,11 +10,11 @@
 
                         <div class="main-menu">
                             <ul>
-                                <li><a href="#">Home</a></li>
-                                <li><a href="#">Schedule</a></li>
-                                <li><a href="about">About Event</a></li>
-                                <li><a href="contact">Contact Us</a></li>
-                                <li><a href="#">Login</a></li>
+                                <li><a href="<?= route('/') ?>">Home</a></li>
+                                <li><a href="<?= route('/events') ?>">Events</a></li>
+                                <!-- <li><a href="about">About Event</a></li> -->
+                                <!-- <li><a href="contact">Contact Us</a></li> -->
+                                <li><a href="<?= route('/login') ?>">Login</a></li>
                             </ul>
                         </div>
 
@@ -71,14 +71,14 @@
     <div class="mobile-nav mobile-nav1">
 
         <ul class="mobile-nav-list nav-list1">
-            <li><a href="#">Home </a></li>
-            <li><a href="about">About Event</a></li>
-            <li><a href="features.html">Schedule</a></li>
-            <li><a href="contact">Contact Us</a></li>
+            <li><a href="<?= route('/') ?>">Home </a></li>
+            <li><a href="<?= route('/events') ?>">Events</a></li>
+            <!-- <li><a href="features.html">Schedule</a></li> -->
+            <li><a href="<?= route('/login') ?>">Login</a></li>
         </ul>
 
         <div class="allmobilesection">
-            <a href="contact" class="vl-btn1">Contact Now</a>
+            <!-- <a href="contact" class="vl-btn1">Contact Now</a> -->
             <div class="single-footer">
                 <h3>Contact Info</h3>
                 <div class="footer1-contact-info">
@@ -87,7 +87,7 @@
                             <span><i class="fa-solid fa-phone-volume"></i></span>
                         </div>
                         <div class="contact-info-text">
-                            <a href="tel:+3(924)4596512">+3(924)4596512</a>
+                            <a href="tel:+8801737036324">+8801737036324</a>
                         </div>
                     </div>
                     <div class="contact-info-single">
@@ -96,18 +96,6 @@
                         </div>
                         <div class="contact-info-text">
                             <a href="mailto:info@example.com">info@example.com</a>
-                        </div>
-                    </div>
-                    <div class="single-footer">
-                        <h3>Our Location</h3>
-                        <div class="contact-info-single">
-                            <div class="contact-info-icon">
-                                <span><i class="fa-solid fa-location-dot"></i></span>
-                            </div>
-                            <div class="contact-info-text">
-                                <a href="mailto:info@example.com">55 East Birchwood Ave.Brooklyn, <br />
-                                    New York 11201,United States</a>
-                            </div>
                         </div>
                     </div>
 

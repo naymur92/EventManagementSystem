@@ -14,9 +14,9 @@ async function callApi(endPoint, params) {
 
 
 // function to get event schedules
-async function getEventSchedules(limit = '') {
+async function getEventSchedules(params) {
     let eventSchedules = [];
-    await callApi('/api/get-event-schedules', { limit: limit }).then((response) => {
+    await callApi('/api/get-event-schedules', params).then((response) => {
         if (response.status) {
             eventSchedules = response.data;
         } else {
@@ -26,4 +26,20 @@ async function getEventSchedules(limit = '') {
         // console.error(error);
     })
     return eventSchedules;
+}
+
+
+// function to get events
+async function getEvents(params) {
+    let events = [];
+    await callApi('/api/get-events', params).then((response) => {
+        if (response.status) {
+            events = response.data;
+        } else {
+            // console.error(response);
+        }
+    }).catch((error) => {
+        // console.error(error);
+    })
+    return events;
 }
