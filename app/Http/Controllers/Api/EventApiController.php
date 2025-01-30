@@ -6,13 +6,18 @@ use App\Core\Controller;
 use App\Core\DB;
 use App\Core\Request;
 use App\Core\Response;
+use Exception;
 
 class EventApiController extends Controller
 {
     public function getEventSchedules(Request $request)
     {
+        $request->setSanitizationRules([
+            'limit' => ['integer']
+        ]);
+
         $data = $request->all();
-        $limit = (int) $data['limit'] ?? '';
+        $limit = $data['limit'] ?? '';
 
         $params = array();
         $sql = "SELECT start_time
@@ -26,11 +31,22 @@ class EventApiController extends Controller
 
         if ($limit) {
             $sql .= " LIMIT $limit";
-            // $params[] = (int) $limit;
         }
 
-        $schedules = DB::query($sql, $params)->fetchAll();
+        try {
+            $schedules = DB::query($sql, $params)->fetchAll();
 
-        Response::json($schedules, 200);
+            Response::json(array(
+                'status' => true,
+                'message' => "Success",
+                'data' => $schedules,
+            ), 200);
+        } catch (Exception $e) {
+            Response::json(array(
+                'status' => false,
+                'message' => "Failed",
+                'data' => array(),
+            ), 400);
+        }
     }
 }

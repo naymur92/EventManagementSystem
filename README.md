@@ -16,9 +16,9 @@
 
 - **Step 5:** Set correct database credentials in the `.env` file.
 
-- **Step 6:** Set correct `APP_URL` and `APP_NAME` in the `.env` file.
+- **Step 6:** Set writable permission to `public/uploads` folder.
 
-- **Step 7:** Set writable permission to `public/uploads` folder.
+- **Step 7:** Add cors-allowed-origins in `config/config.php` file.
 
 ### Developer
 

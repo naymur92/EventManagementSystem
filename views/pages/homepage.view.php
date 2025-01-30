@@ -9,11 +9,55 @@ ob_start(); ?>
 ################## extra scripts section ##################
 ob_start(); ?>
 <script>
-    callApi("<?= route('/api/get-event-schedules') ?>", {
-        limit: 4
-    }).then((response) => {
-        console.log(response)
-    });
+    var eventSchedules = [];
+
+    function generateSchedules(schedules) {
+        let output = '';
+        let isActive = true;
+        for (let i = 0; i < schedules.length; i++) {
+            let scheduleDate = schedules[i].start_time;
+
+            let date = new Date(scheduleDate);
+
+            // Extract values
+            let day = date.getDate().toString().padStart(2, '0');
+            let month = date.toLocaleString('en-US', {
+                month: 'short'
+            }).toUpperCase();
+            let year = date.getFullYear();
+
+            // console.log(day, month, year)
+
+            output += `
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link ${isActive ? 'active' : ''}" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+                            <span class="day">Day ${i + 1}</span>
+                            <span class="vl-flex">
+                                <span class="cal">${day}</span>
+                                <span class="date">${month.toUpperCase()} <br />
+                                    ${year}</span>
+                            </span>
+                        </button>
+                    </li>
+                `;
+
+            isActive = false;
+        }
+
+        $(".schedule-area").html(output ?? "No Content!");
+    }
+
+    async function main() {
+        let scheduleLimit = 4;
+        eventSchedules = await getEventSchedules(scheduleLimit);
+    }
+
+    $(function() {
+        main().then(() => {
+            // get events of first schedule
+            generateSchedules(eventSchedules);
+        })
+    })
 </script>
 <?php $scriptsBlock = ob_get_clean();
 ?>
@@ -44,7 +88,7 @@ ob_start(); ?>
                 <div class="event-header heading2 space-margin60 text-center">
                     <h5 data-aos="fade-left" data-aos-duration="800">Event Schedule</h5>
                     <div class="space16"></div>
-                    <h2 class="text-anime-style-3">Our Events Schedule Plan</h2>
+                    <!-- <h2 class="text-anime-style-3">Events Schedules</h2> -->
                 </div>
             </div>
         </div>
@@ -52,59 +96,18 @@ ob_start(); ?>
         <div class="row">
             <div class="col-lg-12">
                 <div data-aos="fade-up" data-aos-duration="900">
-                    <ul class="nav nav-pills space-margin60" id="pills-tab" role="tablist">
-                        <li class="nav-item" role="presentation">
+                    <ul class="nav nav-pills space-margin60 schedule-area" id="pills-tab" role="tablist">
+
+                        <!-- <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
-                                <span class="day">Day 01</span>
                                 <span class="vl-flex">
                                     <span class="cal">01</span>
                                     <span class="date">JAN <br />
                                         2025</span>
                                 </span>
                             </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
-                                <span class="day">Day 02</span>
-                                <span class="vl-flex">
-                                    <span class="cal">08</span>
-                                    <span class="date">JAN <br />
-                                        2025</span>
-                                </span>
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
-                                <span class="day">Day 03</span>
-                                <span class="vl-flex">
-                                    <span class="cal">15</span>
-                                    <span class="date">JAN <br />
-                                        2025</span>
-                                </span>
-                            </button>
-                        </li>
+                        </li> -->
 
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="pills-contact1-tab" data-bs-toggle="pill" data-bs-target="#pills-contact1" type="button" role="tab" aria-controls="pills-contact1" aria-selected="false">
-                                <span class="day">Day 04</span>
-                                <span class="vl-flex">
-                                    <span class="cal">20</span>
-                                    <span class="date">JAN <br />
-                                        2025</span>
-                                </span>
-                            </button>
-                        </li>
-
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="pills-contact2-tab" data-bs-toggle="pill" data-bs-target="#pills-contact2" type="button" role="tab" aria-controls="pills-contact2" aria-selected="false">
-                                <span class="day">Day 05</span>
-                                <span class="vl-flex">
-                                    <span class="cal">25</span>
-                                    <span class="date">JAN <br />
-                                        2025</span>
-                                </span>
-                            </button>
-                        </li>
                     </ul>
                 </div>
                 <div class="tab-content" id="pills-tabContent">

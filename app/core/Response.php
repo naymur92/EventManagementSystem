@@ -31,7 +31,7 @@ class Response
     public static function success($data = [], string $message = 'Success', int $statusCode = 200): void
     {
         self::json([
-            'status' => 'success',
+            'status' => true,
             'message' => $message,
             'data' => $data,
         ], $statusCode);
@@ -48,7 +48,7 @@ class Response
     public static function error(string $message = 'An error occurred', int $statusCode = 400, array $errors = []): void
     {
         self::json([
-            'status' => 'error',
+            'status' => false,
             'message' => $message,
             'errors' => $errors,
         ], $statusCode);

@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <meta name="csrf-token" content="<?= csrf(); ?>">
+    <meta name="base-url" content="<?= getBaseUrl(); ?>">
 
 
     <title>Eventify Events</title>
@@ -27,6 +28,8 @@
     <link rel="stylesheet" href="<?= getBaseUrl() ?>/assets/css/vendor/nice-select.css" />
     <link rel="stylesheet" href="<?= getBaseUrl() ?>/assets/css/vendor/odometer.css" />
     <link rel="stylesheet" href="<?= getBaseUrl() ?>/assets/css/main.css" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.3/dist/sweetalert2.min.css">
 
 
     <link rel="stylesheet" href="<?= getBaseUrl() ?>/assets/css/custom.css" />
@@ -73,6 +76,8 @@
     <!--===== FOOTER AREA ENDS =======-->
 
     <!--===== JS SCRIPT LINK =======-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.3/dist/sweetalert2.all.min.js"></script>
+
     <script src="<?= getBaseUrl() ?>/assets/js/vendor/bootstrap.min.js"></script>
     <script src="<?= getBaseUrl() ?>/assets/js/vendor/fontawesome.js"></script>
     <script src="<?= getBaseUrl() ?>/assets/js/vendor/aos.js"></script>
