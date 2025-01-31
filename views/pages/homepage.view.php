@@ -100,7 +100,7 @@ ob_start(); ?>
             data_eos_duration += 200;
         }
 
-        $(".event-area").html(output ?? "No Content!");
+        $(".events-area").html(output ?? "No Content!");
     }
 
     function generateHosts(hosts) {
@@ -208,10 +208,10 @@ ob_start(); ?>
 
                 <div class="tab-content">
                     <!-- Event List Section -->
-                    <div class="tab-pane show active event-area" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0"></div>
+                    <div class="tab-pane show active events-area" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0"></div>
 
                     <div class="d-flex justify-content-center">
-                        <a href="<?= getBaseUrl() ?>" class="vl-btn1">Show All Events</a>
+                        <a href="<?= route('/events') ?>" class="vl-btn1">Show All Events</a>
                     </div>
                 </div>
             </div>

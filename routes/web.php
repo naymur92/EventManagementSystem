@@ -10,6 +10,7 @@ use App\Http\Controllers\HomeController;
 
 // Define routes
 $router->get('/', [HomeController::class, 'index']);
+$router->get('/events', [HomeController::class, 'eventPage']);
 
 ############################################# Admin Routes #############################################
 // dashboard routes
