@@ -9,19 +9,52 @@
                         </div>
 
                         <div class="main-menu">
-                            <ul>
+                            <ul class="d-flex align-items-center">
                                 <li><a href="<?= route('/') ?>">Home</a></li>
                                 <li><a href="<?= route('/events') ?>">Events</a></li>
-                                <!-- <li><a href="about">About Event</a></li> -->
-                                <!-- <li><a href="contact">Contact Us</a></li> -->
-                                <li><a href="<?= route('/login') ?>">Login</a></li>
+                                <li><a href="<?= route('/') ?>">Find Ticket</a></li>
+                                <?php if (authUser()): ?>
+                                    <?php if (authUser()->type == 1): ?>
+                                        <li><a href="<?= route('/admin') ?>">Admin Page</a></li>
+                                    <?php endif; ?>
+                                    <li>
+                                        <div style="display: flex; align-items: center; border: 1px solid #ddd; border-radius: 5px; padding: 2px;">
+                                            <?php
+                                            $profilePicture = authUser()->getProfilePicture();
+                                            if ($profilePicture): ?>
+                                                <img class="img-profile rounded-circle" src="<?= getBaseUrl() . "/uploads/{$profilePicture['filepath']}/{$profilePicture['filename']}" ?>">
+                                            <?php else: ?>
+                                                <img class="img-profile rounded-circle" src="<?= getBaseUrl() ?>/uploads/users/user.png">
+                                            <?php endif; ?>
+                                            <a href="#"><?= authUser()->name; ?> <i class="fa-solid fa-angle-down"></i></a>
+
+                                            <ul class="dropdown-padding">
+                                                <li><a href="<?= route('/user-profile') ?>">Profile Info</a></li>
+                                                <?php if (authUser()->type == 3): ?>
+                                                    <li><a href="<?= route('/my-tickets') ?>">My Tickets</a></li>
+                                                <?php endif; ?>
+
+                                                <form action="<?= route('/logout') ?>" method="POST">
+                                                    <?= csrfField() ?>
+
+                                                    <a class="vl-btn1 logout-btn" type="button" onclick="swalConfirmationOnSubmit(event, 'Are you sure to logout?');">
+                                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i>
+                                                        Logout
+                                                    </a>
+                                                </form>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                <?php else: ?>
+                                    <li><a href="<?= route('/login') ?>">Login</a></li>
+                                <?php endif; ?>
                             </ul>
                         </div>
 
                         <div class="btn-area">
-                            <div class="search-icon header__search header-search-btn">
+                            <!-- <div class="search-icon header__search header-search-btn">
                                 <a href="#"><img src="<?= getBaseUrl() ?>/assets/img/icons/search1.svg" alt="" /></a>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="header-search-form-wrapper">
@@ -73,8 +106,42 @@
         <ul class="mobile-nav-list nav-list1">
             <li><a href="<?= route('/') ?>">Home </a></li>
             <li><a href="<?= route('/events') ?>">Events</a></li>
-            <!-- <li><a href="features.html">Schedule</a></li> -->
-            <li><a href="<?= route('/login') ?>">Login</a></li>
+            <li><a href="<?= route('/') ?>">Find Tickets</a></li>
+            <?php if (authUser()): ?>
+                <?php if (authUser()->type == 1): ?>
+                    <li><a href="<?= route('/admin') ?>">Admin Page</a></li>
+                <?php endif; ?>
+                <li>
+                    <div style="display: flex; align-items: center;">
+                        <?php
+                        $profilePicture = authUser()->getProfilePicture();
+                        if ($profilePicture): ?>
+                            <img class="img-profile rounded-circle" src="<?= getBaseUrl() . "/uploads/{$profilePicture['filepath']}/{$profilePicture['filename']}" ?>">
+                        <?php else: ?>
+                            <img class="img-profile rounded-circle" src="<?= getBaseUrl() ?>/uploads/users/user.png">
+                        <?php endif; ?>
+
+                        <a style="margin-left: 5px;" href="#"><?= authUser()->name; ?></a>
+
+                        <ul class="sub-menu">
+                            <li><a href="<?= route('/user-profile') ?>">Profile Info</a></li>
+                            <?php if (authUser()->type == 3): ?>
+                                <li><a href="<?= route('/my-tickets') ?>">My Tickets</a></li>
+                            <?php endif; ?>
+                            <form action="<?= route('/logout') ?>" method="POST">
+                                <?= csrfField() ?>
+
+                                <a class="vl-btn1 logout-btn text-white" type="button" onclick="swalConfirmationOnSubmit(event, 'Are you sure to logout?');">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i>
+                                    Logout
+                                </a>
+                            </form>
+                        </ul>
+                    </div>
+                </li>
+            <?php else: ?>
+                <li><a href="<?= route('/login') ?>">Login</a></li>
+            <?php endif; ?>
         </ul>
 
         <div class="allmobilesection">

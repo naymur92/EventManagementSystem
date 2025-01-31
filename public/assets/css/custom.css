@@ -5,3 +5,14 @@
 .footer1-sertion-area {
     padding: 100px 0 32px;
 }
+
+.img-profile {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.logout-btn {
+    padding: 10px !important;
+}

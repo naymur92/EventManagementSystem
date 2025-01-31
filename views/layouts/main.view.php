@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="<?= getBaseUrl() ?>/assets/css/vendor/owlcarousel.min.css" />
     <link rel="stylesheet" href="<?= getBaseUrl() ?>/assets/css/vendor/sidebar.css" />
     <link rel="stylesheet" href="<?= getBaseUrl() ?>/assets/css/vendor/slick-slider.css" />
-    <link rel="stylesheet" href="<?= getBaseUrl() ?>/assets/css/vendor/nice-select.css" />
+    <!-- <link rel="stylesheet" href="<?= getBaseUrl() ?>/assets/css/vendor/nice-select.css" /> -->
     <link rel="stylesheet" href="<?= getBaseUrl() ?>/assets/css/vendor/odometer.css" />
     <link rel="stylesheet" href="<?= getBaseUrl() ?>/assets/css/main.css" />
 
@@ -90,7 +90,7 @@
     <script src="<?= getBaseUrl() ?>/assets/js/vendor/Splitetext.js"></script>
     <script src="<?= getBaseUrl() ?>/assets/js/vendor/mobilemenu.js"></script>
     <script src="<?= getBaseUrl() ?>/assets/js/vendor/owlcarousel.min.js"></script>
-    <script src="<?= getBaseUrl() ?>/assets/js/vendor/nice-select.js"></script>
+    <!-- <script src="<?= getBaseUrl() ?>/assets/js/vendor/nice-select.js"></script> -->
     <script src="<?= getBaseUrl() ?>/assets/js/vendor/waypoints.js"></script>
     <script src="<?= getBaseUrl() ?>/assets/js/vendor/slick-slider.js"></script>
     <script src="<?= getBaseUrl() ?>/assets/js/vendor/circle-progress.js"></script>
