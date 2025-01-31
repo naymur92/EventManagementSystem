@@ -12,6 +12,7 @@ use App\Http\Controllers\HomeController;
 $router->get('/', [HomeController::class, 'index']);
 $router->get('/events', [HomeController::class, 'eventPage']);
 $router->get('/events/{event_id}/view-details', [HomeController::class, 'eventDetailsPage']);
+$router->get('/events/{event_id}/get-ticket', [HomeController::class, 'getTicketPage']);
 
 ############################################# Admin Routes #############################################
 // dashboard routes
@@ -56,4 +57,6 @@ $router->post('/logout', [AuthenticationController::class, 'logout'])->only(['au
 $router->post('/api/get-event-schedules', [EventApiController::class, 'getEventSchedules'])->only(['cors']);
 $router->post('/api/get-events', [EventApiController::class, 'getEvents'])->only(['cors']);
 $router->post('/api/get-event-detail', [EventApiController::class, 'getEventDetails'])->only(['cors']);
+$router->post('/api/event-registration', [EventApiController::class, 'eventRegistration'])->only(['cors']);
+
 $router->post('/api/get-host-users', [HostApiController::class, 'getHostUsers'])->only(['cors']);

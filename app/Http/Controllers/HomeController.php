@@ -47,4 +47,36 @@ class HomeController extends Controller
 
         view('pages.events.events-details', array('title' => "Event Details", 'event_id' => $event_id));
     }
+
+    /**
+     * Book ticket page
+     *
+     * @return void
+     */
+    public function getTicketPage($event_id): void
+    {
+        $event = (new Event)->find($event_id);
+
+        if (!$event || $event->status != 1) {
+            Session::flash('flash_error', "Invalid action!");
+
+            redirect('/');
+        }
+
+        if ($event->current_capacity == 0 && $event->max_capacity != 0) {
+            Session::setPopup('popup_error', "Seat full!");
+
+            redirect('/');
+        }
+
+        if ($event->start_time < date('Y-m-d H:i:s')) {
+            Session::setPopup('popup_error', "Registration Expired!");
+
+            redirect('/');
+        }
+
+        setUnsetUniqueId();
+
+        view('pages.events.get-ticket', array('title' => "Get Ticket", 'event' => $event));
+    }
 }

@@ -6,6 +6,7 @@ use App\Core\Controller;
 use App\Core\DB;
 use App\Core\Request;
 use App\Core\Response;
+use App\Models\Event;
 use Exception;
 
 class EventApiController extends Controller
@@ -216,6 +217,112 @@ class EventApiController extends Controller
                 'message' => $e->getMessage(),
                 'data' => array(),
             ), 400);
+        }
+    }
+
+
+    /**
+     * Event registration API
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function eventRegistration(Request $request): void
+    {
+        $request->setSanitizationRules([
+            'event_id' => ['integer'],
+            'user_id' => ['integer'],
+            'name' => ['string'],
+            'email' => ['email'],
+            'mobile' => ['string'],
+            'payment_trnx_no' => ['string'],
+            'payment_amount' => ['integer'],
+            'payment_account_no' => ['string']
+        ]);
+
+        // Validation rules
+        $rules = [
+            'event_id' => 'required|integer|min:1',
+            'name' => 'required|string|max:128',
+            'email' => 'required|email|max:255',
+            'mobile' => 'required|string|max:15',
+            'payment_trnx_no' => 'string|max:128',
+            'payment_amount' => 'integer|min:0',
+            'payment_account_no' => 'string|max:128',
+        ];
+
+        // if (!setUnsetUniqueId('get')) {
+        //     Response::error("Unauthorized operation! Please try again!");
+        // }
+
+        // Validate data
+        $request->validate($rules);
+
+        $errors = $request->errors();
+
+        $errorFound = false;
+
+        if (!empty($errors)) {
+            $errorFound = true;
+        }
+
+        try {
+
+            $event_id = filter_var($request->input('event_id'), FILTER_SANITIZE_NUMBER_INT);
+
+            $event = (new Event)->find($event_id);
+
+            if (!$event || $event->status != 1) {
+                throw new Exception('Invalid action! Event data not found!');
+            }
+
+            if ($event->current_capacity == 0 && $event->max_capacity != 0) {
+                throw new Exception('No seat available!');
+            }
+
+            if ($event->start_time < date('Y-m-d H:i:s')) {
+                throw new Exception('Registration time expired!');
+            }
+
+            $paymentAmount = filter_var($request->input('payment_amount'), FILTER_SANITIZE_NUMBER_INT);
+            $paymentTrnxNo = htmlspecialchars(trim($request->input('payment_trnx_no')), ENT_QUOTES, 'UTF-8');
+            $paymentAccountNo = htmlspecialchars(trim($request->input('payment_account_no')), ENT_QUOTES, 'UTF-8');
+
+            if ($event->registration_fee != 0) {
+                if ($paymentAmount < $event->registration_fee) {
+                    $errors['payment_amount'][] = "Payment amount is less than registration fee!";
+                    $errorFound = true;
+                }
+                if ($paymentTrnxNo == "") {
+                    $errors['payment_trnx_no'][] = "Payment transaction number is required!";
+                    $errorFound = true;
+                }
+                if ($paymentAccountNo == "") {
+                    $errors['payment_account_no'][] = "Payment account number is required!";
+                    $errorFound = true;
+                }
+
+                // throw new Exception('No seat available!');
+            }
+
+            if ($errorFound) {
+                throw new Exception('Validation error! Please try again!');
+            }
+
+
+            $data = $request->validated();
+
+            // $schedules = DB::query($sql, $params)->fetchAll();
+
+            Response::json(array(
+                'status' => true,
+                'message' => "Success",
+                'data' => $data,
+            ), 200);
+        } catch (Exception $e) {
+            setUnsetUniqueId();
+
+            Response::error($e->getMessage(), 422, $errors);
         }
     }
 }

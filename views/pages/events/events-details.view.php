@@ -3,35 +3,7 @@ $layoutFile = 'layouts.main';
 
 ################## extra styles section ##################
 ob_start(); ?>
-<style>
-    .schedule-button,
-    .book-ticket-btn {
-        font-size: 15px;
-        font-weight: 600;
-        line-height: 15px;
-        padding: 12px 15px;
-    }
 
-    .schedule-button::after,
-    .book-ticket-btn::after {
-        height: 25px;
-        width: 25px;
-    }
-
-    .search-container {
-        position: relative;
-        display: inline-block;
-    }
-
-    .search-icon {
-        position: absolute;
-        top: 50%;
-        right: 10px;
-        transform: translateY(-50%);
-        color: #999;
-        pointer-events: none;
-    }
-</style>
 <?php $stylesBlock = ob_get_clean();
 
 ################## extra scripts section ##################
@@ -44,10 +16,13 @@ ob_start(); ?>
 
     // dom related functions
     function generateEventDetailContent(event) {
+        // ready date block
         let dateSection = `${event.start_time}`;
         if (event.end_time !== null && event.end_time.length > 0) {
             dateSection += ` - ${event.end_time}`;
         }
+
+        // ready google map block
         let googleMapPart = '';
         if (event.google_map_location !== null && event.google_map_location.length > 0) {
             googleMapPart = `
@@ -58,13 +33,32 @@ ob_start(); ?>
                             <div class="space16"></div>
                             `;
         }
+
+        // ready registration fee section
+        let registrationFeeSection = '';
+        if (event.registration_fee != 0) {
+            registrationFeeSection = `<span class="badge bg-success">Registration Fee: Tk. ${event.registration_fee}</span>`;
+        } else {
+            registrationFeeSection = `<span class="badge bg-success">Free Registration.</span>`;
+        }
+
+        // ready ticket booking button
         let ticketBookingButton = '';
+        let seatsAvailableBadge = '';
         if (event.current_capacity > 0 || event.max_capacity == 0) {
+            if (event.current_capacity > 0) {
+                seatsAvailableBadge = `<span class="badge bg-info text-dark">${event.current_capacity} Seats Available</span>`;
+            } else {
+                seatsAvailableBadge = `<span class="badge bg-info text-dark">Unlimited Registration</span>`;
+            }
+
             ticketBookingButton = `
                                     <a href="<?= getBaseUrl() ?>/events/${event.event_id}/get-ticket" class="vl-btn1"><span class="demo">Get Your Ticket Now</span></a>
                                     <div class="space32"></div>
                                 `;
         }
+
+        // ready host details block
         let hostAddressSection = '';
         if (event.host_address !== null && event.host_address.length > 0) {
             hostAddressSection = `
@@ -73,6 +67,8 @@ ob_start(); ?>
                                 `;
         }
 
+
+        // ready final output
         let output = `
                     <div class="col-lg-8">
                         <div class="blog-deatils-content heading2">
@@ -102,6 +98,11 @@ ob_start(); ?>
                         <div class="blog-auhtor-details">
 
                             ${ticketBookingButton}
+
+                            ${seatsAvailableBadge}
+                            ${registrationFeeSection}
+
+                            <div class="space8"></div>
 
                             <div class="blog-categories">
                                 <h3>Date & Time</h3>
