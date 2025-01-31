@@ -287,3 +287,26 @@ async function printElement(id, title, orientation = 'portrait') {
         };
     }
 }
+
+
+// form interactions
+function setSpinner() {
+    $(".formElement form").css("pointer-events", "none");
+    $(".formElement").css("cursor", "wait");
+}
+function unsetSpinner() {
+    $(".formElement form").css("pointer-events", "auto");
+    $(".formElement").css("cursor", "default");
+}
+function pressSubmitBtn(btnId = null, btnText = null) {
+    let submitButton = document.getElementById(btnId ?? "submitBtn");
+
+    submitButton.disabled = true;
+    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + (btnText ?? 'Processing...');
+}
+function releaseSubmitBtn(btnId = null, btnText = null) {
+    let submitButton = document.getElementById(btnId ?? "submitBtn");
+
+    submitButton.disabled = false;
+    submitButton.innerText = btnText ?? "Save";
+}
