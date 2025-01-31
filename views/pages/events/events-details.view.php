@@ -59,12 +59,15 @@ ob_start(); ?>
         }
 
         // ready host details block
-        let hostAddressSection = '';
+        let hostInfoSection = `<div class="space8"></div>
+                                <div><img src="<?= getBaseUrl() ?>/assets/img/icons/mail1.svg" alt="" /><span> ${event.host_email}</span></div>`;
+        if (event.host_mobile !== null && event.host_mobile.length > 0) {
+            hostInfoSection += `<div class="space8"></div>
+                                <div><img src="<?= getBaseUrl() ?>/assets/img/icons/phn1.svg" alt="" /><span> ${event.host_mobile}</span></div>`;
+        }
         if (event.host_address !== null && event.host_address.length > 0) {
-            hostAddressSection = `
-                                <div class="space8"></div>
-                                <div><img src="<?= getBaseUrl() ?>/assets/img/icons/location1.svg" alt="" /><span> ${event.host_address}</span></div>
-                                `;
+            hostInfoSection += `<div class="space8"></div>
+                                <div><img src="<?= getBaseUrl() ?>/assets/img/icons/location1.svg" alt="" /><span> ${event.host_address}</span></div>`;
         }
 
 
@@ -127,7 +130,7 @@ ob_start(); ?>
                                     <div class="col-8 col-lg-9"> ${event.host_name}</div>
                                 </div>
 
-                                ${hostAddressSection}
+                                ${hostInfoSection}
                             </div>
 
                         </div>

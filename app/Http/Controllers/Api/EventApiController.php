@@ -169,6 +169,8 @@ class EventApiController extends Controller
                     CONCAT('/uploads/', f.filepath, '/', f.filename) banner_image,
                     CONCAT('/uploads/', hf.filepath, '/', hf.filename) host_profile_image,
                     u.name host_name,
+                    u.email host_email,
+                    u.mobile host_mobile,
                     d.description host_details,
                     d.location host_address
                 FROM events ev
