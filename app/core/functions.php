@@ -250,3 +250,23 @@ function route(string $path): string
     // Return the full URL
     return $baseUrl . $path;
 }
+
+
+/**
+ * Set unique id in form open and check it to controller to prevent multiple submit
+ *
+ * @param $operationType
+ */
+function setUnsetUniqueId($operationType = null)
+{
+    if ($operationType == 'get') {
+        $session_data = $_SESSION['unique_id'];
+
+        $_SESSION['unique_id'] = null;
+
+        return $session_data;
+    } else {
+        $uniqid = substr(bin2hex(openssl_random_pseudo_bytes(15)), 0, 30);
+        $_SESSION['unique_id'] = $uniqid;
+    }
+}
