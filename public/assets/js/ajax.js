@@ -44,6 +44,21 @@ async function getEvents(params) {
     return events;
 }
 
+// get event details
+async function getEventDetail(params) {
+    let event = {};
+    await callApi('/api/get-event-detail', params).then((response) => {
+        if (response.status) {
+            event = response.data;
+        } else {
+            // console.error(response);
+        }
+    }).catch((error) => {
+        // console.error(error);
+    })
+    return event;
+}
+
 
 // get host users
 async function getHostUsers(params) {

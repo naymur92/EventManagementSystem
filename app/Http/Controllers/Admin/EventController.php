@@ -17,7 +17,7 @@ class EventController extends Controller
      *
      * @return void
      */
-    public function index()
+    public function index(): void
     {
         $eventsModel = new Event();
 
@@ -48,7 +48,7 @@ class EventController extends Controller
      *
      * @return void
      */
-    public function create()
+    public function create(): void
     {
         view('admin.pages.events.create', array('title' => "Events | Create Event"));
     }
@@ -59,7 +59,7 @@ class EventController extends Controller
      * @param Request $request
      * @return void
      */
-    public function store(Request $request)
+    public function store(Request $request): void
     {
         $request->setSanitizationRules([
             'name' => ['string'],
@@ -121,7 +121,7 @@ class EventController extends Controller
             $_SESSION['error'] = $errors;
             $_SESSION['old'] = $request->all();
 
-            return redirect('/admin/events/create');
+            redirect('/admin/events/create');
         }
 
         $data = $request->validated();
@@ -169,11 +169,11 @@ class EventController extends Controller
             Session::flash('flash_success', "Event created successfully. View it carefully and publish.");
         } else {
             Session::flash('flash_error', "Something went wrong. Please try again!");
-            return redirect('/admin/events/create');
+            redirect('/admin/events/create');
         }
 
 
-        return redirect('/admin/events');
+        redirect('/admin/events');
     }
 
 
@@ -183,14 +183,14 @@ class EventController extends Controller
      * @param integer $event_id
      * @return void
      */
-    public function show(int $event_id)
+    public function show(int $event_id): void
     {
         $event = (new Event)->find($event_id);
 
         if (!$event || ($event->user_id != Auth::user()->user_id && Auth::user()->type != 1)) {
             Session::flash('flash_error', "Invalid action!");
 
-            return redirect('/admin/events');
+            redirect('/admin/events');
         }
 
         $hostDetails = $event->getHostDetail();
@@ -206,14 +206,14 @@ class EventController extends Controller
      * @param integer $event_id
      * @return void
      */
-    public function edit(int $event_id)
+    public function edit(int $event_id): void
     {
         $event = (new Event)->find($event_id);
 
         if (!$event || $event->user_id != Auth::user()->user_id) {
             Session::flash('flash_error', "Invalid action!");
 
-            return redirect('/admin/events');
+            redirect('/admin/events');
         }
 
         view('admin.pages.events.edit', array('title' => "Events | Edit Event", 'event' => $event));
@@ -227,14 +227,14 @@ class EventController extends Controller
      * @param integer $event_id
      * @return void
      */
-    public function update(Request $request, int $event_id)
+    public function update(Request $request, int $event_id): void
     {
         $event = (new Event)->find($event_id);
 
         if (!$event || $event->user_id != Auth::user()->user_id) {
             Session::flash('flash_error', "Invalid action!");
 
-            return redirect('/admin/events');
+            redirect('/admin/events');
         }
 
         $request->setSanitizationRules([
@@ -304,7 +304,7 @@ class EventController extends Controller
             $_SESSION['error'] = $errors;
             $_SESSION['old'] = $request->all();
 
-            return redirect("/admin/events/{$event->event_id}/edit");
+            redirect("/admin/events/{$event->event_id}/edit");
         }
 
         $data = $request->validated();
@@ -365,7 +365,7 @@ class EventController extends Controller
 
         Session::flash('flash_success', "Event updated successfully!");
 
-        return redirect('/admin/events');
+        redirect('/admin/events');
     }
 
 
@@ -376,14 +376,14 @@ class EventController extends Controller
      * @param integer $event_id
      * @return void
      */
-    public function delete(int $event_id)
+    public function delete(int $event_id): void
     {
         $event = (new Event)->find($event_id);
 
         if (!$event || ($event->user_id != Auth::user()->user_id && Auth::user()->type != 1)) {
             Session::flash('flash_error', "Invalid action!");
 
-            return redirect('/admin/events');
+            redirect('/admin/events');
         }
 
         $existingFile = $event->getBanner();
@@ -406,7 +406,7 @@ class EventController extends Controller
 
         Session::flash('flash_success', "Event deleted successfully!");
 
-        return redirect('/admin/events');
+        redirect('/admin/events');
     }
 
 
@@ -417,7 +417,7 @@ class EventController extends Controller
      * @param integer $event_id
      * @return void
      */
-    public function changeStatus(Request $request, int $event_id)
+    public function changeStatus(Request $request, int $event_id): void
     {
         $event = (new Event)->find($event_id);
 
@@ -434,13 +434,13 @@ class EventController extends Controller
         if ($errorFound) {
             Session::flash('flash_error', "Invalid action!");
 
-            return redirect('/admin/events');
+            redirect('/admin/events');
         }
 
         $event->update(['status' => $request->input('status'), 'updated_at' => date('Y-m-d H:i:s')]);
 
         Session::flash('flash_success', "Status changed successfully!");
 
-        return redirect('/admin/events');
+        redirect('/admin/events');
     }
 }

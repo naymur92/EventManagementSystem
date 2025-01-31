@@ -38,6 +38,7 @@ class HostApiController extends Controller
                     ON f.table_id = u.user_id 
                     AND f.operation_name = 'users' 
                     AND f.fileinfo = 'profile_picture'
+                    AND f.deleted_by IS NULL
                 LEFT JOIN host_details d 
                     ON d.user_id = u.user_id
                 WHERE u.type = 2

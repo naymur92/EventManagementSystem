@@ -11,7 +11,7 @@
     <meta name="base-url" content="<?= getBaseUrl(); ?>">
 
 
-    <title>Eventify Events</title>
+    <title><?= $title; ?></title>
 
     <!--=====FAB ICON=======-->
     <link rel="shortcut icon" href="<?= getBaseUrl() ?>/assets/img/logo/fav-logo1.png" />

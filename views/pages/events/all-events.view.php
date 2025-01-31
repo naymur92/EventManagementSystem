@@ -255,14 +255,15 @@ ob_start(); ?>
 
 
 <!--===== HERO AREA STARTS =======-->
-<div class="inner-page-header" style="background-image: url(assets/img/bg/header-bg8.png)">
+<div class="inner-page-header" style="background-image: url(<?= getBaseUrl() ?>/assets/img/bg/header-bg8.png)">
     <div class="container">
         <div class="row">
             <div class="col-lg-6 m-auto">
                 <div class="heading1 text-center">
                     <h1>Events</h1>
                     <div class="space20"></div>
-                    <a href="<?= route('/') ?>">Home <i class="fa-solid fa-angle-right"></i> <span>Event List</span></a>
+                    <a href="<?= route('/') ?>">Home</a>
+                    <a href="#"><i class="mx-2 fa-solid fa-angle-right"></i><span>Event List</span></a>
                 </div>
             </div>
         </div>

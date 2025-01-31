@@ -170,7 +170,7 @@ ob_start(); ?>
 
 
 <!--===== HERO AREA STARTS =======-->
-<div class="inner-page-header" style="background-image: url(assets/img/bg/header-bg12.png)">
+<div class="inner-page-header" style="background-image: url(<?= getBaseUrl() ?>/assets/img/bg/header-bg12.png)">
     <div class="container">
         <div class="row">
             <div class="col-lg-6 m-auto">

@@ -16,7 +16,7 @@ class UserController extends Controller
      *
      * @return void
      */
-    public function index()
+    public function index(): void
     {
         $usersModel = new User();
         $users = $usersModel->getAll();
@@ -29,7 +29,7 @@ class UserController extends Controller
      *
      * @return void
      */
-    public function create()
+    public function create(): void
     {
         view('admin.pages.users.create', array('title' => "Users | Create User"));
     }
@@ -40,7 +40,7 @@ class UserController extends Controller
      * @param Request $request
      * @return void
      */
-    public function store(Request $request)
+    public function store(Request $request): void
     {
         // Define sanitization rules
         $request->setSanitizationRules([
@@ -88,7 +88,7 @@ class UserController extends Controller
             $_SESSION['error'] = $errors;
             $_SESSION['old'] = $request->all();
 
-            return redirect('/admin/users/create');
+            redirect('/admin/users/create');
         }
 
         $data = $request->validated();
@@ -104,7 +104,7 @@ class UserController extends Controller
 
         Session::flash('flash_success', "User created successfully.");
 
-        return redirect('/admin/users');
+        redirect('/admin/users');
     }
 
 
@@ -114,14 +114,14 @@ class UserController extends Controller
      * @param integer $user_id
      * @return void
      */
-    public function show(int $user_id)
+    public function show(int $user_id): void
     {
         $user = (new User)->find($user_id);
 
         if (!$user) {
             Session::flash('flash_error', "Invalid action!");
 
-            return redirect('/admin/users');
+            redirect('/admin/users');
         }
 
         $hostDetails = $user->getHostDetail();
@@ -136,14 +136,14 @@ class UserController extends Controller
      * @param integer $user_id
      * @return void
      */
-    public function edit(int $user_id)
+    public function edit(int $user_id): void
     {
         $user = (new User)->find($user_id);
 
         if (!$user || $user_id == 1) {
             Session::flash('flash_error', "Invalid action!");
 
-            return redirect('/admin/users');
+            redirect('/admin/users');
         }
 
         view('admin.pages.users.edit', array('title' => "Users | Edit User", 'user' => $user));
@@ -157,14 +157,14 @@ class UserController extends Controller
      * @param integer $user_id
      * @return void
      */
-    public function update(Request $request, int $user_id)
+    public function update(Request $request, int $user_id): void
     {
         $user = (new User)->find($user_id);
 
         if (!$user || $user_id == 1) {
             Session::flash('flash_error', "Invalid action!");
 
-            return redirect('/admin/users');
+            redirect('/admin/users');
         }
 
         // Define sanitization rules
@@ -194,7 +194,7 @@ class UserController extends Controller
             $_SESSION['error'] = $errors;
             $_SESSION['old'] = $request->all();
 
-            return redirect("/admin/users/$user_id/edit");
+            redirect("/admin/users/$user_id/edit");
         }
 
         $data = $request->validated();
@@ -211,7 +211,7 @@ class UserController extends Controller
 
         Session::flash('flash_success', "User updated successfully!");
 
-        return redirect('/admin/users');
+        redirect('/admin/users');
     }
 
 
@@ -222,21 +222,21 @@ class UserController extends Controller
      * @param integer $user_id
      * @return void
      */
-    public function delete(int $user_id)
+    public function delete(int $user_id): void
     {
         $user = (new User)->find($user_id);
 
         if (!$user || $user_id == 1) {
             Session::flash('flash_error', "Invalid action!");
 
-            return redirect('/admin/users');
+            redirect('/admin/users');
         }
 
         (new User)->delete($user_id);
 
         Session::flash('flash_success', "User deleted successfully!");
 
-        return redirect('/admin/users');
+        redirect('/admin/users');
     }
 
 
@@ -247,21 +247,21 @@ class UserController extends Controller
      * @param integer $user_id
      * @return void
      */
-    public function changeStatus(Request $request, int $user_id)
+    public function changeStatus(Request $request, int $user_id): void
     {
         $user = (new User)->find($user_id);
 
         if (!$user || $user_id == 1) {
             Session::flash('flash_error', "Invalid action!");
 
-            return redirect('/admin/users');
+            redirect('/admin/users');
         }
 
         $user->update(['status' => $request->input('status'), 'updated_by' => Auth::user()->user_id, 'updated_at' => date('Y-m-d H:i:s')]);
 
         Session::flash('flash_success', "Status changed successfully!");
 
-        return redirect('/admin/users');
+        redirect('/admin/users');
     }
 
 
@@ -271,14 +271,14 @@ class UserController extends Controller
      *
      * @return void
      */
-    public function userProfile()
+    public function userProfile(): void
     {
         $user = (new User)->find(Auth::user()->user_id);
 
         if (!$user) {
             Session::flash('flash_error', "Invalid action!");
 
-            return redirect('/');
+            redirect('/');
         }
 
         $hostDetails = $user->getHostDetail();
@@ -293,7 +293,7 @@ class UserController extends Controller
      * @param Request $request
      * @return void
      */
-    public function changeProfilePicture(Request $request)
+    public function changeProfilePicture(Request $request): void
     {
         $user = Auth::user();
 
@@ -331,7 +331,7 @@ class UserController extends Controller
         }
 
         if ($errorFound) {
-            return redirect('/user-profile');
+            redirect('/user-profile');
         }
 
         $user = (new User)->find(Auth::user()->user_id);
@@ -372,7 +372,7 @@ class UserController extends Controller
         }
 
         Session::setPopup('popup_success', "Profile picture updated successfully!");
-        return redirect('/user-profile');
+        redirect('/user-profile');
     }
 
 
@@ -382,14 +382,14 @@ class UserController extends Controller
      *
      * @return void
      */
-    public function editProfile()
+    public function editProfile(): void
     {
         $user = (new User)->find(Auth::user()->user_id);
 
         if (!$user) {
             Session::flash('flash_error', "Invalid action!");
 
-            return redirect('/user-profile');
+            redirect('/user-profile');
         }
 
         $hostDetails = $user->getHostDetail();
@@ -403,14 +403,14 @@ class UserController extends Controller
      * @param Request $request
      * @return void
      */
-    public function updateProfile(Request $request)
+    public function updateProfile(Request $request): void
     {
         $user = (new User)->find(Auth::user()->user_id);
 
         if (!$user) {
             Session::flash('flash_error', "Invalid action!");
 
-            return redirect('/user-profile');
+            redirect('/user-profile');
         }
 
         // Define sanitization rules
@@ -437,7 +437,7 @@ class UserController extends Controller
             $_SESSION['error'] = $errors;
             $_SESSION['old'] = $request->all();
 
-            return redirect("/edit-profile");
+            redirect("/edit-profile");
         }
 
         $data = $request->validated();
@@ -463,7 +463,7 @@ class UserController extends Controller
 
         Session::flash('flash_success', "Profile updated successfully!");
 
-        return redirect('/user-profile');
+        redirect('/user-profile');
     }
 
 
@@ -472,14 +472,14 @@ class UserController extends Controller
      *
      * @return void
      */
-    public function changePassword()
+    public function changePassword(): void
     {
         $user = (new User)->find(Auth::user()->user_id);
 
         if (!$user) {
             Session::flash('flash_error', "Invalid action!");
 
-            return redirect('/');
+            redirect('/');
         }
 
         view('admin.pages.user-profile.change-password', array('title' => "User Profile | Change Password"));
@@ -491,14 +491,14 @@ class UserController extends Controller
      * @param Request $request
      * @return void
      */
-    public function saveChangedPassword(Request $request)
+    public function saveChangedPassword(Request $request): void
     {
         $user = (new User)->find(Auth::user()->user_id);
 
         if (!$user) {
             Session::flash('flash_error', "Invalid action!");
 
-            return redirect('/user-profile');
+            redirect('/user-profile');
         }
 
         // Define sanitization rules
@@ -536,7 +536,7 @@ class UserController extends Controller
             $_SESSION['error'] = $errors;
             $_SESSION['old'] = $request->all();
 
-            return redirect("/change-password");
+            redirect("/change-password");
         }
 
         $data = $request->validated();
@@ -549,6 +549,6 @@ class UserController extends Controller
 
         Session::flash('flash_success', "Password updated successfully!");
 
-        return redirect('/user-profile');
+        redirect('/user-profile');
     }
 }

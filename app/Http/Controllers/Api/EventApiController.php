@@ -92,6 +92,7 @@ class EventApiController extends Controller
                     ON f.table_id=ev.event_id
                     AND f.operation_name = 'events'  
                     AND f.fileinfo = 'banner_image'
+                    AND f.deleted_by IS NULL
                 WHERE ev.status = ?
                     AND (ev.current_capacity > 0 OR ev.max_capacity = 0)";
         $params[] = 1;
@@ -124,6 +125,90 @@ class EventApiController extends Controller
                 'status' => true,
                 'message' => "Success",
                 'data' => $events,
+            ), 200);
+        } catch (Exception $e) {
+            Response::json(array(
+                'status' => false,
+                'message' => $e->getMessage(),
+                'data' => array(),
+            ), 400);
+        }
+    }
+
+    /**
+     * Get events details API
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function getEventDetails(Request $request): void
+    {
+        $request->setSanitizationRules([
+            'event_id' => ['integer']
+        ]);
+
+        $data = $request->all();
+
+        $event_id = $data['event_id'] ?? '';
+
+        $params = array();
+        $sql = "SELECT
+                    ev.event_id,
+                    ev.name,
+                    ev.location,
+                    ev.google_map_location,
+                    ev.description,
+                    ev.max_capacity,
+                    ev.registration_fee,
+                    ev.current_capacity,
+                    ev.user_id host_id,
+                    DATE_FORMAT(ev.start_time, '%Y-%m-%d %h:%i %p') start_time,
+                    DATE_FORMAT(ev.end_time, '%Y-%m-%d %h:%i %p') end_time,
+                    CONCAT('/uploads/', f.filepath, '/', f.filename) banner_image,
+                    CONCAT('/uploads/', hf.filepath, '/', hf.filename) host_profile_image,
+                    u.name host_name,
+                    d.description host_details,
+                    d.location host_address
+                FROM events ev
+                JOIN users u ON u.user_id = ev.user_id
+                LEFT JOIN files f 
+                    ON f.table_id = ev.event_id
+                    AND f.operation_name = 'events'  
+                    AND f.fileinfo = 'banner_image'
+                    AND f.deleted_by IS NULL
+                LEFT JOIN host_details d
+                    ON d.user_id = ev.user_id
+                LEFT JOIN files hf 
+                    ON hf.table_id = ev.user_id
+                    AND hf.operation_name = 'users'  
+                    AND hf.fileinfo = 'profile_picture'
+                    AND hf.deleted_by IS NULL
+                WHERE ev.event_id = ?
+                ORDER BY f.created_at DESC, hf.created_at DESC
+                LIMIT 1";
+
+        $params[] = $event_id;
+
+        // echo $sql, '<br>';
+        // print_r($params);
+        // die;
+
+        try {
+            $events = DB::query($sql, $params)->fetchAll();
+
+            if (empty($events)) {
+                throw new Exception("Event not found!");
+            }
+
+            $event = $events[0];
+            $event['google_map_location'] = html_entity_decode($event['google_map_location'] ?? '');
+            $event['description'] = html_entity_decode($event['description'] ?? '');
+            $event['host_details'] = html_entity_decode($event['host_details'] ?? '');
+
+            Response::json(array(
+                'status' => true,
+                'message' => "Success",
+                'data' => $event,
             ), 200);
         } catch (Exception $e) {
             Response::json(array(
