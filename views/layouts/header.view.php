@@ -14,7 +14,7 @@
                                 <li><a href="<?= route('/events') ?>">Events</a></li>
                                 <li><a href="<?= route('/') ?>">Find Ticket</a></li>
                                 <?php if (authUser()): ?>
-                                    <?php if (authUser()->type == 1): ?>
+                                    <?php if (authUser()->type != 3): ?>
                                         <li><a href="<?= route('/admin') ?>">Admin Page</a></li>
                                     <?php endif; ?>
                                     <li>
@@ -108,7 +108,7 @@
             <li><a href="<?= route('/events') ?>">Events</a></li>
             <li><a href="<?= route('/') ?>">Find Tickets</a></li>
             <?php if (authUser()): ?>
-                <?php if (authUser()->type == 1): ?>
+                <?php if (authUser()->type != 3): ?>
                     <li><a href="<?= route('/admin') ?>">Admin Page</a></li>
                 <?php endif; ?>
                 <li>

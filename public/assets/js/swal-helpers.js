@@ -1,5 +1,6 @@
 function swalConfirmationOnSubmit(event, msg) {
     event.preventDefault();
+    let target = event.target;
 
     Swal.fire({
         title: msg,
@@ -7,9 +8,15 @@ function swalConfirmationOnSubmit(event, msg) {
         confirmButtonText: "Yes",
         denyButtonText: "No",
     }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-            event.target.submit();
+            if (target.matches(".logout-btn")) {
+                let form = target.closest("form");
+                if (form) {
+                    form.submit();
+                }
+            } else if (target.tagName === "FORM") {
+                target.submit();
+            }
         }
     });
 }

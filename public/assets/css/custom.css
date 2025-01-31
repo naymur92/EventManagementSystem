@@ -16,3 +16,7 @@
 .logout-btn {
     padding: 10px !important;
 }
+
+input:disabled {
+    cursor: not-allowed;
+}

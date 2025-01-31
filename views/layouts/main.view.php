@@ -75,8 +75,6 @@
     <?php require(basePath('/views/layouts/footer.view.php')) ?>
     <!--===== FOOTER AREA ENDS =======-->
 
-    <!--===== JS SCRIPT LINK =======-->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.3/dist/sweetalert2.all.min.js"></script>
 
     <script src="<?= getBaseUrl() ?>/assets/js/vendor/bootstrap.min.js"></script>
     <script src="<?= getBaseUrl() ?>/assets/js/vendor/fontawesome.js"></script>
@@ -90,12 +88,14 @@
     <script src="<?= getBaseUrl() ?>/assets/js/vendor/Splitetext.js"></script>
     <script src="<?= getBaseUrl() ?>/assets/js/vendor/mobilemenu.js"></script>
     <script src="<?= getBaseUrl() ?>/assets/js/vendor/owlcarousel.min.js"></script>
-    <!-- <script src="<?= getBaseUrl() ?>/assets/js/vendor/nice-select.js"></script> -->
+    <script src="<?= getBaseUrl() ?>/assets/js/vendor/nice-select.js"></script>
     <script src="<?= getBaseUrl() ?>/assets/js/vendor/waypoints.js"></script>
     <script src="<?= getBaseUrl() ?>/assets/js/vendor/slick-slider.js"></script>
     <script src="<?= getBaseUrl() ?>/assets/js/vendor/circle-progress.js"></script>
     <script src="<?= getBaseUrl() ?>/assets/js/main.js"></script>
 
+    <!--===== JS SCRIPT LINK =======-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.3/dist/sweetalert2.all.min.js"></script>
 
     <script src="<?= getBaseUrl() ?>/assets/js/global_helpers.js"></script>
     <script src="<?= getBaseUrl() ?>/assets/js/swal-helpers.js"></script>

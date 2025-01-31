@@ -193,18 +193,30 @@ ob_start(); ?>
                         <div class="row">
                             <div class="col-lg-6 col-md-6">
                                 <div class="input-area">
-                                    <input id="name_field" type="text" placeholder="Name" />
+                                    <?php if (authUser() && authUser()->name != ""): ?>
+                                        <input id="name_field" type="text" value="<?= authUser()->name ?>" disabled readonly placeholder="Name" />
+                                    <?php else: ?>
+                                        <input id="name_field" type="text" placeholder="Name" />
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6">
                                 <div class="input-area">
-                                    <input id="mobile_field" type="text" placeholder="Mobile" />
+                                    <?php if (authUser() && authUser()->mobile != ""): ?>
+                                        <input id="mobile_field" type="text" value="<?= authUser()->mobile ?>" disabled readonly placeholder="Mobile" />
+                                    <?php else: ?>
+                                        <input id="mobile_field" type="text" placeholder="Mobile" />
+                                    <?php endif; ?>
                                 </div>
                             </div>
 
                             <div class="col-lg-12 col-md-6">
                                 <div class="input-area">
-                                    <input id="email_field" type="email" placeholder="Email" />
+                                    <?php if (authUser() && authUser()->email != ""): ?>
+                                        <input id="email_field" type="email" value="<?= authUser()->email ?>" disabled readonly placeholder="Email" />
+                                    <?php else: ?>
+                                        <input id="email_field" type="email" placeholder="Email" />
+                                    <?php endif; ?>
                                 </div>
                             </div>
 
