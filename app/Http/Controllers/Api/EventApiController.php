@@ -6,6 +6,7 @@ use App\Core\Controller;
 use App\Core\DB;
 use App\Core\Request;
 use App\Core\Response;
+use App\Models\Attendee;
 use App\Models\Event;
 use Exception;
 
@@ -289,8 +290,8 @@ class EventApiController extends Controller
             $paymentAccountNo = htmlspecialchars(trim($request->input('payment_account_no')), ENT_QUOTES, 'UTF-8');
 
             if ($event->registration_fee != 0) {
-                if ($paymentAmount < $event->registration_fee) {
-                    $errors['payment_amount'][] = "Payment amount is less than registration fee!";
+                if ($paymentAmount != $event->registration_fee) {
+                    $errors['payment_amount'][] = "Invalid payment amount!";
                     $errorFound = true;
                 }
                 if ($paymentTrnxNo == "") {
@@ -301,23 +302,59 @@ class EventApiController extends Controller
                     $errors['payment_account_no'][] = "Payment account number is required!";
                     $errorFound = true;
                 }
-
-                // throw new Exception('No seat available!');
             }
 
             if ($errorFound) {
                 throw new Exception('Validation error! Please try again!');
             }
 
-
             $data = $request->validated();
 
-            // $schedules = DB::query($sql, $params)->fetchAll();
+            $attendee = new Attendee();
+
+            // check uniqueness
+            $dataExists = DB::query(
+                "SELECT * FROM attendees WHERE event_id = ? AND (email = ? OR mobile = ?)",
+                array($event_id, $data['email'], $data['mobile'])
+            )->fetchAll();
+
+            if ($dataExists) {
+                throw new Exception('Registration failed! Please try with another email/mobile!');
+            }
+
+            $bookingNumber = $attendee->generateBookingNumber($event_id);
+
+
+            if ($data['user_id'] == '') unset($data['user_id']);
+            if ($data['payment_amount'] == '') unset($data['payment_amount']);
+            if ($data['payment_trnx_no'] == '') unset($data['payment_trnx_no']);
+            if ($data['payment_account_no'] == '') unset($data['payment_account_no']);
+
+            $data['booking_no'] = $bookingNumber;
+
+            $attendee_id = $attendee->insert($data);
+
+            $responseData = array(
+                'booking_no' => $bookingNumber
+            );
+            if ($attendee_id) {
+                $uniqueId = base64_encode($bookingNumber . "|" . $attendee_id);
+                $ticketPrintUrl = route("/event-registration/$uniqueId/view-ticket");
+                $responseData['attendee_id'] = $attendee_id;
+                $responseData['redirect_url'] = $ticketPrintUrl;
+
+                // update seat capacity
+                if ($event->max_capacity != 0) {
+                    $event->update(['current_capacity' => $event->current_capacity - 1]);
+                }
+            } else {
+                throw new Exception('Something went wrong! Please try again!');
+            }
 
             Response::json(array(
                 'status' => true,
                 'message' => "Success",
-                'data' => $data,
+                'data' => $responseData,
             ), 200);
         } catch (Exception $e) {
             setUnsetUniqueId();

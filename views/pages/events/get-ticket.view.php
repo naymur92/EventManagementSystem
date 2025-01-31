@@ -14,11 +14,11 @@ ob_start(); ?>
 ################## extra scripts section ##################
 ob_start(); ?>
 <script>
-    var eventId = <?= $event->event_id ?>;
-    var userId = <?= authUser()->user_id ?? '' ?>;
-    var registrationFee = <?= $event->registration_fee ?>;
-    var maxCapacity = <?= $event->max_capacity ?>;
-    var currentCapacity = <?= $event->current_capacity ?>;
+    var eventId = "<?= $event->event_id ?>";
+    var userId = "<?= authUser()->user_id ?? '' ?>";
+    var registrationFee = "<?= $event->registration_fee ?>";
+    var maxCapacity = "<?= $event->max_capacity ?>";
+    var currentCapacity = "<?= $event->current_capacity ?>";
 
     // main function
     // async function main() {}
@@ -74,11 +74,11 @@ ob_start(); ?>
                     errorFound = true;
                 }
                 if (paymentAmountFieldValue == '') {
-                    insertFormError(formFields.payment_amount, 'Enter transaction amount!');
+                    insertFormError(formFields.payment_amount, 'Enter payment amount!');
                     errorFound = true;
                 }
-                if (paymentAmountFieldValue > 0 && paymentAmountFieldValue < registrationFee) {
-                    insertFormError(formFields.payment_amount, 'Transaction amount id lower than registration fee!');
+                if (paymentAmountFieldValue > 0 && paymentAmountFieldValue != registrationFee) {
+                    insertFormError(formFields.payment_amount, 'Invalid payment amount!');
                     errorFound = true;
                 }
                 if (paymentAccountFieldValue == '') {
@@ -116,9 +116,22 @@ ob_start(); ?>
 
                     callApi('/api/event-registration', params).then((response) => {
                         if (response.status) {
-                            console.log(response)
+                            let msg = "Registration successfull! Your booking number is: " + response.data.booking_no + ". You want to print your ticket now?";
+                            Swal.fire({
+                                title: `${msg}`,
+                                showDenyButton: true,
+                                confirmButtonText: "Yes",
+                                denyButtonText: "No",
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.href = response.data.redirect_url;
+                                } else {
+                                    location.href = BASE_URL;
+                                }
+                            });
                         } else {
-                            console.error(response);
+                            // console.error(response);
+                            swalMessage('error', response.message);
                         }
 
                         unsetSpinner();
