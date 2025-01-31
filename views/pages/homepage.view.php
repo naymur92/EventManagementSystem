@@ -23,13 +23,14 @@ ob_start(); ?>
 <script>
     var eventSchedules = [];
     var events = [];
+    var hostUsers = [];
 
     // dom related functions
     function generateSchedules(schedules) {
         let output = '';
         let isActive = true;
         for (let i = 0; i < schedules.length; i++) {
-            let scheduleDate = schedules[i].start_time;
+            let scheduleDate = schedules[i].date;
 
             let date = new Date(scheduleDate);
 
@@ -45,7 +46,7 @@ ob_start(); ?>
             output += `
                     <li class="nav-item" role="presentation">
                         <button class="nav-link ${isActive ? 'active' : ''} schedule-button" data-schedule-date="${scheduleDate}" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
-                            <span class="day">Day ${i + 1}</span>
+                            
                             <span class="vl-flex">
                                 <span class="cal">${day}</span>
                                 <span class="date">${month.toUpperCase()} <br />
@@ -87,7 +88,7 @@ ob_start(); ?>
                                     <a href="<?= getBaseUrl() ?>/events/${event.event_id}/view-details" class="head">${event.name}</a>
                                     <div class="space32"></div>
                                     <div class="btn-area1">
-                                        <a href="<?= getBaseUrl() ?>/events/${event.event_id}/view-details" class="vl-btn1">Details</a>
+                                        <a href="<?= getBaseUrl() ?>/events/${event.event_id}/get-ticket" class="vl-btn1">Get Your Ticket Now</a>
                                     </div>
                                 </div>
                             </div>
@@ -102,18 +103,42 @@ ob_start(); ?>
         $(".event-area").html(output ?? "No Content!");
     }
 
+    function generateHosts(hosts) {
+        let output = '';
+        let data_eos_duration = 800;
+        for (let host of hosts) {
+            output += `
+                    <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-duration="${data_eos_duration}">
+                        <div class="custom-brand-box row justify-content-between align-items-center">
+                            <img class="col-3" src="<?= getBaseUrl() ?>${host.profile_picture ?? '/uploads/users/user.png'}" alt="" />
+                            <h5 class="col-9">${host.name}</h5>
+                        </div>
+                    </div>
+                `;
+
+            data_eos_duration += 100;
+        }
+
+        $(".hosts-area").html(output ?? "");
+    }
+
     // main function
     async function main() {
+        // get schedules
         eventSchedules = await getEventSchedules({
             limit: 4
         });
 
-        // get events on first date
+        // get events on first schedule
         if (eventSchedules.length > 0) {
             events = await getEvents({
-                date: eventSchedules[0].start_time
+                date: eventSchedules[0].date
             });
         }
+
+        hostUsers = await getHostUsers({
+            limit: 6
+        });
     }
 
     // call function at beginning
@@ -122,7 +147,11 @@ ob_start(); ?>
             // get events of first schedule
             generateSchedules(eventSchedules);
 
+            // generate events
             generateEvents(events);
+
+            // generate hosts
+            generateHosts(hostUsers);
         })
     })
 
@@ -204,51 +233,7 @@ ob_start(); ?>
                 </div>
             </div>
         </div>
-        <div class="row">
-
-            <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-duration="800">
-                <div class="custom-brand-box row justify-content-between align-items-center">
-                    <img class="col-3" src="<?= getBaseUrl() ?>/assets/img/elements/brand-img1.png" alt="" />
-                    <h5 class="col-9">Our Official Sponsors Our Official Sponsors</h5>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-duration="900">
-                <div class="custom-brand-box row justify-content-between align-items-center">
-                    <img class="col-3" src="<?= getBaseUrl() ?>/assets/img/elements/brand-img2.png" alt="" />
-                    <h5 class="col-9">Our Official Sponsors Our Official Sponsors</h5>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-duration="1000">
-                <div class="custom-brand-box row justify-content-between align-items-center">
-                    <img class="col-3" src="<?= getBaseUrl() ?>/assets/img/elements/brand-img3.png" alt="" />
-                    <h5 class="col-9">Our Official Sponsors Our Official Sponsors</h5>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-duration="1100">
-                <div class="custom-brand-box row justify-content-between align-items-center">
-                    <img class="col-3" src="<?= getBaseUrl() ?>/assets/img/elements/brand-img4.png" alt="" />
-                    <h5 class="col-9">Our Official Sponsors Our Official Sponsors</h5>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-duration="900">
-                <div class="custom-brand-box row justify-content-between align-items-center">
-                    <img class="col-3" src="<?= getBaseUrl() ?>/assets/img/elements/brand-img5.png" alt="" />
-                    <h5 class="col-9">Our Official Sponsors Our Official Sponsors</h5>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-duration="1000">
-                <div class="custom-brand-box row justify-content-between align-items-center">
-                    <img class="col-3" src="<?= getBaseUrl() ?>/assets/img/elements/brand-img6.png" alt="" />
-                    <h5 class="col-9">Our Official Sponsors Our Official Sponsors</h5>
-                </div>
-            </div>
-
-        </div>
+        <div class="row hosts-area"></div>
     </div>
 </div>
 <!--===== OTHERS AREA ENDS =======-->

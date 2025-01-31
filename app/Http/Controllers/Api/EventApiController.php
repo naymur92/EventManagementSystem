@@ -12,7 +12,7 @@ class EventApiController extends Controller
 {
 
     /**
-     * Get schedule dates
+     * Get schedule dates API
      *
      * @param Request $request
      * @return void
@@ -27,11 +27,12 @@ class EventApiController extends Controller
         $limit = $data['limit'] ?? 500; // default limit is 500
 
         $params = array();
-        $sql = "SELECT start_time
+        $sql = "SELECT 
+                    DISTINCT(DATE_FORMAT(start_time, '%Y-%m-%d')) date
                 FROM events
                 WHERE start_time >= ?
                     AND status = ?
-                ORDER BY start_time ASC";
+                ORDER BY date ASC";
 
         $params[] = date('Y-m-d H:i:s');
         $params[] = 1;
@@ -58,6 +59,12 @@ class EventApiController extends Controller
     }
 
 
+    /**
+     * Get events API
+     *
+     * @param Request $request
+     * @return void
+     */
     public function getEvents(Request $request): void
     {
         $request->setSanitizationRules([
@@ -73,19 +80,26 @@ class EventApiController extends Controller
         $limit = $data['limit'] ?? 500; // default limit is 500
 
         $params = array();
-        $sql = "SELECT ev.event_id, ev.name, ev.location, DATE_FORMAT(ev.start_time, '%Y-%m-%d %h:%i %p') start_time, DATE_FORMAT(ev.end_time, '%Y-%m-%d %h:%i %p') end_time,
-                CONCAT('/uploads/', f.filepath, '/', f.filename) banner_image
+        $sql = "SELECT
+                    ev.event_id,
+                    ev.name,
+                    ev.location,
+                    DATE_FORMAT(ev.start_time, '%Y-%m-%d %h:%i %p') start_time,
+                    DATE_FORMAT(ev.end_time, '%Y-%m-%d %h:%i %p') end_time,
+                    CONCAT('/uploads/', f.filepath, '/', f.filename) banner_image
                 FROM events ev
-                JOIN files f ON f.table_id=ev.event_id
-                WHERE f.operation_name = 'events'
+                LEFT JOIN files f 
+                    ON f.table_id=ev.event_id
+                    AND f.operation_name = 'events'  
                     AND f.fileinfo = 'banner_image'
-                    AND ev.status = ?
+                WHERE ev.status = ?
                     AND (ev.current_capacity > 0 OR ev.max_capacity = 0)";
         $params[] = 1;
 
         if (!empty($date)) {
-            $sql .= " AND ev.start_time  = ?";
-            $params[] = date('Y-m-d H:i:s', strtotime($date));
+            $sql .= " AND ev.start_time BETWEEN ? AND ?";
+            $params[] = date('Y-m-d 00:00:00', strtotime($date));
+            $params[] = date('Y-m-d 23:59:59', strtotime($date));
         }
 
         if (!empty($host_id)) {
@@ -93,7 +107,8 @@ class EventApiController extends Controller
             $params[] = $host_id;
         }
 
-        $sql .= " ORDER BY ev.start_time ASC";
+        $sql .= " ORDER BY ev.start_time ASC, f.created_at DESC";
+
         if ($limit) {
             $sql .= " LIMIT $limit";
         }

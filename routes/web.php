@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Api\EventApiController;
+use App\Http\Controllers\Api\HostApiController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\HomeController;
 
@@ -52,3 +53,4 @@ $router->post('/logout', [AuthenticationController::class, 'logout'])->only(['au
 // Apis
 $router->post('/api/get-event-schedules', [EventApiController::class, 'getEventSchedules'])->only(['cors']);
 $router->post('/api/get-events', [EventApiController::class, 'getEvents'])->only(['cors']);
+$router->post('/api/get-host-users', [HostApiController::class, 'getHostUsers'])->only(['cors']);

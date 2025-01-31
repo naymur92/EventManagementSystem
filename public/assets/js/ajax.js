@@ -13,7 +13,7 @@ async function callApi(endPoint, params) {
 }
 
 
-// function to get event schedules
+// get event schedules
 async function getEventSchedules(params) {
     let eventSchedules = [];
     await callApi('/api/get-event-schedules', params).then((response) => {
@@ -29,7 +29,7 @@ async function getEventSchedules(params) {
 }
 
 
-// function to get events
+// get events
 async function getEvents(params) {
     let events = [];
     await callApi('/api/get-events', params).then((response) => {
@@ -42,4 +42,20 @@ async function getEvents(params) {
         // console.error(error);
     })
     return events;
+}
+
+
+// get host users
+async function getHostUsers(params) {
+    let hostUsers = [];
+    await callApi('/api/get-host-users', params).then((response) => {
+        if (response.status) {
+            hostUsers = response.data;
+        } else {
+            // console.error(response);
+        }
+    }).catch((error) => {
+        // console.error(error);
+    })
+    return hostUsers;
 }
