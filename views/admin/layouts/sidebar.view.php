@@ -49,6 +49,12 @@
                 <i class="fa-solid fa-chart-line"></i>
                 <span>Event Report</span></a>
         </li>
+
+        <li class="nav-item <?= urlInList(['/admin/reports/attendee-report']) ? 'active' : '' ?>">
+            <a class="nav-link" href="<?= route('/admin/reports/attendee-report') ?>">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Attendee Report</span></a>
+        </li>
     <?php endif; ?>
 
 

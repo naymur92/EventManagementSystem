@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\HostApiController;
 use App\Http\Controllers\Api\TicketApiController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Reports\AttendeeReportController;
 use App\Http\Controllers\Reports\EventReportController;
 use App\Http\Controllers\TicketController;
 
@@ -56,6 +57,10 @@ $router->get('/admin/reports/event-report', [EventReportController::class, 'inde
 $router->post('/admin/reports/event-report', [EventReportController::class, 'generate'])->only(['auth', 'super&host']);
 $router->get('/admin/reports/event-report/download-event-list', [EventReportController::class, 'downloadEventReport'])->only(['auth', 'super&host']);
 $router->get('/admin/reports/event-report/download-attendee-list', [EventReportController::class, 'downloadAttendeeListReport'])->only(['auth', 'super&host']);
+
+$router->get('/admin/reports/attendee-report', [AttendeeReportController::class, 'index'])->only(['auth', 'super&host']);
+$router->post('/admin/reports/attendee-report', [AttendeeReportController::class, 'generate'])->only(['auth', 'super&host']);
+$router->get('/admin/reports/attendee-report/download', [AttendeeReportController::class, 'downloadReportData'])->only(['auth', 'super&host']);
 
 
 // User profile routes
