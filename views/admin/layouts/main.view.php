@@ -13,6 +13,9 @@
 
     <title><?= $title ?? '' ?> - <?= getEnvData('APP_NAME') ?></title>
 
+    <!--=====FAB ICON=======-->
+    <link rel="shortcut icon" href="<?= getBaseUrl() ?>/assets/img/logo/fav-logo1.png" />
+
     <!-- Custom fonts for this template-->
     <link href="<?= getBaseUrl() ?>/admin_assets/vendor/Font-Awesome-6.x/css/all.min.css" rel="stylesheet" type="text/css">
 

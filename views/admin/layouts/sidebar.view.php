@@ -2,8 +2,9 @@
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= route('/admin') ?>">
-        <div class="sidebar-brand-icon rotate-n-15">
+        <div class="sidebar-brand-icon">
             <!-- <i class="fas fa-laugh-wink"></i> -->
+            <img src="<?= getBaseUrl() ?>/assets/img/logo/fav-logo1.png" alt="">
         </div>
         <div class="sidebar-brand-text mx-3"><?= getEnvData('APP_NAME') ?></div>
     </a>
