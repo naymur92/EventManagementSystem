@@ -11,7 +11,7 @@
     <meta name="base-url" content="<?= getBaseUrl(); ?>">
 
 
-    <title><?= $title; ?></title>
+    <title><?= $title; ?> - <?= getEnvData('APP_NAME') ?></title>
 
     <!--=====FAB ICON=======-->
     <link rel="shortcut icon" href="<?= getBaseUrl() ?>/assets/img/logo/fav-logo1.png" />
@@ -57,12 +57,12 @@
 
 <body class="homepage1-body">
     <!--===== PRELOADER STARTS =======-->
-    <!-- <div class="preloader">
+    <div class="preloader">
         <div class="loading-container">
             <div class="loading"></div>
             <div id="loading-icon"><img src="assets/img/logo/preloader.png" alt="" /></div>
         </div>
-    </div> -->
+    </div>
     <!--===== PRELOADER ENDS =======-->
 
     <!--===== PAGE PROGRESS START=======-->

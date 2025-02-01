@@ -82,7 +82,7 @@
         <div class="col-12">
             <div class="mobile-header-elements">
                 <div class="mobile-logo">
-                    <a href="index.html"><img src="<?= getBaseUrl() ?>/assets/img/logo/logo1.png" alt="" /></a>
+                    <a href="<?= route('/') ?>"><img src="<?= getBaseUrl() ?>/assets/img/logo/logo1.png" alt="" /></a>
                 </div>
                 <div class="mobile-nav-icon dots-menu">
                     <i class="fa-solid fa-bars-staggered"></i>
@@ -95,7 +95,7 @@
 <div class="mobile-sidebar mobile-sidebar1">
     <div class="logosicon-area">
         <div class="logos">
-            <img src="<?= getBaseUrl() ?>/assets/img/logo/logo2.png" alt="" />
+            <img src="<?= getBaseUrl() ?>/assets/img/logo/logo1.png" alt="" />
         </div>
         <div class="menu-close">
             <i class="fa-solid fa-xmark"></i>
