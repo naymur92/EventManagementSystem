@@ -270,3 +270,30 @@ function setUnsetUniqueId($operationType = null)
         $_SESSION['unique_id'] = $uniqid;
     }
 }
+
+
+/**
+ * Encoode array to unique ID
+ *
+ * @param array $params
+ * @return string
+ */
+function encodeData(array $params): string
+{
+    $str = implode('||', $params);
+
+    return base64_encode($str);
+}
+
+/**
+ * Decode encoded data to array
+ *
+ * @param string $str
+ * @return array
+ */
+function decodeData(string $str): array
+{
+    $str = base64_decode($str);
+
+    return explode("||", $str);
+}
