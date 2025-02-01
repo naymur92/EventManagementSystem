@@ -4,6 +4,13 @@ $layoutFile = 'layouts.main';
 ################## extra styles section ##################
 ob_start(); ?>
 <link href="<?= getBaseUrl() ?>/admin_assets/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+
+<style>
+    .is-invalid {
+        border: 1px solid #dc3545;
+        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+</style>
 <?php $stylesBlock = ob_get_clean();
 
 ################## extra scripts section ##################
@@ -14,6 +21,104 @@ ob_start(); ?>
 
 <!-- Page level custom scripts -->
 <script src="<?= getBaseUrl() ?>/admin_assets/js/demo/datatables-demo.js"></script>
+
+
+<script>
+    var uniqueId = "";
+    var userId = "<?= authUser()->user_id ?? '' ?>";
+
+    // main function
+    // async function main() {}
+
+    function insertFormError(selector, message) {
+        $(selector).addClass('is-invalid');
+        $(`<span class='errors invalid-feedback' role='alert'><strong>${message}</strong></span>`).insertAfter(selector);
+    }
+
+    // call function at beginning
+    $(function() {
+        // get unique id from button link
+        $(".cancel-ticket-btn").on('click', function() {
+            uniqueId = $(this).attr('data-unique-id');
+        })
+
+        $("#ticketCancelForm").on('submit', function(e) {
+            e.preventDefault();
+
+            const formFields = {
+                cancel_reason: $("#cancel_reason")
+            };
+
+            var cancelReason = formFields.cancel_reason.val() ?? '';
+
+            // remove all errors first
+            $('.input-area > input').removeClass('is-invalid');
+            $(".errors").remove();
+
+            var errorFound = false;
+            // validation
+            if (cancelReason == '') {
+                insertFormError(formFields.cancel_reason, 'Enter cancel reason!');
+                errorFound = true;
+            }
+
+            if (errorFound) {
+                // swalMessage('error', 'Please fill the form carefully!');
+                return;
+            }
+
+            params = {
+                uniqueId: uniqueId,
+                user_id: userId,
+                cancel_reason: cancelReason,
+            };
+
+            Swal.fire({
+                title: "Are you sure to cancel ticket?",
+                showDenyButton: true,
+                confirmButtonText: "Yes",
+                denyButtonText: "No",
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    setSpinner();
+                    pressSubmitBtn("cancelTicketBtn", "Cancelling...");
+
+                    callApi('/api/cancel-tickets', params).then((response) => {
+                        if (response.status) {
+                            location.reload();
+                        } else {
+                            console.error(response);
+                            swalMessage('error', response.message);
+                        }
+
+                        unsetSpinner();
+                        releaseSubmitBtn("cancelTicketBtn", "Cancel Now");
+                    }).catch((error) => {
+                        console.error(error);
+                        errObj = error.responseJSON;
+
+                        errors = errObj.errors ?? {};
+
+                        Object.keys(errors).forEach(key => {
+                            errors[key].forEach(message => {
+                                insertFormError(formFields[key], message);
+                            })
+                        });
+
+                        swalMessage('error', errObj.message);
+
+                        unsetSpinner();
+                        releaseSubmitBtn("cancelTicketBtn", "Cancel Now");
+                    })
+                }
+            });
+        })
+    })
+</script>
+
+
+
 <?php $scriptsBlock = ob_get_clean();
 ?>
 
@@ -99,10 +204,22 @@ ob_start(); ?>
                                             <td class="align-middle">
                                                 <div class="text-center d-flex justify-content-center align-items-center">
 
-                                                    <?php $uniquiId = encodeData([$item['booking_no'], $item['attendee_id']]); ?>
-                                                    <a href="<?= route("/event-registration/$uniquiId/view-ticket") ?>" data-toggle="tooltip" data-placement="top" title="View Ticket" class="table-data-modify-icon mr-2">
-                                                        <span class="text-primary"><i class="fa-solid fa-ticket"></i></span>
-                                                    </a>
+                                                    <?php if ($item['status'] == 1): ?>
+                                                        <?php $uniquiId = encodeData([$item['booking_no'], $item['attendee_id']]); ?>
+
+                                                        <!-- view ticket button -->
+                                                        <a href="<?= route("/tickets/$uniquiId/view-ticket") ?>" data-toggle="tooltip" data-placement="top" title="View Ticket" class="table-data-modify-icon mx-1" target="_blank">
+                                                            <span class="text-primary"><i class="fa-solid fa-ticket"></i></span>
+                                                        </a>
+
+                                                        <!-- cancel ticket modal button -->
+                                                        <!-- allow cancellation before 6 hrs to start -->
+                                                        <?php if (strtotime("-6 hours", strtotime($item['start_time'])) > time()): ?>
+                                                            <a href="#" data-unique-id="<?= $uniquiId ?>" data-toggle="tooltip" data-placement="top" title="Cancel Ticket" class="table-data-modify-icon mx-1 cancel-ticket-btn" data-bs-toggle="modal" data-bs-target="#ticketCancelModal">
+                                                                <span class="text-warning"><i class="fa-solid fa-rectangle-xmark"></i></span>
+                                                            </a>
+                                                        <?php endif; ?>
+                                                    <?php endif; ?>
 
                                                 </div>
 
@@ -116,6 +233,30 @@ ob_start(); ?>
                 </div>
             </div>
         </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="ticketCancelModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ticketCancelModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content formElement">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ticketCancelModalLabel">Cancel Ticket</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="ticketCancelForm">
+                        <div class="modal-body">
+                            <div class="form-body">
+                                <input id="cancel_reason" class="form-control" type="text" placeholder="Cancel Reason" required>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button id="cancelTicketBtn" type="submit" class="btn btn-primary">Cancel Now</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
 
         <div class="space12"></div>
     </div>

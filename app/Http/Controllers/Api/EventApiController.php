@@ -254,9 +254,9 @@ class EventApiController extends Controller
             'payment_account_no' => 'string|max:128',
         ];
 
-        // if (!setUnsetUniqueId('get')) {
-        //     Response::error("Unauthorized operation! Please try again!");
-        // }
+        if (!setUnsetUniqueId('get')) {
+            Response::error("Unauthorized operation! Please try again!");
+        }
 
         // Validate data
         $request->validate($rules);
@@ -350,7 +350,7 @@ class EventApiController extends Controller
             );
             if ($attendee_id) {
                 $uniqueId = encodeData([$bookingNumber, $attendee_id]);
-                $ticketPrintUrl = route("/event-registration/$uniqueId/view-ticket");
+                $ticketPrintUrl = route("/tickets/$uniqueId/view-ticket");
                 // $responseData['attendee_id'] = $attendee_id;
                 $responseData['redirect_url'] = $ticketPrintUrl;
 

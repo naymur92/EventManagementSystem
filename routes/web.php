@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Api\EventApiController;
 use App\Http\Controllers\Api\HostApiController;
+use App\Http\Controllers\Api\TicketApiController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TicketController;
@@ -16,7 +17,7 @@ $router->get('/events/{event_id}/view-details', [HomeController::class, 'eventDe
 
 $router->get('/events/{event_id}/get-ticket', [TicketController::class, 'eventRegistrationPage']);
 $router->get('/my-tickets', [TicketController::class, 'myTickets'])->only(['auth']);
-$router->get('/event-registration/{unique_id}/view-ticket', [TicketController::class, 'viewTicket']);
+$router->get('/tickets/{unique_id}/view-ticket', [TicketController::class, 'viewTicket']);
 
 ############################################# Admin Routes #############################################
 // dashboard routes
@@ -62,5 +63,7 @@ $router->post('/api/get-event-schedules', [EventApiController::class, 'getEventS
 $router->post('/api/get-events', [EventApiController::class, 'getEvents'])->only(['cors']);
 $router->post('/api/get-event-detail', [EventApiController::class, 'getEventDetails'])->only(['cors']);
 $router->post('/api/event-registration', [EventApiController::class, 'eventRegistration'])->only(['cors']);
+
+$router->post('/api/cancel-tickets', [TicketApiController::class, 'cancelTicket'])->only(['cors']);
 
 $router->post('/api/get-host-users', [HostApiController::class, 'getHostUsers'])->only(['cors']);
