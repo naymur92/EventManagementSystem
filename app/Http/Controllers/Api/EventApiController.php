@@ -314,14 +314,23 @@ class EventApiController extends Controller
 
             $attendee = new Attendee();
 
-            // check uniqueness
+            // check unique registration info
             $dataExists = DB::query(
                 "SELECT * FROM attendees WHERE event_id = ? AND (email = ? OR mobile = ?)",
                 array($event_id, $data['email'], $data['mobile'])
             )->fetchAll();
 
             if ($dataExists) {
-                throw new Exception('Registration failed! Please try with another email/mobile!');
+                throw new Exception('Registration failed! Duplicate registration!');
+            }
+
+            // checking valid transaction
+            if ($event->registration_fee != 0) {
+                $dataExists = $attendee->where('payment_trnx_no', '=', $data['payment_trnx_no'])->where('payment_account_no', '=', $data['payment_account_no'])->get();
+
+                if ($dataExists) {
+                    throw new Exception('Invalid payment!');
+                }
             }
 
             $bookingNumber = $attendee->generateBookingNumber($event_id);
@@ -342,7 +351,7 @@ class EventApiController extends Controller
             if ($attendee_id) {
                 $uniqueId = base64_encode($bookingNumber . "|" . $attendee_id);
                 $ticketPrintUrl = route("/event-registration/$uniqueId/view-ticket");
-                $responseData['attendee_id'] = $attendee_id;
+                // $responseData['attendee_id'] = $attendee_id;
                 $responseData['redirect_url'] = $ticketPrintUrl;
 
                 // update seat capacity

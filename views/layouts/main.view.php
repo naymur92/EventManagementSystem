@@ -34,6 +34,16 @@
 
     <link rel="stylesheet" href="<?= getBaseUrl() ?>/assets/css/custom.css" />
 
+    <!-- style files for printing -->
+    <script>
+        var fontUrls = [];
+
+        var cssFiles = [
+            "<?= getBaseUrl() ?>/admin_assets/vendor/Font-Awesome-6.x/css/all.min.css",
+            "<?= getBaseUrl() ?>/admin_assets/css/print-style.css",
+        ];
+    </script>
+
 
     <!-- Styles -->
     <?= $stylesBlock ?? '' ?>

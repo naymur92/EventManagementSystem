@@ -40,7 +40,7 @@ ob_start(); ?>
     var eventSchedules = [];
     var events = [];
     var filteredEvents = [];
-    const eventsPerPage = 2;
+    const eventsPerPage = 10;
     var currentPage = 1;
     var totalPages;
 
