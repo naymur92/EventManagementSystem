@@ -221,11 +221,15 @@ ob_start(); ?>
 
     // call function at beginning
     $(function() {
+        setCursorWait();
+
         main().then(() => {
             // get events of first schedule
             generateSchedules(eventSchedules);
 
             filteredEvents = events;
+
+            unsetCursorWait();
 
             // generate events
             renderDataWithAllFunctionality();
@@ -241,10 +245,14 @@ ob_start(); ?>
 
     // get events and print when click schedule button
     $(document).on('click', '.schedule-button', function(event) {
+        setCursorWait();
+
         getEvents({
             date: $(this).attr('data-schedule-date')
         }).then((events) => {
             setEvents(events);
+
+            unsetCursorWait();
 
             renderDataWithAllFunctionality();
         })
@@ -272,7 +280,7 @@ ob_start(); ?>
 <!--===== HERO AREA ENDS =======-->
 
 <!--===== EVENT AREA STARTS =======-->
-<div class="event-team-area blog-details-section sp1">
+<div class="event-team-area blog-details-section sp1 page-content">
     <div class="container">
         <div class="row">
             <div class="col-lg-6 m-auto">

@@ -296,3 +296,11 @@ function releaseSubmitBtn(btnId = null, btnText = null) {
     submitButton.disabled = false;
     submitButton.innerText = btnText ?? "Save";
 }
+function setCursorWait(selector = '.page-content') {
+    $(`${selector} div`).css("pointer-events", "none");
+    $(selector).css("cursor", "wait");
+}
+function unsetCursorWait(selector = '.page-content') {
+    $(`${selector} div`).css("pointer-events", "auto");
+    $(selector).css("cursor", "default");
+}

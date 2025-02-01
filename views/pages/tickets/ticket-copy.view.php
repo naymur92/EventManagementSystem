@@ -33,7 +33,7 @@ ob_start(); ?>
 <!--===== HERO AREA ENDS =======-->
 
 <!--===== EVENT AREA STARTS =======-->
-<div>
+<div class="page-content">
     <div class="container">
         <div class="row">
 

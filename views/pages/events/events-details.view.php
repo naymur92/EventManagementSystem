@@ -150,7 +150,11 @@ ob_start(); ?>
 
     // call function at beginning
     $(function() {
+        setCursorWait();
+
         main().then(() => {
+            unsetCursorWait();
+
             generateEventDetailContent(event);
         })
     })
@@ -178,7 +182,7 @@ ob_start(); ?>
 <!--===== HERO AREA ENDS =======-->
 
 <!--===== EVENT AREA STARTS =======-->
-<div class="blog-details-section sp8">
+<div class="blog-details-section sp8 page-content">
     <div class="container">
         <div class="row event-detail-area"></div>
     </div>

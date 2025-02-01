@@ -181,7 +181,7 @@ ob_start(); ?>
 <!--===== HERO AREA ENDS =======-->
 
 <!--===== EVENT AREA STARTS =======-->
-<div class="blog-details-section contact-inner-section sp8">
+<div class="blog-details-section contact-inner-section sp8 page-content">
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
