@@ -25,7 +25,6 @@ ob_start(); ?>
                 </div>
 
                 <div class="card-body">
-                    <!-- profile info -->
                     <div class="row align-items-center justify-content-between">
                         <div class="col-12">
                             <table class="show-table table border table-bordered">
@@ -198,6 +197,10 @@ ob_start(); ?>
 
                         <button class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
                     </form> -->
+
+                    <a href="<?= route("/admin/events/{$event->event_id}/attendee-list") ?>" class="btn btn-outline-info br-5 waves-effect waves-light">
+                        <i class="fa-solid fa-list"></i> Attendee List
+                    </a>
 
                     <?php if ($event->user_id == authUser()->user_id): ?>
                         <a href="<?= route("/admin/events/{$event->event_id}/edit") ?>" class="btn btn-outline-warning br-5 waves-effect waves-light">

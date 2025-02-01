@@ -86,7 +86,15 @@ table.dataTable>thead .sorting_desc_disabled::after {
 
 .table tbody td {
     /* padding: 0.3rem !important; */
-    font-size: 0.9rem !important;
+    /* font-size: 0.9rem !important; */
+    font-size: 12px !important;
+    line-height: normal;
+}
+
+.table thead th {
+    /* padding: 0.3rem !important; */
+    /* font-size: 0.9rem !important; */
+    font-size: 12px !important;
     line-height: normal;
 }
 

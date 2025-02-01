@@ -52,7 +52,7 @@
     <script src="<?= getBaseUrl() ?>/assets/js/vendor/jquery-3.7.1.min.js"></script>
 
 
-    <script src="<?= getBaseUrl() ?>/assets/js/ajax.js"></script>
+    <script src="<?= getBaseUrl() ?>/common_assets/js/ajax.js"></script>
 </head>
 
 <body class="homepage1-body">
@@ -107,8 +107,8 @@
     <!--===== JS SCRIPT LINK =======-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.3/dist/sweetalert2.all.min.js"></script>
 
-    <script src="<?= getBaseUrl() ?>/assets/js/global_helpers.js"></script>
-    <script src="<?= getBaseUrl() ?>/assets/js/swal-helpers.js"></script>
+    <script src="<?= getBaseUrl() ?>/common_assets/js/global_helpers.js"></script>
+    <script src="<?= getBaseUrl() ?>/common_assets/js/swal-helpers.js"></script>
 
     <script>
         // show popup messages

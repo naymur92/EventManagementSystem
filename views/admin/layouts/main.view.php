@@ -10,6 +10,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="<?= csrf(); ?>">
+    <meta name="base-url" content="<?= getBaseUrl(); ?>">
 
     <title><?= $title ?? '' ?> - <?= getEnvData('APP_NAME') ?></title>
 
@@ -71,6 +72,9 @@
     <!-- Custom scripts for all pages-->
     <script src="<?= getBaseUrl() ?>/admin_assets/js/sb-admin-2.js"></script>
 
+
+    <script src="<?= getBaseUrl() ?>/common_assets/js/ajax.js"></script>
+
 </head>
 
 <body id="page-top">
@@ -128,8 +132,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
 
     <script src="<?= getBaseUrl() ?>/admin_assets/js/customized-bootstrap-datepicker.js" defer></script>
-    <script src="<?= getBaseUrl() ?>/admin_assets/js/global_helpers.js"></script>
-    <script src="<?= getBaseUrl() ?>/admin_assets/js/swal-helpers.js"></script>
+    <script src="<?= getBaseUrl() ?>/common_assets/js/global_helpers.js"></script>
+    <script src="<?= getBaseUrl() ?>/common_assets/js/swal-helpers.js"></script>
 
     <script>
         $(document).ready(function() {

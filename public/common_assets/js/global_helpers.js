@@ -192,35 +192,21 @@ function multipleFileSelection(fileSelector, imageContainer, fileContainer, form
     // end
 }
 
-function printDoc(id, title, orientation) {
-    // code for page height
-    // var div = $(`#${id}`);
-    // if (orientation == 'portrait') {
-    //     var minHeight = 1010;
-    // } else if (orientation == 'landscape') {
-    //     var minHeight = 690;
-    // }
-    // var pageNumber = Math.ceil(div.height() / minHeight);
-    // var newHeight = pageNumber * minHeight;
+function printDoc(id, title, orientation = 'portrait') {
+    var div = $(`#${id}`);
 
     var w = window.open();
 
     w.document.write('<html><head><title>' + title + '</title>');
     w.document.write('<style>@media print{@page {size: ' + orientation + '}}</style>');
-    // fontUrls.forEach(function (file) {
-    //     w.document.write('<link rel="stylesheet" type="text/css" href="' + file + '">');
-    // });
-    cssFiles.forEach(function (file) {
-        w.document.write('<link rel="stylesheet" type="text/css" href="' + file + '">');
-    });
 
     w.document.write('</head><body>');
-    w.document.write(document.getElementById(id).innerHTML);
+    w.document.write(div.html());
     w.document.write('</body></html>');
 
-    // w.document.close();
-    // w.print();
-    // w.close();
+    w.document.close();
+    w.print();
+    w.close();
 }
 
 async function printElement(id, title, orientation = 'portrait') {
@@ -286,4 +272,35 @@ async function printElement(id, title, orientation = 'portrait') {
             }, 100); // Adjust delay as needed
         };
     }
+}
+
+
+// form interactions
+function setSpinner() {
+    $(".formElement form").css("pointer-events", "none");
+    $(".formElement").css("cursor", "wait");
+}
+function unsetSpinner() {
+    $(".formElement form").css("pointer-events", "auto");
+    $(".formElement").css("cursor", "default");
+}
+function pressSubmitBtn(btnId = null, btnText = null) {
+    let submitButton = document.getElementById(btnId ?? "submitBtn");
+
+    submitButton.disabled = true;
+    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + (btnText ?? 'Processing...');
+}
+function releaseSubmitBtn(btnId = null, btnText = null) {
+    let submitButton = document.getElementById(btnId ?? "submitBtn");
+
+    submitButton.disabled = false;
+    submitButton.innerText = btnText ?? "Save";
+}
+function setCursorWait(selector = '.page-content') {
+    $(`${selector} div`).css("pointer-events", "none");
+    $(selector).css("cursor", "wait");
+}
+function unsetCursorWait(selector = '.page-content') {
+    $(`${selector} div`).css("pointer-events", "auto");
+    $(selector).css("cursor", "default");
 }

@@ -121,6 +121,10 @@ ob_start(); ?>
                                                     </form>
                                                 <?php endif; ?>
 
+                                                <a href="<?= route("/admin/events/{$event['event_id']}/attendee-list") ?>" data-toggle="tooltip" data-placement="top" title="Attendee List" class="table-data-modify-icon mr-2">
+                                                    <span class="badge badge-info"><i class="fa-solid fa-list"></i></span>
+                                                </a>
+
                                                 <?php if (authUser()->type == 2): ?>
 
                                                     <a href="<?= route("/admin/events/{$event['event_id']}/edit") ?>" data-toggle="tooltip" data-placement="top" title="Edit Event" class="table-data-modify-icon mr-2">

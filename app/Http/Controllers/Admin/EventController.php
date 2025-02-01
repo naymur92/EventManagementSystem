@@ -6,6 +6,7 @@ use App\Core\Auth;
 use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Session;
+use App\Models\Attendee;
 use App\Models\Event;
 use App\Models\File;
 use App\Models\User;
@@ -442,5 +443,29 @@ class EventController extends Controller
         Session::flash('flash_success', "Status changed successfully!");
 
         redirect('/admin/events');
+    }
+
+
+    /**
+     * View Attendee List
+     *
+     * @param integer $event_id
+     * @return void
+     */
+    public function attendeeList(int $event_id)
+    {
+        $event = (new Event)->find($event_id);
+
+        if (!$event) {
+            Session::flash('flash_error', "Invalid action!");
+
+            redirect('/admin/events');
+        }
+
+        setUnsetUniqueId();
+
+        $attendees = (new Attendee())->where('event_id', '=', $event_id)->get();
+
+        view('admin.pages.events.attendee-list', array('title' => "Events", 'event' => $event, 'attendees' => $attendees));
     }
 }

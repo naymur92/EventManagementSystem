@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Core\Auth;
 use App\Core\Controller;
 use App\Core\DB;
 use App\Core\Request;
@@ -30,7 +31,7 @@ class TicketApiController extends Controller
         // Validation rules
         $rules = [
             'uniqueId' => 'required|string',
-            'user_id' => 'required|integer|min:1',
+            'user_id' => 'integer|min:1',
             'cancel_reason' => 'required|string|max:128'
         ];
 
@@ -56,13 +57,18 @@ class TicketApiController extends Controller
 
             $data = $request->validated();
 
+            if ($data['user_id'] == "" && !Auth::user()) {
+                throw new Exception('Invalid request!');
+            }
+
             $attendee = new Attendee();
 
             [$bookingNo, $attendeeId] = decodeData($data['uniqueId']);
-            $attendeeData = $attendee->where('booking_no', '=', $bookingNo)
-                ->where('attendee_id', '=', $attendeeId)
-                ->where('user_id', '=', $data['user_id'])
-                ->where('status', '=', 1)
+            $attendee->where('booking_no', '=', $bookingNo)
+                ->where('attendee_id', '=', $attendeeId);
+            if ($data['user_id'] != '')
+                $attendee->where('user_id', '=', $data['user_id']);
+            $attendeeData = $attendee->where('status', '=', 1)
                 ->get();
 
             // validate data existing
