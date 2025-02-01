@@ -88,14 +88,14 @@ ob_start(); ?>
                         if (response.status) {
                             location.reload();
                         } else {
-                            console.error(response);
+                            // console.error(response);
                             swalMessage('error', response.message);
                         }
 
                         unsetSpinner();
                         releaseSubmitBtn("cancelTicketBtn", "Cancel Now");
                     }).catch((error) => {
-                        console.error(error);
+                        // console.error(error);
                         errObj = error.responseJSON;
 
                         errors = errObj.errors ?? {};

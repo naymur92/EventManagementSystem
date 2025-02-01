@@ -12,7 +12,7 @@
                             <ul class="d-flex align-items-center">
                                 <li><a href="<?= route('/') ?>">Home</a></li>
                                 <li><a href="<?= route('/events') ?>">Events</a></li>
-                                <li><a href="<?= route('/') ?>">Find Ticket</a></li>
+                                <li><a href="<?= route('/tickets/find-ticket') ?>">Find Ticket</a></li>
                                 <?php if (authUser()): ?>
                                     <?php if (authUser()->type != 3): ?>
                                         <li><a href="<?= route('/admin') ?>">Admin Page</a></li>
@@ -106,7 +106,7 @@
         <ul class="mobile-nav-list nav-list1">
             <li><a href="<?= route('/') ?>">Home </a></li>
             <li><a href="<?= route('/events') ?>">Events</a></li>
-            <li><a href="<?= route('/') ?>">Find Tickets</a></li>
+            <li><a href="<?= route('/tickets/find-ticket') ?>">Find Tickets</a></li>
             <?php if (authUser()): ?>
                 <?php if (authUser()->type != 3): ?>
                     <li><a href="<?= route('/admin') ?>">Admin Page</a></li>

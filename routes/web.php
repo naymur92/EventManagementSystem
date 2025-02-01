@@ -18,6 +18,7 @@ $router->get('/events/{event_id}/view-details', [HomeController::class, 'eventDe
 $router->get('/events/{event_id}/get-ticket', [TicketController::class, 'eventRegistrationPage']);
 $router->get('/my-tickets', [TicketController::class, 'myTickets'])->only(['auth']);
 $router->get('/tickets/{unique_id}/view-ticket', [TicketController::class, 'viewTicket']);
+$router->get('/tickets/find-ticket', [TicketController::class, 'findTicket']);
 
 ############################################# Admin Routes #############################################
 // dashboard routes
@@ -65,5 +66,6 @@ $router->post('/api/get-event-detail', [EventApiController::class, 'getEventDeta
 $router->post('/api/event-registration', [EventApiController::class, 'eventRegistration'])->only(['cors']);
 
 $router->post('/api/cancel-tickets', [TicketApiController::class, 'cancelTicket'])->only(['cors']);
+$router->post('/api/find-tickets', [TicketApiController::class, 'findTicket'])->only(['cors']);
 
 $router->post('/api/get-host-users', [HostApiController::class, 'getHostUsers'])->only(['cors']);

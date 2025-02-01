@@ -13,6 +13,12 @@ use Exception;
 
 class TicketApiController extends Controller
 {
+    /**
+     * Cancel Ticket API
+     *
+     * @param Request $request
+     * @return void
+     */
     public function cancelTicket(Request $request): void
     {
         $request->setSanitizationRules([
@@ -83,6 +89,113 @@ class TicketApiController extends Controller
                 'status' => true,
                 'message' => "Success",
                 'data' => array(),
+            ), 200);
+        } catch (Exception $e) {
+            setUnsetUniqueId();
+
+            Response::error($e->getMessage(), 422, $errors);
+        }
+    }
+
+
+    /**
+     * Find Ticket API
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function findTicket(Request $request): void
+    {
+        $request->setSanitizationRules([
+            'booking_no' => ['string'],
+            'mobile' => ['string'],
+            'email' => ['string']
+        ]);
+
+        // Validation rules
+        $rules = [
+            'booking_no' => 'required|string"|max:128',
+            'mobile' => 'string|max:15',
+            'email' => 'email|max:128'
+        ];
+
+        if (!setUnsetUniqueId('get')) {
+            Response::error("Unauthorized operation! Please try again!");
+        }
+
+        // Validate data
+        $request->validate($rules);
+
+        $errors = $request->errors();
+
+        $errorFound = false;
+
+        if (!empty($errors)) {
+            $errorFound = true;
+        }
+
+        try {
+            if ($errorFound) {
+                throw new Exception('Validation error! Please try again!');
+            }
+
+            $data = $request->validated();
+
+            // validation          
+            if ($data['mobile'] == '' && $data['email'] == '') {
+                $errors['mobile'][] = "Enter mobile no!";
+                $errors['email'][] = "Enter email!";
+
+                $errorFound = true;
+            }
+
+            if ($errorFound) {
+                throw new Exception('Validation error! Please try again!');
+            }
+
+
+            // check unique registration info
+            $params = array();
+            $sql = "SELECT * FROM attendees WHERE booking_no = ?";
+            $params[] = $data['booking_no'];
+            if ($data['mobile'] == '' || $data['email'] == '') {
+                if ($data['mobile'] != '') {
+                    $sql .= " AND mobile = ?";
+                    $params[] = $data['mobile'];
+                } else {
+                    $sql .= " AND email = ?";
+                    $params[] = $data['email'];
+                }
+            } else {
+                $sql .= " AND (email = ? OR mobile = ?)";
+                $params[] = $data['email'];
+                $params[] = $data['mobile'];
+            }
+            // $sql .= " AND status = ?";
+            // $params[] = 1;
+
+            $ticketData = DB::query($sql, $params)->fetchAll();
+
+            if (!$ticketData) {
+                throw new Exception('Ticket data not found!');
+            }
+
+            if ($ticketData[0]['status'] != 1) {
+                throw new Exception('Ticket was cancelled!');
+            }
+
+            Session::flash('flash_success', "Ticket found!");
+
+            $responseData = array();
+
+            $uniqueId = encodeData([$ticketData[0]['booking_no'], $ticketData[0]['attendee_id']]);
+            $ticketPrintUrl = route("/tickets/$uniqueId/view-ticket");
+            $responseData['redirect_url'] = $ticketPrintUrl;
+
+            Response::json(array(
+                'status' => true,
+                'message' => "Success",
+                'data' => $responseData,
             ), 200);
         } catch (Exception $e) {
             setUnsetUniqueId();

@@ -161,4 +161,15 @@ class TicketController extends Controller
             redirect('/');
         }
     }
+
+
+    /**
+     * Find ticket page
+     *
+     * @return void
+     */
+    public function findTicket()
+    {
+        view('pages.tickets.find-ticket', array('title' => "Find Ticket"));
+    }
 }
