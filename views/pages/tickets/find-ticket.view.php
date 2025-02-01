@@ -19,6 +19,8 @@ ob_start(); ?>
         $("#ticket_find_form").on('submit', function(e) {
             e.preventDefault();
 
+            $(".ticket-view-btn-area").hide();
+
             const formFields = {
                 booking_no: $("#booking_number_field"),
                 mobile: $("#mobile_field"),
@@ -72,7 +74,11 @@ ob_start(); ?>
 
                     callApi('/api/find-tickets', params).then((response) => {
                         if (response.status) {
-                            location.href = response.data.redirect_url;
+                            // console.log(response.data);
+                            // location.href = response.data.redirect_url;
+                            $(".ticket-view-btn-area").show();
+                            $(".ticket-view-btn-area a").attr('href', response.data.redirect_url);
+                            swalMessage('success', response.message);
                         } else {
                             // console.error(response);
                             swalMessage('error', response.message);
@@ -82,7 +88,7 @@ ob_start(); ?>
                         releaseSubmitBtn("ticket_find_submit_btn", "Find Now");
                     }).catch((error) => {
                         // console.error(error);
-                        errObj = error.responseJSON;
+                        errObj = error.responseJSON ?? {};
 
                         errors = errObj.errors ?? {};
 
@@ -160,6 +166,11 @@ ob_start(); ?>
                             </div>
                         </div>
                     </form>
+
+                    <div class="text-center ticket-view-btn-area" style="display: none;">
+                        <div class="space8"></div>
+                        <a href="" class="btn btn-success">View Ticket</a>
+                    </div>
                 </div>
             </div>
         </div>

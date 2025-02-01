@@ -96,6 +96,8 @@ class TicketController extends Controller
 
             // dd($ticketList);
 
+            setUnsetUniqueId();
+
             view('pages.tickets.ticket-list', array('title' => "Ticket List", 'ticketList' => $ticketList));
         } catch (Exception $e) {
             Session::setPopup('popup_error', $e->getMessage());
@@ -170,6 +172,8 @@ class TicketController extends Controller
      */
     public function findTicket()
     {
+        setUnsetUniqueId();
+
         view('pages.tickets.find-ticket', array('title' => "Find Ticket"));
     }
 }

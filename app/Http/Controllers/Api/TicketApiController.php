@@ -184,7 +184,7 @@ class TicketApiController extends Controller
                 throw new Exception('Ticket was cancelled!');
             }
 
-            Session::flash('flash_success', "Ticket found!");
+            // Session::flash('flash_success', "Ticket found!");
 
             $responseData = array();
 
@@ -194,7 +194,7 @@ class TicketApiController extends Controller
 
             Response::json(array(
                 'status' => true,
-                'message' => "Success",
+                'message' => "Ticket found!",
                 'data' => $responseData,
             ), 200);
         } catch (Exception $e) {
