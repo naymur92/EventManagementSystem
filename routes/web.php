@@ -44,6 +44,11 @@ $router->put('/admin/events/{id}/update', [EventController::class, 'update'])->o
 $router->delete('/admin/events/{id}/delete', [EventController::class, 'delete'])->only(['auth', 'super&host']);
 $router->put('/admin/events/{id}/change-status', [EventController::class, 'changeStatus'])->only(['auth', 'super&host']);
 $router->get('/admin/events/{id}/attendee-list', [EventController::class, 'attendeeList'])->only(['auth', 'super&host']);
+$router->get('/admin/events/{id}/attendee-list', [EventController::class, 'attendeeList'])->only(['auth', 'super&host']);
+
+// tickets
+$router->get('/admin/tickets/{unique_id}/view-ticket', [EventController::class, 'viewTicket'])->only(['auth', 'super&host']);
+
 
 // User profile routes
 $router->get('/user-profile', [UserController::class, 'userProfile'])->only(['auth']);

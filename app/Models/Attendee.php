@@ -42,4 +42,49 @@ class Attendee extends BaseModel
 
         return $bookingNumber;
     }
+
+
+    /**
+     * Get ticket data
+     *
+     * @param string $unique_id
+     * @return array|null
+     */
+    public static function generateTicketData(string $unique_id): ?array
+    {
+        [$bookingNo, $attendeeId] = decodeData($unique_id);
+
+        $params = array();
+        $sql = "SELECT
+                    ev.event_id,
+                    ev.name,
+                    ev.location,
+                    ev.registration_fee,
+                    DATE_FORMAT(ev.start_time, '%Y-%m-%d %h:%i %p') start_time,
+                    DATE_FORMAT(ev.end_time, '%Y-%m-%d %h:%i %p') end_time,
+                    u.name host_name,
+                    u.email host_email,
+                    u.mobile host_mobile,
+                    a.attendee_id,
+                    a.booking_no,
+                    a.name attendee_name,
+                    a.email attendee_email,
+                    a.mobile attendee_mobile,
+                    a.payment_trnx_no,
+                    a.payment_amount,
+                    a.payment_account_no,
+                    a.registration_time
+                FROM attendees a
+                JOIN events ev
+                    ON a.event_id = ev.event_id
+                JOIN users u
+                    ON u.user_id = ev.user_id
+                WHERE a.status = ? AND a.booking_no = ? AND a.attendee_id = ?";
+
+        $params[] = 1;
+        $params[] = $bookingNo;
+        $params[] = $attendeeId;
+
+        return DB::query($sql, $params)->fetchAll();
+    }
 }

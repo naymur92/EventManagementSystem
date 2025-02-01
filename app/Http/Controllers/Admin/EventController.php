@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Core\Auth;
 use App\Core\Controller;
+use App\Core\DB;
 use App\Core\Request;
 use App\Core\Session;
 use App\Models\Attendee;
 use App\Models\Event;
 use App\Models\File;
 use App\Models\User;
+use Exception;
 
 class EventController extends Controller
 {
@@ -467,5 +469,30 @@ class EventController extends Controller
         $attendees = (new Attendee())->where('event_id', '=', $event_id)->get();
 
         view('admin.pages.events.attendee-list', array('title' => "Events", 'event' => $event, 'attendees' => $attendees));
+    }
+
+
+    /**
+     * View and print ticket copy
+     *
+     * @param string $unique_id
+     * @return void
+     */
+    public function viewTicket(string $unique_id)
+    {
+        $unique_id = htmlspecialchars(trim($unique_id), ENT_QUOTES, 'UTF-8');
+
+        try {
+            $ticketData = Attendee::generateTicketData($unique_id);
+
+            if (empty($ticketData)) {
+                throw new Exception("Invalid access! Ticket not found!");
+            }
+
+            view('admin.pages.events.ticket-copy', array('title' => "View Ticket", 'ticketData' => $ticketData[0]));
+        } catch (Exception $e) {
+            Session::setPopup('popup_error', $e->getMessage());
+            redirect('/');
+        }
     }
 }
