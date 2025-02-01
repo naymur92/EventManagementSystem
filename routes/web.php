@@ -15,6 +15,7 @@ $router->get('/events', [HomeController::class, 'eventPage']);
 $router->get('/events/{event_id}/view-details', [HomeController::class, 'eventDetailsPage']);
 
 $router->get('/events/{event_id}/get-ticket', [TicketController::class, 'eventRegistrationPage']);
+$router->get('/my-tickets', [TicketController::class, 'myTickets'])->only(['auth']);
 $router->get('/event-registration/{unique_id}/view-ticket', [TicketController::class, 'viewTicket']);
 
 ############################################# Admin Routes #############################################

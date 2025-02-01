@@ -51,6 +51,60 @@ class TicketController extends Controller
 
 
     /**
+     * Ticket list of users
+     *
+     * @return void
+     */
+    public function myTickets()
+    {
+
+        if (!Auth::user() || Auth::user()->type != 3) {
+            Session::flash('flash_error', "Invalid action!");
+
+            redirect('/');
+        }
+
+        $params = array();
+        $sql = "SELECT
+                    ev.event_id,
+                    ev.name,
+                    ev.location,
+                    ev.registration_fee,
+                    DATE_FORMAT(ev.start_time, '%Y-%m-%d %h:%i %p') start_time,
+                    DATE_FORMAT(ev.end_time, '%Y-%m-%d %h:%i %p') end_time,
+                    u.name host_name,
+                    a.attendee_id,
+                    a.booking_no,
+                    a.payment_trnx_no,
+                    a.payment_amount,
+                    a.payment_account_no,
+                    a.registration_time,
+                    a.status
+                FROM attendees a
+                JOIN events ev
+                    ON a.event_id = ev.event_id
+                JOIN users u
+                    ON u.user_id = ev.user_id
+                WHERE a.user_id = ?
+                ORDER BY registration_time DESC
+                LIMIT 500";
+
+        $params[] = Auth::user()->user_id;
+
+        try {
+            $ticketList = DB::query($sql, $params)->fetchAll();
+
+            // dd($ticketList);
+
+            view('pages.tickets.ticket-list', array('title' => "Ticket List", 'ticketList' => $ticketList));
+        } catch (Exception $e) {
+            Session::setPopup('popup_error', $e->getMessage());
+            // redirect('/');
+        }
+    }
+
+
+    /**
      * View and print ticket copy
      *
      * @param string $unique_id
@@ -58,8 +112,8 @@ class TicketController extends Controller
      */
     public function viewTicket(string $unique_id)
     {
-        $decoded = base64_decode($unique_id);
-        [$bookingNo, $attendeeId] = explode('|', $decoded);
+        $unique_id = htmlspecialchars(trim($unique_id), ENT_QUOTES, 'UTF-8');
+        [$bookingNo, $attendeeId] = decodeData($unique_id);
 
         $params = array();
         $sql = "SELECT
@@ -101,10 +155,10 @@ class TicketController extends Controller
 
             // dd($ticketData);
 
-            view('pages.events.ticket-copy', array('title' => "Event Ticket", 'ticketData' => $ticketData[0]));
+            view('pages.tickets.ticket-copy', array('title' => "Event Ticket", 'ticketData' => $ticketData[0]));
         } catch (Exception $e) {
             Session::setPopup('popup_error', $e->getMessage());
-            // redirect('/');
+            redirect('/');
         }
     }
 }

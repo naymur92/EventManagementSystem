@@ -69,14 +69,18 @@ ob_start(); ?>
                             <td style="padding: 3px;">: <?= $ticketData['attendee_mobile']; ?></td>
                         </tr>
                         <tr>
-                            <th>Transaction No</th>
-                            <td style="padding: 3px;">: <?= $ticketData['payment_trnx_no']; ?></td>
-                        </tr>
-                        <tr>
-                            <th>Amount Paid</th>
-                            <td style="padding: 3px;">: BDT <?= $ticketData['payment_amount']; ?></td>
+                            <th>Registration Fee</th>
+                            <td style="padding: 3px;">: <?= $ticketData['registration_fee'] > 0 ? $ticketData['registration_fee'] : '<strong style="color: green;">FREE</strong>'; ?></td>
                         </tr>
                         <?php if ($ticketData['registration_fee'] > 0): ?>
+                            <tr>
+                                <th>Transaction No</th>
+                                <td style="padding: 3px;">: <?= $ticketData['payment_trnx_no']; ?></td>
+                            </tr>
+                            <tr>
+                                <th>Amount Paid</th>
+                                <td style="padding: 3px;">: BDT <?= $ticketData['payment_amount']; ?></td>
+                            </tr>
                             <tr>
                                 <th>Payment Status</th>
                                 <td style="padding: 3px;">: <?= $ticketData['payment_amount'] == $ticketData['registration_fee'] ? '<strong style="color: green;">Paid</strong>' : '<strong style="color: red;">Pending</strong>' ?></td>

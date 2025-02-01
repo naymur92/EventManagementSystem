@@ -349,7 +349,7 @@ class EventApiController extends Controller
                 'booking_no' => $bookingNumber
             );
             if ($attendee_id) {
-                $uniqueId = base64_encode($bookingNumber . "|" . $attendee_id);
+                $uniqueId = encodeData([$bookingNumber, $attendee_id]);
                 $ticketPrintUrl = route("/event-registration/$uniqueId/view-ticket");
                 // $responseData['attendee_id'] = $attendee_id;
                 $responseData['redirect_url'] = $ticketPrintUrl;
