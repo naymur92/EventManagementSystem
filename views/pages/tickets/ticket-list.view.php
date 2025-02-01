@@ -141,10 +141,8 @@ ob_start(); ?>
 <!--===== HERO AREA ENDS =======-->
 
 <!--===== EVENT AREA STARTS =======-->
-<div class="page-content">
+<div class="blog-details-section contact-inner-section sp8 page-content">
     <div class="container">
-        <div class="space12"></div>
-
         <div class="card">
             <div class="card-header">
                 Ticket List
@@ -258,7 +256,7 @@ ob_start(); ?>
         </div>
 
 
-        <div class="space12"></div>
+        <div class="space24"></div>
     </div>
 </div>
 <!--===== EVENT AREA ENDS =======-->

@@ -143,7 +143,11 @@ ob_start(); ?>
 
     // call function at beginning
     $(function() {
+        setCursorWait();
+
         main().then(() => {
+            unsetCursorWait();
+
             // get events of first schedule
             generateSchedules(eventSchedules);
 
@@ -158,9 +162,13 @@ ob_start(); ?>
 
     // get events and print when click schedule button
     $(document).on('click', '.schedule-button', function() {
+        setCursorWait();
+
         getEvents({
             date: $(this).attr('data-schedule-date')
         }).then((events) => {
+            unsetCursorWait();
+
             generateEvents(events)
         })
     });
