@@ -188,6 +188,14 @@ ob_start(); ?>
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
             <h5 class="m-0 text-primary">Event Attendee List</h5>
+
+            <div class="ms-auto">
+                <div class="btn-list">
+                    <a href="<?= route("/admin/events/{$event->event_id}/download-attendee-list") ?>" class="btn waves-effect waves-light br-5 btn-success">Download List
+                    </a>
+
+                </div>
+            </div>
         </div>
         <div class="card-body">
             <div class="row">

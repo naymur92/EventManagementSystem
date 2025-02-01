@@ -28,10 +28,26 @@
             Event Management
         </div>
 
-        <li class="nav-item <?= urlInList(['/admin/events', '/admin/events/create', '/admin/events/{id}/show', '/admin/events/{id}/edit']) ? 'active' : '' ?>">
+        <li class="nav-item <?= urlInList(['/admin/events', '/admin/events/create', '/admin/events/{id}/show', '/admin/events/{id}/edit', '/admin/events/{id}/attendee-list']) ? 'active' : '' ?>">
             <a class="nav-link" href="<?= route('/admin/events') ?>">
                 <i class="fa-solid fa-calendar-days"></i>
                 <span>Events</span></a>
+        </li>
+    <?php endif; ?>
+
+
+    <?php if (authUser()->type == 1 || authUser()->type == 2): ?>
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+        <!-- Heading -->
+        <div class="sidebar-heading mb-2">
+            Reports
+        </div>
+
+        <li class="nav-item <?= urlInList(['/admin/reports/event-report']) ? 'active' : '' ?>">
+            <a class="nav-link" href="<?= route('/admin/reports/event-report') ?>">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Event Report</span></a>
         </li>
     <?php endif; ?>
 

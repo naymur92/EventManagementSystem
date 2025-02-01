@@ -73,7 +73,8 @@ class Attendee extends BaseModel
                     a.payment_trnx_no,
                     a.payment_amount,
                     a.payment_account_no,
-                    a.registration_time
+                    a.registration_time,
+                    a.status
                 FROM attendees a
                 JOIN events ev
                     ON a.event_id = ev.event_id

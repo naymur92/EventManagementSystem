@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\HostApiController;
 use App\Http\Controllers\Api\TicketApiController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Reports\EventReportController;
 use App\Http\Controllers\TicketController;
 
 // Define routes
@@ -45,9 +46,16 @@ $router->delete('/admin/events/{id}/delete', [EventController::class, 'delete'])
 $router->put('/admin/events/{id}/change-status', [EventController::class, 'changeStatus'])->only(['auth', 'super&host']);
 $router->get('/admin/events/{id}/attendee-list', [EventController::class, 'attendeeList'])->only(['auth', 'super&host']);
 $router->get('/admin/events/{id}/attendee-list', [EventController::class, 'attendeeList'])->only(['auth', 'super&host']);
+$router->get('/admin/events/{id}/download-attendee-list', [EventController::class, 'downloadAttendeeList'])->only(['auth', 'super&host']);
 
 // tickets
 $router->get('/admin/tickets/{unique_id}/view-ticket', [EventController::class, 'viewTicket'])->only(['auth', 'super&host']);
+
+// reports
+$router->get('/admin/reports/event-report', [EventReportController::class, 'index'])->only(['auth', 'super&host']);
+$router->post('/admin/reports/event-report', [EventReportController::class, 'generate'])->only(['auth', 'super&host']);
+$router->get('/admin/reports/event-report/download-event-list', [EventReportController::class, 'downloadEventReport'])->only(['auth', 'super&host']);
+$router->get('/admin/reports/event-report/download-attendee-list', [EventReportController::class, 'downloadAttendeeListReport'])->only(['auth', 'super&host']);
 
 
 // User profile routes

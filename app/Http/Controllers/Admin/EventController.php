@@ -11,6 +11,7 @@ use App\Models\Attendee;
 use App\Models\Event;
 use App\Models\File;
 use App\Models\User;
+use App\Utils\CSVExporter;
 use Exception;
 
 class EventController extends Controller
@@ -494,5 +495,52 @@ class EventController extends Controller
             Session::setPopup('popup_error', $e->getMessage());
             redirect('/');
         }
+    }
+
+
+    public function downloadAttendeeList($event_id)
+    {
+        $event = (new Event)->find($event_id);
+
+        if (!$event) {
+            Session::flash('flash_error', "Invalid action!");
+
+            redirect('/admin/events');
+        }
+
+        $sql = "SELECT
+                    u.name host_name,
+                    ev.name event_name,
+                    ev.start_time,
+                    ev.end_time,
+                    a.booking_no,
+                    a.name attendee_name,
+                    a.email attendee_email,
+                    a.mobile attendee_mobile,
+                    ev.registration_fee,
+                    a.payment_amount,
+                    a.payment_trnx_no,
+                    a.payment_account_no,
+                    a.registration_time,
+                    IF(a.status = 0, 'Cancelled', 'Confirmed') status
+                FROM attendees a
+                JOIN events ev
+                    ON a.event_id = ev.event_id
+                JOIN users u
+                    ON u.user_id = ev.user_id
+                WHERE a.event_id = ?";
+
+        $params[] = $event_id;
+
+        $attendees = DB::query($sql, $params)->fetchAll();
+
+        $headers = ["Host Name", "Event Name", "Start Time", "End Time", "Booking Number", "Attendee Name", "Attendee Email", "Attendee Mobile", "Registration Fee", "Payment Amount", "Payment Trnx No", "Payment Account No", "Registration Time", "Status"];
+
+        $fileName = 'attendees_' . $event_id . '.csv';
+
+        $csvExporter = new CSVExporter($attendees, $fileName);
+        $csvExporter->setHeaders($headers);
+
+        $csvExporter->download();
     }
 }
