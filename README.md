@@ -131,8 +131,7 @@ To access the application, use the following test credentials:
 &nbsp; &nbsp; ✔️ Backend: PHP (Pure PHP, Laravel), MySQL  
 &nbsp; &nbsp; ✔️ Frontend: JavaScript, AJAX, Vue, React  
 &nbsp; &nbsp; ✔️ API Development & Integration: Payment Gateways, Custom APIs  
-&nbsp; &nbsp; ✔️ Others: C++, DSA, Problem Solving, Mathematics, SOLID, OOP  
-🔹 **GitHub Stats:** 🚀 _[Optionally, you can add GitHub stats images here]_
+&nbsp; &nbsp; ✔️ Others: C++, DSA, Problem Solving, Mathematics, SOLID, OOP
 
 ---
 
