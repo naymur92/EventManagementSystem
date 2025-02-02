@@ -82,7 +82,7 @@ ob_start(); ?>
                                         <td class="align-middle">
                                             <div class="text-center d-flex justify-content-center align-items-center">
 
-                                                <a href="<?= route("/admin/events/{$event['event_id']}/show") ?>" data-toggle="tooltip" data-placement="top" title="View Details" class="table-data-modify-icon mr-2">
+                                                <a href="<?= route("/admin/events/{$event['event_id']}/show") ?>" data-toggle="tooltip" data-placement="top" title="View Details" class="table-data-modify-icon mx-1 my-1">
                                                     <span class="badge badge-primary"><i class="fa-solid fa-eye"></i></span>
                                                 </a>
 
@@ -99,7 +99,7 @@ ob_start(); ?>
                                                         <input type="submit" class="hidden-submit-btn" hidden>
 
                                                         <a type="button" data-toggle="tooltip" data-placement="top"
-                                                            title="Unpublish" class="table-data-modify-icon mr-2"
+                                                            title="Unpublish" class="table-data-modify-icon mx-1 my-1"
                                                             onclick="$(this).closest('form').find('.hidden-submit-btn').click()">
                                                             <span class="badge badge-danger"><i class="fa-solid fa-xmark"></i></span>
                                                         </a>
@@ -119,7 +119,7 @@ ob_start(); ?>
                                                         <input type="submit" class="hidden-submit-btn" hidden>
 
                                                         <a type="button" data-toggle="tooltip" data-placement="top"
-                                                            title="Publish" class="table-data-modify-icon mr-2" onclick="$(this).closest('form').find('.hidden-submit-btn').click()">
+                                                            title="Publish" class="table-data-modify-icon mx-1 my-1" onclick="$(this).closest('form').find('.hidden-submit-btn').click()">
                                                             <span class="badge badge-success"><i class="fa-solid fa-check"></i></span>
                                                         </a>
                                                     </form>
@@ -137,19 +137,19 @@ ob_start(); ?>
                                                         <input type="submit" class="hidden-submit-btn" hidden>
 
                                                         <a type="button" data-toggle="tooltip" data-placement="top"
-                                                            title="Block" class="table-data-modify-icon mr-2" onclick="$(this).closest('form').find('.hidden-submit-btn').click()">
+                                                            title="Block" class="table-data-modify-icon mx-1 my-1" onclick="$(this).closest('form').find('.hidden-submit-btn').click()">
                                                             <span class="badge badge-danger"><i class="fa-solid fa-ban"></i></span>
                                                         </a>
                                                     </form>
                                                 <?php endif; ?>
 
-                                                <a href="<?= route("/admin/events/{$event['event_id']}/attendee-list") ?>" data-toggle="tooltip" data-placement="top" title="Attendee List" class="table-data-modify-icon mr-2">
+                                                <a href="<?= route("/admin/events/{$event['event_id']}/attendee-list") ?>" data-toggle="tooltip" data-placement="top" title="Attendee List" class="table-data-modify-icon mx-1 my-1">
                                                     <span class="badge badge-info"><i class="fa-solid fa-list"></i></span>
                                                 </a>
 
                                                 <?php if (authUser()->type == 2): ?>
 
-                                                    <a href="<?= route("/admin/events/{$event['event_id']}/edit") ?>" data-toggle="tooltip" data-placement="top" title="Edit Event" class="table-data-modify-icon mr-2">
+                                                    <a href="<?= route("/admin/events/{$event['event_id']}/edit") ?>" data-toggle="tooltip" data-placement="top" title="Edit Event" class="table-data-modify-icon mx-1 my-1">
                                                         <span class="badge badge-warning"><i class="fa-solid fa-pen-to-square"></i></span>
                                                     </a>
 

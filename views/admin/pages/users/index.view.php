@@ -83,7 +83,7 @@ ob_start(); ?>
                                         <td>
                                             <div class="text-center d-flex justify-content-center align-items-center">
 
-                                                <a href="<?= route("/admin/users/{$user['user_id']}/show") ?>" data-toggle="tooltip" data-placement="top" title="View Details" class="table-data-modify-icon mr-2">
+                                                <a href="<?= route("/admin/users/{$user['user_id']}/show") ?>" data-toggle="tooltip" data-placement="top" title="View Details" class="table-data-modify-icon mx-1 my-1">
                                                     <span class="badge badge-primary"><i class="fa-solid fa-eye"></i></span>
                                                 </a>
 
@@ -100,7 +100,7 @@ ob_start(); ?>
                                                             <input type="submit" class="hidden-submit-btn" hidden>
 
                                                             <a type="button" data-toggle="tooltip" data-placement="top"
-                                                                title="Mark Inactive" class="table-data-modify-icon mr-2"
+                                                                title="Mark Inactive" class="table-data-modify-icon mx-1 my-1"
                                                                 onclick="$(this).closest('form').find('.hidden-submit-btn').click()">
                                                                 <span class="badge badge-danger"><i class="fa-solid fa-xmark"></i></span>
                                                             </a>
@@ -120,13 +120,13 @@ ob_start(); ?>
                                                             <input type="submit" class="hidden-submit-btn" hidden>
 
                                                             <a type="button" data-toggle="tooltip" data-placement="top"
-                                                                title="Mark Active" class="table-data-modify-icon mr-2" onclick="$(this).closest('form').find('.hidden-submit-btn').click()">
+                                                                title="Mark Active" class="table-data-modify-icon mx-1 my-1" onclick="$(this).closest('form').find('.hidden-submit-btn').click()">
                                                                 <span class="badge badge-success"><i class="fa-solid fa-check"></i></span>
                                                             </a>
                                                         </form>
                                                     <?php endif; ?>
 
-                                                    <a href="<?= route("/admin/users/{$user['user_id']}/edit") ?>" data-toggle="tooltip" data-placement="top" title="Edit User" class="table-data-modify-icon mr-2">
+                                                    <a href="<?= route("/admin/users/{$user['user_id']}/edit") ?>" data-toggle="tooltip" data-placement="top" title="Edit User" class="table-data-modify-icon mx-1 my-1">
                                                         <span class="badge badge-warning"><i class="fa-solid fa-pen-to-square"></i></span>
                                                     </a>
 

@@ -120,21 +120,3 @@ To access the application, use the following test credentials:
 > ⚠️ **Note:** You can create more users via the registration form or database.
 
 ---
-
-## **👤 About Me**
-
-🔹 **Name:** _Naymur Rahman_  
-🔹 **Role:** Software Engineer  
-🔹 **Expertise:** PHP, Laravel, Custom MVC, JavaScript, Vue, C++, DSA, API Development & Integration  
-🔹 **Current Projects:** **Event Management System**, Custom ERP  
-🔹 **Skills:**  
-&nbsp; &nbsp; ✔️ Backend: PHP (Pure PHP, Laravel), MySQL  
-&nbsp; &nbsp; ✔️ Frontend: JavaScript, AJAX, Vue, React  
-&nbsp; &nbsp; ✔️ API Development & Integration: Payment Gateways, Custom APIs  
-&nbsp; &nbsp; ✔️ Others: C++, DSA, Problem Solving, Mathematics, SOLID, OOP
-
----
-
-### **📫 Connect with Me**
-
-💼 **LinkedIn:** _[https://www.linkedin.com/in/naymur/]_
