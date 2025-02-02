@@ -24,6 +24,9 @@
     </div>
 
     <ul class="navbar-nav float-end ml-auto">
+        <li class="nav-item" style="display: flex; align-items: center;">
+            <a style="height: 40px; color: white;" href="<?= route('/') ?>" class="nav-link btn btn-sm btn-primary">View Site</a>
+        </li>
         <div class="first-topbar-divider topbar-divider d-none d-sm-block"></div>
         <!-- Nav Item - User Information -->
         <?php if (authUser()): ?>

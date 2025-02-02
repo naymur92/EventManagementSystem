@@ -25,9 +25,10 @@ ob_start(); ?>
 
             <div class="ms-auto">
                 <div class="btn-list">
-                    <a class="btn btn-primary waves-effect waves-light br-5" href="<?= route("/admin/events/create") ?>">
-                        <i class="fas fa-plus-circle me-1"></i> Add New Event</a>
-
+                    <?php if (authUser()->type == 2): ?>
+                        <a class="btn btn-primary waves-effect waves-light br-5" href="<?= route("/admin/events/create") ?>">
+                            <i class="fas fa-plus-circle me-1"></i> Add New Event</a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

@@ -304,3 +304,21 @@ function unsetCursorWait(selector = '.page-content') {
     $(`${selector} div`).css("pointer-events", "auto");
     $(selector).css("cursor", "default");
 }
+
+
+function insertFormError(selector, message) {
+    $(selector).addClass('is-invalid');
+    $(`<span class='errors invalid-feedback' role='alert'><strong>${message}</strong></span>`).insertAfter(selector);
+}
+
+function removeFormError(selector) {
+    $(selector).removeClass('is-invalid');
+    $(".errors").remove();
+}
+
+function validateMobileNumber(value) {
+    value = value.trim();
+
+    let mobilePattern = /^01\d{9}$/;
+    return mobilePattern.test(value) || value.length == 0;
+}

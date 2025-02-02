@@ -93,13 +93,17 @@ class Validator
 
             case 'email':
                 if (!filter_var($value, FILTER_VALIDATE_EMAIL) && !empty($value)) {
-                    $this->addError($field, "$field must be a valid email address.");
+                    $this->addError($field, "Must be a valid email address.");
                 }
                 break;
 
             case 'url':
                 if (!filter_var($value, FILTER_VALIDATE_URL) && !empty($value)) {
-                    $this->addError($field, "$field must be a valid URL.");
+                    $this->addError($field, "Must be a valid URL.");
+                }
+            case 'mobile':
+                if (!preg_match('/^01\d{9}$/', $value) && !empty($value)) {
+                    $this->addError($field, "Must be a valid mobile number.");
                 }
                 break;
         }

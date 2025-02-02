@@ -56,7 +56,7 @@ class UserController extends Controller
         $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:127',
-            'mobile' => 'string|max:15',
+            'mobile' => 'mobile|max:15',
             'type' => 'required|integer',
             'password' => 'required|string|min:8',
         ];
@@ -179,7 +179,7 @@ class UserController extends Controller
         // Validation rules
         $rules = [
             'name' => 'required|string|max:255',
-            'mobile' => 'string|max:15',
+            'mobile' => 'mobile|max:15',
             'type' => 'required|integer',
             'password' => 'string|min:8',
         ];
@@ -425,7 +425,7 @@ class UserController extends Controller
         // Validation rules
         $rules = [
             'name' => 'required|string|max:255',
-            'mobile' => 'string|max:15',
+            'mobile' => 'mobile|max:15',
             'description' => 'string',
         ];
 

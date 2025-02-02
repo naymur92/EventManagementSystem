@@ -17,6 +17,20 @@ ob_start(); ?>
         $('.text-editor').summernote()
     })
 </script>
+
+<script>
+    // mobile number validation
+    $("#_mobile").on("input", function() {
+        // remove all errors first
+        removeFormError('.form-group > input')
+
+        let value = $(this).val().trim();
+
+        if (!validateMobileNumber(value)) {
+            insertFormError($("#_mobile"), "Invalid mobile number");
+        }
+    });
+</script>
 <?php $scriptsBlock = ob_get_clean();
 ?>
 
@@ -68,8 +82,8 @@ ob_start(); ?>
                                 </div>
 
                                 <div class="form-group col-12 col-lg-12 mb-3">
-                                    <label for="mobile">Mobile</label>
-                                    <input type="text" name="mobile" id="mobile" value="<?= old('mobile', $user->mobile) ?>" class="form-control <?= hasError('mobile') ? 'is-invalid' : '' ?>" placeholder="01xxxxxxxxx">
+                                    <label for="_mobile">Mobile</label>
+                                    <input type="text" name="mobile" id="_mobile" value="<?= old('mobile', $user->mobile) ?>" class="form-control <?= hasError('mobile') ? 'is-invalid' : '' ?>" placeholder="01xxxxxxxxx">
 
                                     <?php foreach (errors('mobile') as $error) : ?>
                                         <span class="invalid-feedback" role="alert">

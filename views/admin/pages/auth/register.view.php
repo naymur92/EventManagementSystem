@@ -123,6 +123,24 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.3/dist/sweetalert2.all.min.js"></script>
     <script src="<?= getBaseUrl() ?>/common_assets/js/swal-helpers.js"></script>
 
+
+    <script src="<?= getBaseUrl() ?>/common_assets/js/global_helpers.js"></script>
+    <script src="<?= getBaseUrl() ?>/common_assets/js/ajax.js"></script>
+
+    <script>
+        // mobile number validation
+        $("#_mobile").on("input", function() {
+            // remove all errors first
+            removeFormError('.form-group > input')
+
+            let value = $(this).val().trim();
+
+            if (!validateMobileNumber(value)) {
+                insertFormError($("#_mobile"), "Invalid mobile number");
+            }
+        });
+    </script>
+
     <script>
         // show popup messages
         showPopupMessages(<?= json_encode(getPopupData()); ?>).then(() => {

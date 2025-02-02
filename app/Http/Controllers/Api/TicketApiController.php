@@ -121,7 +121,7 @@ class TicketApiController extends Controller
         // Validation rules
         $rules = [
             'booking_no' => 'required|string"|max:128',
-            'mobile' => 'string|max:15',
+            'mobile' => 'mobile|max:15',
             'email' => 'email|max:128'
         ];
 

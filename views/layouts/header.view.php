@@ -5,7 +5,7 @@
                 <div class="col-lg-12">
                     <div class="header-elements">
                         <div class="site-logo">
-                            <a href="index.html"><img src="<?= getBaseUrl() ?>/assets/img/logo/logo1.png" alt="" /></a>
+                            <a href="<?= route('/'); ?>"><img src="<?= getBaseUrl() ?>/assets/img/logo/logo1.png" alt="" /></a>
                         </div>
 
                         <div class="main-menu">

@@ -9,11 +9,6 @@ ob_start(); ?>
 ################## extra scripts section ##################
 ob_start(); ?>
 <script>
-    function insertFormError(selector, message) {
-        $(selector).addClass('is-invalid');
-        $(`<span class='errors invalid-feedback' role='alert'><strong>${message}</strong></span>`).insertAfter(selector);
-    }
-
     // call function at beginning
     $(function() {
         $("#ticket_find_form").on('submit', function(e) {
@@ -28,8 +23,7 @@ ob_start(); ?>
             };
 
             // remove all errors first
-            $('.input-area > input').removeClass('is-invalid');
-            $(".errors").remove();
+            removeFormError('.input-area > input')
 
             var errorFound = false;
 
@@ -46,6 +40,11 @@ ob_start(); ?>
                     insertFormError(formFields.mobile, 'Enter mobile no!');
                     insertFormError(formFields.email, 'Enter email!');
 
+                    errorFound = true;
+                }
+
+                if (!validateMobileNumber(mobile)) {
+                    insertFormError(formFields.mobile, "Invalid mobile number");
                     errorFound = true;
                 }
             }
@@ -106,6 +105,18 @@ ob_start(); ?>
                 }
             });
         })
+
+        // mobile number validation
+        $("#mobile_field").on("input", function() {
+            // remove all errors first
+            removeFormError('.input-area > input')
+
+            let value = $(this).val().trim();
+
+            if (!validateMobileNumber(value)) {
+                insertFormError($("#mobile_field"), "Invalid mobile number");
+            }
+        });
     })
 </script>
 <?php $scriptsBlock = ob_get_clean();

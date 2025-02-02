@@ -20,13 +20,10 @@ ob_start(); ?>
     var maxCapacity = "<?= $event->max_capacity ?>";
     var currentCapacity = "<?= $event->current_capacity ?>";
 
+    var errorFound = false;
+
     // main function
     // async function main() {}
-
-    function insertFormError(selector, message) {
-        $(selector).addClass('is-invalid');
-        $(`<span class='errors invalid-feedback' role='alert'><strong>${message}</strong></span>`).insertAfter(selector);
-    }
 
     // call function at beginning
     $(function() {
@@ -50,10 +47,8 @@ ob_start(); ?>
             var paymentAccountFieldValue = formFields.payment_account_no.val() ?? '';
 
             // remove all errors first
-            $('.input-area > input').removeClass('is-invalid');
-            $(".errors").remove();
+            removeFormError('.input-area > input')
 
-            var errorFound = false;
             // validation
             if (nameFieldValue == '') {
                 insertFormError(formFields.name, 'Enter your name!');
@@ -65,6 +60,10 @@ ob_start(); ?>
             }
             if (mobileFieldValue == '') {
                 insertFormError(formFields.mobile, 'Enter mobile number!');
+                errorFound = true;
+            }
+            if (!validateMobileNumber(mobileFieldValue)) {
+                insertFormError(formFields.mobile, "Invalid mobile number");
                 errorFound = true;
             }
 
@@ -156,6 +155,18 @@ ob_start(); ?>
                 }
             });
         })
+
+        // mobile number validation
+        $("#mobile_field").on("input", function() {
+            // remove all errors first
+            removeFormError('.input-area > input')
+
+            let value = $(this).val().trim();
+
+            if (!validateMobileNumber(value)) {
+                insertFormError($("#mobile_field"), "Invalid mobile number");
+            }
+        });
     })
 </script>
 <?php $scriptsBlock = ob_get_clean();

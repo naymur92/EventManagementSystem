@@ -248,7 +248,7 @@ class EventApiController extends Controller
             'event_id' => 'required|integer|min:1',
             'name' => 'required|string|max:128',
             'email' => 'required|email|max:255',
-            'mobile' => 'required|string|max:15',
+            'mobile' => 'required|mobile|max:15',
             'payment_trnx_no' => 'string|max:128',
             'payment_amount' => 'integer|min:0',
             'payment_account_no' => 'string|max:128',

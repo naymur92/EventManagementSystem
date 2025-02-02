@@ -124,7 +124,7 @@ class AuthenticationController extends Controller
         $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:127',
-            'mobile' => 'string|max:15',
+            'mobile' => 'mobile|max:15',
             'password' => 'required|string|min:8',
         ];
 

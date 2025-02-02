@@ -30,11 +30,6 @@ ob_start(); ?>
     // main function
     // async function main() {}
 
-    function insertFormError(selector, message) {
-        $(selector).addClass('is-invalid');
-        $(`<span class='errors invalid-feedback' role='alert'><strong>${message}</strong></span>`).insertAfter(selector);
-    }
-
     // call function at beginning
     $(function() {
         // get unique id from button link
@@ -52,8 +47,7 @@ ob_start(); ?>
             var cancelReason = formFields.cancel_reason.val() ?? '';
 
             // remove all errors first
-            $('.input-area > input').removeClass('is-invalid');
-            $(".errors").remove();
+            removeFormError('.input-area > input')
 
             var errorFound = false;
             // validation
@@ -232,31 +226,31 @@ ob_start(); ?>
             </div>
         </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="ticketCancelModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ticketCancelModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content formElement">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="ticketCancelModalLabel">Cancel Ticket</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form id="ticketCancelForm">
-                        <div class="modal-body">
-                            <div class="form-body">
-                                <input id="cancel_reason" class="form-control" type="text" placeholder="Cancel Reason" required>
-                            </div>
-
-                        </div>
-                        <div class="modal-footer">
-                            <button id="cancelTicketBtn" type="submit" class="btn btn-primary">Cancel Now</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-
         <div class="space24"></div>
     </div>
 </div>
 <!--===== EVENT AREA ENDS =======-->
+
+
+<!-- Modal -->
+<div class="modal fade" id="ticketCancelModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ticketCancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content formElement">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ticketCancelModalLabel">Cancel Ticket</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="ticketCancelForm">
+                <div class="modal-body">
+                    <div class="form-body">
+                        <input id="cancel_reason" class="form-control" type="text" placeholder="Cancel Reason" required>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button id="cancelTicketBtn" type="submit" class="btn btn-primary">Cancel Now</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

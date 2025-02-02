@@ -52,6 +52,7 @@
     <script src="<?= getBaseUrl() ?>/assets/js/vendor/jquery-3.7.1.min.js"></script>
 
 
+    <script src="<?= getBaseUrl() ?>/common_assets/js/global_helpers.js"></script>
     <script src="<?= getBaseUrl() ?>/common_assets/js/ajax.js"></script>
 </head>
 
@@ -107,7 +108,6 @@
     <!--===== JS SCRIPT LINK =======-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.3/dist/sweetalert2.all.min.js"></script>
 
-    <script src="<?= getBaseUrl() ?>/common_assets/js/global_helpers.js"></script>
     <script src="<?= getBaseUrl() ?>/common_assets/js/swal-helpers.js"></script>
 
     <script>
