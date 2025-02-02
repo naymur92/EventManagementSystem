@@ -109,7 +109,7 @@ To access the application, use the following test credentials:
 
 ### **👥 Host Users**
 
-📧 **Email:** `admin@gycm.com` `admin@limelight.com` `admin@bylc.com`
+📧 **Email:** `admin@gycm.com` `admin@limelight.com` `admin@bylc.com`  
 🔑 **Password:** `12345678`
 
 ### **👨‍🎓 Attendee User**
