@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 02, 2025 at 02:35 AM
+-- Generation Time: Feb 02, 2025 at 03:32 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -53,11 +53,11 @@ INSERT INTO `attendees` (`attendee_id`, `booking_no`, `event_id`, `user_id`, `na
 (3, 'EV20000002', 2, NULL, 'Kamrul Hasan', 'kamrul@gmail.com', '01720000001', NULL, NULL, NULL, '2025-01-31 15:10:25', 1, NULL),
 (4, 'EV30000001', 3, NULL, 'Al Helal', 'al-helal@gmail.com', '01737889900', '63485738', 600, '42345223542355', '2025-01-31 15:21:29', 1, NULL),
 (5, 'EV30000002', 3, NULL, 'Kawsar Ahmed', 'kawsar@gmail.com', '01645443322', '3745273458990', 600, '298457lskdafj2456', '2025-01-31 15:22:25', 0, 'Test Cancel'),
-(6, 'EV10000002', 1, 4, 'Abdur Rahman', 'abdrahman@gmail.com', '01737036324', '28342723493428', 500, '42345223542355', '2025-01-31 17:09:49', 1, NULL),
-(7, 'EV30000003', 3, 4, 'Abdur Rahman', 'abdrahman@gmail.com', '01737036324', '28342723493428', 600, '423452235423553', '2025-02-01 01:41:05', 0, NULL),
-(8, 'EV50000001', 5, 4, 'Abdur Rahman', 'abdrahman@gmail.com', '01737036324', NULL, NULL, NULL, '2025-02-01 01:41:25', 1, NULL),
-(9, 'EV20000003', 2, 4, 'Abdur Rahman', 'abdrahman@gmail.com', '01737036324', NULL, NULL, NULL, '2025-02-01 01:41:34', 1, NULL),
-(10, 'EV40000001', 4, 4, 'Abdur Rahman', 'abdrahman@gmail.com', '01737036324', '28342723493428', 1000, '423452235423551', '2025-02-01 01:43:36', 1, NULL),
+(6, 'EV10000002', 1, 4, 'Abdur Rahman', 'abdrahman@gmail.com', '01727010101', '28342723493428', 500, '42345223542355', '2025-01-31 17:09:49', 1, NULL),
+(7, 'EV30000003', 3, 4, 'Abdur Rahman', 'abdrahman@gmail.com', '01727010101', '28342723493428', 600, '423452235423553', '2025-02-01 01:41:05', 0, NULL),
+(8, 'EV50000001', 5, 4, 'Abdur Rahman', 'abdrahman@gmail.com', '01727010101', NULL, NULL, NULL, '2025-02-01 01:41:25', 1, NULL),
+(9, 'EV20000003', 2, 4, 'Abdur Rahman', 'abdrahman@gmail.com', '01727010101', NULL, NULL, NULL, '2025-02-01 01:41:34', 1, NULL),
+(10, 'EV40000001', 4, 4, 'Abdur Rahman', 'abdrahman@gmail.com', '01727010101', '28342723493428', 1000, '423452235423551', '2025-02-01 01:43:36', 1, NULL),
 (11, 'EV50000002', 5, NULL, 'Abu Hasan', 'abu.hasan@gmail.com', '01720112233', NULL, NULL, NULL, '2025-02-02 00:56:00', 1, NULL);
 
 -- --------------------------------------------------------
@@ -172,9 +172,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `name`, `email`, `mobile`, `email_verified_at`, `status`, `type`, `password`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, 'Naymur Rahman', 'naymur92@gmail.com', '01737036324', NULL, 1, 1, '$2y$10$.HRiuajTuUBzB6QcgjoXcu0jMasD5XZZSymxn0jZkNZ12rdI0qVva', 0, 1, '2025-01-23 01:51:37', '2025-01-26 12:46:40'),
-(3, 'Md. Kamrul Hasan', 'kamrul@gmail.com', '01558981652', NULL, 0, 2, '$2y$10$qQji/ujnkB6upiQXyENnR.UHy.XkqIx1YGiSpDbCv/F0616FvnLiG', 0, 1, '2025-01-24 09:27:53', '2025-01-26 12:03:58'),
-(4, 'Abdur Rahman', 'abdrahman@gmail.com', '01737036324', NULL, 1, 3, '$2y$10$6ZHQFuUJDRq5mdYCmsJ5lu/cli9URQ7fG4aH5mto3HEjmmeeIOPuC', 1, 1, '2025-01-25 05:35:22', '2025-01-25 08:35:39'),
+(1, 'Naymur Rahman', 'superuser@example.com', '01725010101', NULL, 1, 1, '$2y$10$.HRiuajTuUBzB6QcgjoXcu0jMasD5XZZSymxn0jZkNZ12rdI0qVva', 0, 1, '2025-01-23 01:51:37', '2025-01-26 12:46:40'),
+(3, 'Md. Kamrul Hasan', 'kamrul@gmail.com', '01723010101', NULL, 0, 2, '$2y$10$qQji/ujnkB6upiQXyENnR.UHy.XkqIx1YGiSpDbCv/F0616FvnLiG', 0, 1, '2025-01-24 09:27:53', '2025-01-26 12:03:58'),
+(4, 'Abdur Rahman', 'abdrahman@gmail.com', '01727010101', NULL, 1, 3, '$2y$10$6ZHQFuUJDRq5mdYCmsJ5lu/cli9URQ7fG4aH5mto3HEjmmeeIOPuC', 1, 1, '2025-01-25 05:35:22', '2025-01-25 08:35:39'),
 (12, 'GYCM - Global Youth Change Maker', 'admin@gycm.com', '', NULL, 1, 2, '$2y$10$I4WSau95kQMVYC1Bb3HHq.EUZnkLndXUAhKh7UZy0U7MP2cLSYm9C', 0, 0, '2025-01-29 20:07:38', '2025-01-29 20:07:38'),
 (13, 'LimeLight Sports', 'admin@limelight.com', '', NULL, 1, 2, '$2y$10$kppvtTdntOu3NhHCJVpcje5qA/N2q8EFGggXUvKkL39ogBNX.tCT2', 0, 0, '2025-01-29 20:16:59', '2025-01-29 20:16:59'),
 (14, 'Bangladesh Youth Leadership Center (BYLC)', 'admin@bylc.com', '', NULL, 1, 2, '$2y$10$6pi3sPVFhwsnohqUxGK5N.Guxv5.F3SBDHNLdo.1hRSTboDwXlxOS', 0, 14, '2025-01-29 20:23:54', '2025-01-29 20:25:21'),

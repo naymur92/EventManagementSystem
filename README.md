@@ -45,7 +45,7 @@ cd EventManagementSystem
 
 ### **2️⃣ Configure the Environment**
 
-Rename the `.env.example` file to `.env` and update the necessary database credentials:
+Rename the `.env.example` file to `.env` and update:
 
 ```sh
 cp .env.example .env
@@ -54,6 +54,9 @@ cp .env.example .env
 Then, edit the `.env` file:
 
 ```
+APP_NAME="Your App Name"
+APP_URL=http://your-domain.com
+
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=event_management
@@ -79,13 +82,42 @@ Set writable permission to `public/uploads` folder
 
 Add your host address in `cors-allowed-origins` in `config/config.php` file
 
-### **7️⃣ Start the Development Server**
+### **7️⃣ Enable error reporting in Local Development**
+
+Enable error reporting lines from `public/index.php`.
+
+### **8️⃣ Start the Development Server**
 
 ```sh
 php -S localhost:8000 -t public
 ```
 
 Visit `http://localhost:8000` in your browser to access the application.
+
+---
+
+## **🔑 Login Credentials**
+
+To access the application, use the following test credentials:
+
+### **👤 Admin Account**
+
+📧 **Email:** `superuser@example.com`  
+🔑 **Password:** `abcd1234`
+
+> ⚠️ **Note:** Do not delete user with user_id 1.
+
+### **👥 Host Users**
+
+📧 **Email:** `admin@gycm.com` `admin@limelight.com` `admin@bylc.com`
+🔑 **Password:** `12345678`
+
+### **👨‍🎓 Attendee User**
+
+📧 **Email:** `abdrahman@gmail.com`  
+🔑 **Password:** `12345678`
+
+> ⚠️ **Note:** You can create more users via the registration form or database.
 
 ---
 

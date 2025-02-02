@@ -29,7 +29,11 @@ require BASE_PATH . 'routes/web.php';
 try {
     echo $router->resolve($request);
 } catch (Exception $e) {
-    // http_response_code($e->getCode() ?: 500);
+    $responseCode = $e->getCode() ?: 500;
+
+    if ($responseCode > 500 || $responseCode < 200) $responseCode = 400;
+
+    http_response_code($responseCode);
     echo $e->getMessage();
 }
 ############################### Routing part ends ###############################
