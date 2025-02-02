@@ -165,8 +165,9 @@ ob_start(); ?>
 
                         <select name="status" id="_status" class="form-control select2">
                             <option value="" <?= ($searchParams['status'] ?? "") == '' ? 'selected' : "" ?>>All</option>
-                            <option value="1" <?= ($searchParams['status'] ?? "") == 1 ? 'selected' : "" ?>>Active</option>
-                            <option value="0" <?= ($searchParams['status'] ?? "") == 0 ? 'selected' : "" ?>>Inactive</option>
+                            <option value="1" <?= ($searchParams['status'] ?? "") == 1 ? 'selected' : "" ?>>Published</option>
+                            <option value="0" <?= ($searchParams['status'] ?? "") == 0 ? 'selected' : "" ?>>Pending</option>
+                            <option value="2" <?= ($searchParams['status'] ?? "") == 2 ? 'selected' : "" ?>>Blocked</option>
                         </select>
                     </div>
 
@@ -214,6 +215,7 @@ ob_start(); ?>
                                     <th class="align-middle">Available Seat</th>
                                     <th class="align-middle">Total Registration</th>
                                     <th class="align-middle">Total Payment Received</th>
+                                    <th class="align-middle">Event Status</th>
                                 </tr>
                             </thead>
 
@@ -231,6 +233,7 @@ ob_start(); ?>
                                         <td class="align-middle"><?= $item['available_seat'] ?></td>
                                         <td class="align-middle"><?= $item['total_registration'] ?></td>
                                         <td class="align-middle"><?= $item['total_payment_collection'] ?></td>
+                                        <td class="align-middle"><?= $item['status'] ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>

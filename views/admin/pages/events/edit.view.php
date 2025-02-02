@@ -351,7 +351,7 @@ ob_start(); ?>
 
                     </div>
                     <div class="card-footer d-flex justify-content-end">
-                        <input type="submit" value="Update Event Event" class="btn btn-success">
+                        <input type="submit" value="Update Event" class="btn btn-success">
                     </div>
                 </form>
 

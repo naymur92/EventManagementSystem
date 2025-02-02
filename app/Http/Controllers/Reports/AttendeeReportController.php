@@ -95,6 +95,12 @@ class AttendeeReportController extends Controller
                     ev.name event_name,
                     ev.start_time,
                     ev.end_time,
+                    CASE 
+                        WHEN ev.status = 0 THEN 'Pending'
+                        WHEN ev.status = 1 THEN 'Published'
+                        WHEN ev.status = 2 THEN 'Blocked'
+                        ELSE 'Unknown' 
+                    END AS event_status,
                     a.booking_no,
                     a.name attendee_name,
                     a.email attendee_email,
@@ -275,7 +281,7 @@ class AttendeeReportController extends Controller
 
             $reportResult = $this->getReportData($requestData);
 
-            $headers = ["Host Name", "Event Name", "Start Time", "End Time", "Booking Number", "Attendee Name", "Attendee Email", "Attendee Mobile", "Registration Fee", "Payment Amount", "Payment Trnx No", "Payment Account No", "Registration Time", "Status", "Cancel Reason"];
+            $headers = ["Host Name", "Event Name", "Start Time", "End Time", "Event Status", "Booking Number", "Attendee Name", "Attendee Email", "Attendee Mobile", "Registration Fee", "Payment Amount", "Payment Trnx No", "Payment Account No", "Registration Time", "Status", "Cancel Reason"];
 
             $fileName = 'event_report_attendee_list.csv';
 

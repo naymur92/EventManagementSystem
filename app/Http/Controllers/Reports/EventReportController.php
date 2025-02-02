@@ -105,7 +105,13 @@ class EventReportController extends Controller
                     ev.max_capacity total_seat,
                     ev.current_capacity available_seat,
                     COUNT(a.attendee_id) total_registration,
-                    SUM(a.payment_amount) total_payment_collection
+                    SUM(a.payment_amount) total_payment_collection,
+                    CASE 
+                        WHEN ev.status = 0 THEN 'Pending'
+                        WHEN ev.status = 1 THEN 'Published'
+                        WHEN ev.status = 2 THEN 'Blocked'
+                        ELSE 'Unknown' 
+                    END AS status
                 ";
     }
 
@@ -121,6 +127,12 @@ class EventReportController extends Controller
                     ev.name event_name,
                     ev.start_time,
                     ev.end_time,
+                    CASE 
+                        WHEN ev.status = 0 THEN 'Pending'
+                        WHEN ev.status = 1 THEN 'Published'
+                        WHEN ev.status = 2 THEN 'Blocked'
+                        ELSE 'Unknown' 
+                    END AS event_status,
                     a.booking_no,
                     a.name attendee_name,
                     a.email attendee_email,
@@ -222,7 +234,7 @@ class EventReportController extends Controller
         }
 
         // status
-        if (isset($requestData['status']) && ($requestData['status'] == 0 || $requestData['status'] == 1)) {
+        if (isset($requestData['status']) && ($requestData['status'] >= 0)) {
             $whereConditions[] = 'ev.status = ?';
             $params[] = $requestData['status'];
         }
@@ -322,6 +334,7 @@ class EventReportController extends Controller
                 "Available Seat",
                 "Total Registration",
                 "Total Payment Received",
+                "Event Status"
             ];
 
             $fileName = 'event_report_event_list.csv';
@@ -389,7 +402,7 @@ class EventReportController extends Controller
 
             $reportResult = $this->getReportData($requestData);
 
-            $headers = ["Host Name", "Event Name", "Start Time", "End Time", "Booking Number", "Attendee Name", "Attendee Email", "Attendee Mobile", "Registration Fee", "Payment Amount", "Payment Trnx No", "Payment Account No", "Registration Time", "Status"];
+            $headers = ["Host Name", "Event Name", "Start Time", "End Time", "Event Status", "Booking Number", "Attendee Name", "Attendee Email", "Attendee Mobile", "Registration Fee", "Payment Amount", "Payment Trnx No", "Payment Account No", "Registration Time", "Status"];
 
             $fileName = 'event_report_attendee_list.csv';
 

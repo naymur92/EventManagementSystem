@@ -251,13 +251,15 @@ class UserController extends Controller
     {
         $user = (new User)->find($user_id);
 
+        $status = filter_var($request->input('status'), FILTER_SANITIZE_NUMBER_INT);
+
         if (!$user || $user_id == 1) {
             Session::flash('flash_error', "Invalid action!");
 
             redirect('/admin/users');
         }
 
-        $user->update(['status' => $request->input('status'), 'updated_by' => Auth::user()->user_id, 'updated_at' => date('Y-m-d H:i:s')]);
+        $user->update(['status' => $status, 'updated_by' => Auth::user()->user_id, 'updated_at' => date('Y-m-d H:i:s')]);
 
         Session::flash('flash_success', "Status changed successfully!");
 

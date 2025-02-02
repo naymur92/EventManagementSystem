@@ -145,8 +145,9 @@ ob_start(); ?>
 
                         <select name="status" id="_status" class="form-control select2">
                             <option value="" <?= ($searchParams['status'] ?? "") == '' ? 'selected' : "" ?>>All</option>
-                            <option value="1" <?= ($searchParams['status'] ?? "") == 1 ? 'selected' : "" ?>>Active</option>
-                            <option value="0" <?= ($searchParams['status'] ?? "") == 0 ? 'selected' : "" ?>>Inactive</option>
+                            <option value="1" <?= ($searchParams['status'] ?? "") == 1 ? 'selected' : "" ?>>Published</option>
+                            <option value="0" <?= ($searchParams['status'] ?? "") == 0 ? 'selected' : "" ?>>Pending</option>
+                            <option value="2" <?= ($searchParams['status'] ?? "") == 2 ? 'selected' : "" ?>>Blocked</option>
                         </select>
                     </div>
 
@@ -196,6 +197,7 @@ ob_start(); ?>
                                     <th class="align-middle">Event Name</th>
                                     <th class="align-middle">Start Time</th>
                                     <th class="align-middle">End Time</th>
+                                    <th class="align-middle">Event Status</th>
                                     <th class="align-middle">Booking No</th>
                                     <th class="align-middle">Attendee Name</th>
                                     <th class="align-middle">Attendee Email</th>
@@ -218,6 +220,7 @@ ob_start(); ?>
                                         <td class="align-middle"><?= $item['event_name'] ?></td>
                                         <td class="text-center align-middle"><?= date('Y-m-d h:i', strtotime($item['start_time'])) ?></td>
                                         <td class="text-center align-middle"><?= $item['end_time'] ? date('Y-m-d h:i', strtotime($item['end_time'])) : '' ?></td>
+                                        <td class="align-middle"><?= $item['event_status'] ?></td>
                                         <td class="align-middle"><?= $item['booking_no'] ?></td>
                                         <td class="align-middle"><?= $item['attendee_name'] ?></td>
                                         <td class="align-middle"><?= $item['attendee_email'] ?></td>

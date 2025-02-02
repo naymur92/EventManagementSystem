@@ -71,9 +71,13 @@ ob_start(); ?>
                                         <td class="text-center align-middle"><?= $event['max_capacity'] > 0 ? $event['current_capacity'] : "Unlimited" ?></td>
                                         <td class="text-center align-middle"><?= $event['start_time'] ?></td>
                                         <td class="text-center align-middle">
-                                            <span class="badge badge-pill <?= ($event['start_time'] != '' && $event['start_time'] < date('Y-m-d H:i:s')) || $event['status'] == 0 ? 'badge-danger' : 'badge-success' ?>">
-                                                <?= $event['start_time'] != '' && $event['start_time'] < date('Y-m-d H:i:s') ? 'Ended' : ($event['status'] == 0 ? 'Inactive' : 'Published') ?>
-                                            </span>
+                                            <?php if ($event['status'] ==  0): ?>
+                                                <span class="badge badge-pill badge-warning">Pending</span>
+                                            <?php elseif ($event['status'] == 1): ?>
+                                                <span class="badge badge-pill badge-success">Published</span>
+                                            <?php else: ?>
+                                                <span class="badge badge-pill badge-danger">Blocked</span>
+                                            <?php endif; ?>
                                         </td>
                                         <td class="align-middle">
                                             <div class="text-center d-flex justify-content-center align-items-center">
@@ -104,7 +108,7 @@ ob_start(); ?>
                                                 <?php endif; ?>
 
                                                 <!-- set active -->
-                                                <?php if ($event['status'] == 0): ?>
+                                                <?php if ($event['status'] == 0 || ($event['status'] == 2 && authUser()->type == 1)): ?>
                                                     <form action="<?= route("/admin/events/{$event['event_id']}/change-status") ?>" method="POST"
                                                         onsubmit="swalConfirmationOnSubmit(event, 'Are you sure??');">
                                                         <?= csrfField() ?>
@@ -117,6 +121,24 @@ ob_start(); ?>
                                                         <a type="button" data-toggle="tooltip" data-placement="top"
                                                             title="Publish" class="table-data-modify-icon mr-2" onclick="$(this).closest('form').find('.hidden-submit-btn').click()">
                                                             <span class="badge badge-success"><i class="fa-solid fa-check"></i></span>
+                                                        </a>
+                                                    </form>
+                                                <?php endif; ?>
+
+                                                <!-- block event -->
+                                                <?php if ($event['status'] != 2 && authUser()->type == 1): ?>
+                                                    <form action="<?= route("/admin/events/{$event['event_id']}/change-status") ?>" method="POST"
+                                                        onsubmit="swalConfirmationOnSubmit(event, 'Are you sure??');">
+                                                        <?= csrfField() ?>
+                                                        <input type="hidden" name="_method" value="PUT">
+
+                                                        <input type="text" value="2" name="status" hidden>
+
+                                                        <input type="submit" class="hidden-submit-btn" hidden>
+
+                                                        <a type="button" data-toggle="tooltip" data-placement="top"
+                                                            title="Block" class="table-data-modify-icon mr-2" onclick="$(this).closest('form').find('.hidden-submit-btn').click()">
+                                                            <span class="badge badge-danger"><i class="fa-solid fa-ban"></i></span>
                                                         </a>
                                                     </form>
                                                 <?php endif; ?>

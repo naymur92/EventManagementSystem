@@ -425,6 +425,8 @@ class EventController extends Controller
     {
         $event = (new Event)->find($event_id);
 
+        $status = filter_var($request->input('status'), FILTER_SANITIZE_NUMBER_INT);
+
         $errorFound = false;
         if (!$event || ($event->user_id != Auth::user()->user_id && Auth::user()->type != 1)) {
             $errorFound = true;
@@ -441,9 +443,16 @@ class EventController extends Controller
             redirect('/admin/events');
         }
 
-        $event->update(['status' => $request->input('status'), 'updated_at' => date('Y-m-d H:i:s')]);
+        $event->update(['status' => $status, 'updated_at' => date('Y-m-d H:i:s')]);
 
-        Session::flash('flash_success', "Status changed successfully!");
+        if ($status == 0) {
+            Session::flash('flash_warning', "Event unpublished!");
+        } elseif ($status == 1) {
+            Session::flash('flash_success', "Event published!");
+        } else {
+            Session::flash('flash_warning', "Event blocked!");
+        }
+
 
         redirect('/admin/events');
     }
@@ -513,6 +522,12 @@ class EventController extends Controller
                     ev.name event_name,
                     ev.start_time,
                     ev.end_time,
+                    CASE 
+                        WHEN ev.status = 0 THEN 'Pending'
+                        WHEN ev.status = 1 THEN 'Published'
+                        WHEN ev.status = 2 THEN 'Blocked'
+                        ELSE 'Unknown' 
+                    END AS event_status,
                     a.booking_no,
                     a.name attendee_name,
                     a.email attendee_email,
@@ -534,7 +549,7 @@ class EventController extends Controller
 
         $attendees = DB::query($sql, $params)->fetchAll();
 
-        $headers = ["Host Name", "Event Name", "Start Time", "End Time", "Booking Number", "Attendee Name", "Attendee Email", "Attendee Mobile", "Registration Fee", "Payment Amount", "Payment Trnx No", "Payment Account No", "Registration Time", "Status"];
+        $headers = ["Host Name", "Event Name", "Start Time", "End Time", "Event Status", "Booking Number", "Attendee Name", "Attendee Email", "Attendee Mobile", "Registration Fee", "Payment Amount", "Payment Trnx No", "Payment Account No", "Registration Time", "Status"];
 
         $fileName = 'attendees_' . $event_id . '.csv';
 
