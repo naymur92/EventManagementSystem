@@ -34,6 +34,7 @@ class CsrfMiddleware
         // Check token from request body or headers
         $token = $request->input('_csrf_token')
             ?? $request->header('X-CSRF-TOKEN')
+            ?? $request->header('X-Csrf-Token')
             ?? $request->header('X-Requested-With')
             ?? '';
 
